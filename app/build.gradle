@@ -1,17 +1,21 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion rootProject.ext.COMPILE_SDK_VERSION
+    buildToolsVersion rootProject.ext.BUILD_TOOLS_VERSION
+
     defaultConfig {
         applicationId "jp.tomyamkun330.androidlearning"
-        minSdkVersion 19
-        targetSdkVersion 26
+        minSdkVersion rootProject.ext.MIN_SDK_VERSION
+        targetSdkVersion rootProject.ext.TARGET_SDK_VERSION
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
+        debug {
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -21,10 +25,30 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+
+    compile 'com.android.support:appcompat-v7:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
+    compile 'com.android.support:support-v4:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
+    compile 'com.android.support:support-annotations:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
+    compile 'com.android.support:design:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
+    compile 'com.google.android.gms:play-services-ads:' + rootProject.ext.PLAY_SERVICES_VERSION
+
+    compile 'com.jakewharton:butterknife:' + rootProject.ext.BUTTER_KNIFE_VERSION
+    annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.ext.BUTTER_KNIFE_VERSION
+
+    compile 'com.google.dagger:dagger:' + rootProject.ext.DAGGER_VERSION
+    annotationProcessor 'com.google.dagger:dagger-compiler:' + rootProject.ext.DAGGER_VERSION
+    compile 'com.google.dagger:dagger-android:' + rootProject.ext.DAGGER_VERSION
+    annotationProcessor 'com.google.dagger:dagger-android-processor:' + rootProject.ext.DAGGER_VERSION
+    compile 'com.google.dagger:dagger-android-support:' + rootProject.ext.DAGGER_VERSION
+
+    compile 'io.reactivex.rxjava2:rxandroid:' + rootProject.ext.RXANDROID_VERSION
+    compile 'io.reactivex.rxjava2:rxjava:' + rootProject.ext.RXJAVA_VERSION
+
+    compile 'com.jakewharton.timber:timber:' + rootProject.ext.TIMBER_VERSION
+
+    testCompile 'junit:junit:' + rootProject.ext.JUNIT_VERSION
+    androidTestCompile('com.android.support.test.espresso:espresso-core:' + rootProject.ext.ESPRESSO_VERSION, {
         exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
     })
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile 'com.google.android.gms:play-services-ads:11.0.4'
-    testCompile 'junit:junit:4.12'
 }
