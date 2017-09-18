@@ -5,7 +5,7 @@ android {
     buildToolsVersion rootProject.ext.BUILD_TOOLS_VERSION
 
     defaultConfig {
-        applicationId "jp.tomyamkun330.androidlearning"
+        applicationId "jp.ttanaka330.androidlearning"
         minSdkVersion rootProject.ext.MIN_SDK_VERSION
         targetSdkVersion rootProject.ext.TARGET_SDK_VERSION
         versionCode 1
@@ -13,11 +13,19 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    compileOptions {
+        sourceCompatibility rootProject.ext.JAVA_VERSION
+        targetCompatibility rootProject.ext.JAVA_VERSION
+    }
+
     buildTypes {
         debug {
+            applicationIdSuffix ".debug"
+            debuggable true
         }
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
