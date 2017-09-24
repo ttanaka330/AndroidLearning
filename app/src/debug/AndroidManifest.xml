@@ -1,0 +1,8 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="jp.ttanaka330.androidlearning">
+
+    <application android:name=".DebugApplication"
+        tools:replace="android:name" />
+
+</manifest>

@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion rootProject.ext.COMPILE_SDK_VERSION
@@ -31,13 +33,21 @@ android {
     }
 }
 
+repositories {
+    maven {
+        url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
+    // サポートライブラリ
     compile 'com.android.support:appcompat-v7:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
+    compile 'com.android.support:design:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
+    compile 'com.android.support:recyclerview-v7:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
     compile 'com.android.support:support-v4:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
     compile 'com.android.support:support-annotations:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
-    compile 'com.android.support:design:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
     compile 'com.google.android.gms:play-services-ads:' + rootProject.ext.PLAY_SERVICES_VERSION
 
     compile 'com.jakewharton:butterknife:' + rootProject.ext.BUTTER_KNIFE_VERSION
@@ -54,6 +64,11 @@ dependencies {
 
     compile 'com.jakewharton.timber:timber:' + rootProject.ext.TIMBER_VERSION
 
+    // デバッグ用
+    debugCompile 'com.facebook.stetho:stetho:' + rootProject.ext.STETHO_VERSION
+    debugCompile 'com.uphyca:stetho_realm:' + rootProject.ext.STETHO_REALM_VERSION
+
+    // テストライブラリ
     testCompile 'junit:junit:' + rootProject.ext.JUNIT_VERSION
     androidTestCompile('com.android.support.test.espresso:espresso-core:' + rootProject.ext.ESPRESSO_VERSION, {
         exclude group: 'com.android.support', module: 'support-annotations'

@@ -1,8 +1,16 @@
 package jp.ttanaka330.androidlearning.di;
 
-/**
- * Created by Tomohiro Tanaka on 2017/09/18.
- */
+import javax.inject.Singleton;
 
-public class AppComponent {
+import dagger.Component;
+import jp.ttanaka330.androidlearning.MainApplication;
+
+@Singleton
+@Component(modules = {AppModule.class})
+public interface AppComponent {
+
+    void inject(MainApplication application);
+
+    ActivityComponent plus(ActivityModule module);
+
 }
