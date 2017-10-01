@@ -7,7 +7,7 @@ import jp.ttanaka330.androidlearning.di.FragmentComponent;
 import jp.ttanaka330.androidlearning.di.FragmentModule;
 import jp.ttanaka330.androidlearning.ui.activity.BaseActivity;
 
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
     private FragmentComponent mComponent;
 
@@ -20,5 +20,10 @@ public class BaseFragment extends Fragment {
             }
         }
         return mComponent;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
     }
 }

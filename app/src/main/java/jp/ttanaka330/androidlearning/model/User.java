@@ -1,5 +1,7 @@
 package jp.ttanaka330.androidlearning.model;
 
+import android.text.TextUtils;
+
 import java.util.UUID;
 
 import io.realm.RealmObject;
@@ -51,6 +53,8 @@ public class User extends RealmObject {
 
     @Override
     public String toString() {
-        return getName() + "(" + getAge() +") : " + getUrl();
+        return name
+                + ((age == null) ? "" :  "(" + age +")")
+                + ((TextUtils.isEmpty(url)) ? "" : " : " + getUrl());
     }
 }

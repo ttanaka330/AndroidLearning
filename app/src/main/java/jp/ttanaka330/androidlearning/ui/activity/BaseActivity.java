@@ -7,7 +7,7 @@ import jp.ttanaka330.androidlearning.MainApplication;
 import jp.ttanaka330.androidlearning.di.ActivityComponent;
 import jp.ttanaka330.androidlearning.di.ActivityModule;
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private ActivityComponent mComponent;
 

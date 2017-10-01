@@ -10,32 +10,51 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.realm.RealmResults;
+
 /**
- * 1行の文字列を表示するだけのシンプルな {@link RecyclerView.Adapter}.
- * {@see android.R.layout#simple_list_item_1}
+ * 1行の文字列を表示するだけのシンプルな {@link RecyclerView.Adapter}。
+ * {@link RecyclerSimpleAdapter} は以下の機能を有します。
+ * <li>指定したオブジェクトの #toString をリストに表示</li>
+ * <li>クリックイベントは {@link #onItemClicked(Object)} を override して実装</li>
+ *
+ * @see android.R.layout#simple_list_item_1
  */
-public class RecyclerSimpleAdapter extends RecyclerView.Adapter<RecyclerSimpleAdapter.ViewHolder> {
+public class RecyclerSimpleAdapter<T> extends RecyclerView.Adapter<RecyclerSimpleAdapter.ViewHolder> {
 
     private final Object lock = new Object();
-    private final List<String> mDataList;
+    private final List<T> mDataList;
 
     public RecyclerSimpleAdapter() {
         mDataList = new ArrayList<>();
     }
 
-    public RecyclerSimpleAdapter(@NonNull List<String> list) {
-        mDataList = list;
+    public RecyclerSimpleAdapter(@NonNull List<T> list) {
+        if (list instanceof RealmResults) {
+            mDataList = Observable.fromIterable(list)
+                    .toList()
+                    .blockingGet();
+        } else {
+            mDataList = list;
+        }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext())
+        final ViewHolder holder = new ViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(android.R.layout.simple_list_item_1, parent, false));
+
+        holder.itemView.setOnClickListener(view -> {
+            T item = mDataList.get(holder.getAdapterPosition());
+            onItemClicked(item);
+        });
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textView.setText(mDataList.get(position));
+        holder.textView.setText(mDataList.get(position).toString());
     }
 
     @Override
@@ -48,13 +67,22 @@ public class RecyclerSimpleAdapter extends RecyclerView.Adapter<RecyclerSimpleAd
      *
      * @param value 表示文字列
      */
-    public void add(String value) {
+    public void add(T value) {
         final int position;
         synchronized (lock) {
             position = mDataList.size();
             mDataList.add(value);
         }
         notifyItemChanged(position);
+    }
+
+    /**
+     * アイテムクリックイベント
+     *
+     * @param item クリックしたアイテム
+     */
+    protected void onItemClicked(T item) {
+
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
