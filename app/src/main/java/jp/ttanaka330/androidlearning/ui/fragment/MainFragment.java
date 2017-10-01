@@ -49,7 +49,6 @@ public class MainFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        getComponent().inject(this);
         mUnbinder = ButterKnife.bind(this, view);
         initFragmentList();
         return view;
