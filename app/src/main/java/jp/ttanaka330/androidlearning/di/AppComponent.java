@@ -3,14 +3,20 @@ package jp.ttanaka330.androidlearning.di;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import dagger.android.AndroidInjector;
+import dagger.android.support.AndroidSupportInjectionModule;
 import jp.ttanaka330.androidlearning.MainApplication;
 
 @Singleton
-@Component(modules = {AppModule.class})
-public interface AppComponent {
+@Component(modules = {
+        AndroidSupportInjectionModule.class,
+        AppModule.class,
+        ActivityModule.class
+})
+public interface AppComponent extends AndroidInjector<MainApplication> {
 
-    void inject(MainApplication application);
-
-    ActivityComponent plus(ActivityModule module);
+    @Component.Builder
+    abstract class Builder extends AndroidInjector.Builder<MainApplication> {
+    }
 
 }

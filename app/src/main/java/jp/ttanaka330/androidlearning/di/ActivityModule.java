@@ -1,22 +1,30 @@
 package jp.ttanaka330.androidlearning.di;
 
-import android.support.v7.app.AppCompatActivity;
-
 import dagger.Module;
-import dagger.Provides;
+import dagger.android.ContributesAndroidInjector;
+import jp.ttanaka330.androidlearning.di.scope.ActivityScope;
+import jp.ttanaka330.androidlearning.di.scope.FragmentScope;
+import jp.ttanaka330.androidlearning.ui.activity.MainActivity;
+import jp.ttanaka330.androidlearning.ui.fragment.MainFragment;
+import jp.ttanaka330.androidlearning.ui.fragment.RealmFragment;
 
 @Module
-public class ActivityModule {
+abstract class ActivityModule {
 
-    private AppCompatActivity mActivity;
+    @ActivityScope
+    @ContributesAndroidInjector(modules = MainActivityModule.class)
+    abstract MainActivity contributeMainActivity();
 
-    public ActivityModule(AppCompatActivity activity) {
-        mActivity = activity;
-    }
+    @Module
+    abstract class MainActivityModule {
 
-    @Provides
-    public AppCompatActivity provideActivity() {
-        return mActivity;
+        @FragmentScope
+        @ContributesAndroidInjector(modules = FragmentModule.class)
+        abstract MainFragment contributeMainFragment();
+
+        @FragmentScope
+        @ContributesAndroidInjector(modules = FragmentModule.class)
+        abstract RealmFragment contributeRealmFragment();
     }
 
 }
