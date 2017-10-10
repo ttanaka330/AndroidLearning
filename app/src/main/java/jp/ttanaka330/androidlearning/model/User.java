@@ -54,7 +54,7 @@ public class User extends RealmObject {
     @Override
     public String toString() {
         return name
-                + ((age == null) ? "" :  "(" + age +")")
-                + ((TextUtils.isEmpty(url)) ? "" : " : " + getUrl());
+                + ((age == null) ? "" : "(" + age + ")")
+                + ((TextUtils.isEmpty(url)) ? "" : " : " + url);
     }
 }

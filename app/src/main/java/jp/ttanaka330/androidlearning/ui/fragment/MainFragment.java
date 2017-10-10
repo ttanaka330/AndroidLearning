@@ -1,6 +1,8 @@
 package jp.ttanaka330.androidlearning.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -65,7 +67,7 @@ public class MainFragment extends BaseFragment {
         list.add(RealmFragment.newInstance());
         RecyclerSimpleAdapter adapter = new RecyclerSimpleAdapter<BaseFragment>(list) {
             @Override
-            protected void onItemClicked(BaseFragment item) {
+            protected void onItemClicked(int position, BaseFragment item) {
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_view, item)
@@ -73,7 +75,12 @@ public class MainFragment extends BaseFragment {
                         .commit();
             }
         };
-        mListView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        Context context = getContext();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        DividerItemDecoration decoration = new DividerItemDecoration(context, layoutManager.getOrientation());
         mListView.setAdapter(adapter);
+        mListView.setLayoutManager(layoutManager);
+        mListView.addItemDecoration(decoration);
     }
 }

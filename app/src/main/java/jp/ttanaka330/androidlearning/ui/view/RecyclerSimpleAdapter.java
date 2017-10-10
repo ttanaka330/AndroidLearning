@@ -17,7 +17,7 @@ import io.realm.RealmResults;
  * 1行の文字列を表示するだけのシンプルな {@link RecyclerView.Adapter}。
  * {@link RecyclerSimpleAdapter} は以下の機能を有します。
  * <li>指定したオブジェクトの #toString をリストに表示</li>
- * <li>クリックイベントは {@link #onItemClicked(Object)} を override して実装</li>
+ * <li>クリックイベントは {@link #onItemClicked(int, Object)} を override して実装</li>
  *
  * @see android.R.layout#simple_list_item_1
  */
@@ -46,8 +46,9 @@ public class RecyclerSimpleAdapter<T> extends RecyclerView.Adapter<RecyclerSimpl
                 .inflate(android.R.layout.simple_list_item_1, parent, false));
 
         holder.itemView.setOnClickListener(view -> {
-            T item = mDataList.get(holder.getAdapterPosition());
-            onItemClicked(item);
+            final int position = holder.getAdapterPosition();
+            T item = mDataList.get(position);
+            onItemClicked(position, item);
         });
         return holder;
     }
@@ -60,6 +61,16 @@ public class RecyclerSimpleAdapter<T> extends RecyclerView.Adapter<RecyclerSimpl
     @Override
     public int getItemCount() {
         return mDataList.size();
+    }
+
+    /**
+     * アイテムの取得
+     *
+     * @param position 取得する行番号
+     * @return 指定したアイテム
+     */
+    public T getItem(int position) {
+        return mDataList.get(position);
     }
 
     /**
@@ -77,11 +88,25 @@ public class RecyclerSimpleAdapter<T> extends RecyclerView.Adapter<RecyclerSimpl
     }
 
     /**
+     * アイテム削除
+     *
+     * @param position 削除する行番号
+     */
+    public void removeItem(int position) {
+        synchronized (lock) {
+            mDataList.remove(position);
+        }
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mDataList.size());
+    }
+
+    /**
      * アイテムクリックイベント
      *
-     * @param item クリックしたアイテム
+     * @param position クリックした行番号
+     * @param item     クリックしたアイテム
      */
-    protected void onItemClicked(T item) {
+    protected void onItemClicked(int position, T item) {
 
     }
 

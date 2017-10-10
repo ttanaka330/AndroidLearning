@@ -1,9 +1,18 @@
 <resources>
+
     <string name="app_name">Android Learning</string>
 
-    <string name="text_name">名前</string>
-    <string name="text_age">年齢</string>
-    <string name="text_url">サイトURL</string>
-    <string name="text_entry">登録</string>
+    <!-- common -->
+    <string name="register">登録</string>
+    <string name="update">更新</string>
+    <string name="delete">削除</string>
+    <string name="cancel">キャンセル</string>
+
+    <!-- Realm user -->
+    <string name="realm_user_name">名前</string>
+    <string name="realm_user_age">年齢</string>
+    <string name="realm_user_url">サイトURL</string>
+    <string name="realm_user_register">ユーザー登録</string>
+    <string name="realm_user_edit">ユーザー編集</string>
 
 </resources>
