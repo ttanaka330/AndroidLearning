@@ -75,21 +75,22 @@ public class RealmFragment extends BaseFragment implements DialogListener {
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Intent data) {
-        final User user;
         switch (resultCode) {
             case RealmUserEditDialog.RESULT_CANCEL:
                 return;
             case RealmUserEditDialog.RESULT_REGISTER:
-                user = updateUserData(new User(), data);
-                mDatabase.add(user);
-                mAdapter.add(user);
+                mDatabase.execute(realm -> {
+                    User user = realm.createObject(User.class, User.createKey());
+                    updateUserData(user, data);
+                    mAdapter.add(user);
+                });
                 break;
             case RealmUserEditDialog.RESULT_UPDATE:
                 mDatabase.execute(realm -> updateUserData(mAdapter.getItem(requestCode), data));
                 mAdapter.notifyItemChanged(requestCode);
                 break;
             case RealmUserEditDialog.RESULT_DELETE:
-                user = mAdapter.getItem(requestCode);
+                User user = mAdapter.getItem(requestCode);
                 mDatabase.execute(realm -> user.deleteFromRealm());
                 mAdapter.removeItem(requestCode);
                 break;

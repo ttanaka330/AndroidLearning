@@ -15,8 +15,8 @@ public class User extends RealmObject {
     private Integer age;
     private String url;
 
-    public User() {
-        id = UUID.randomUUID().toString();
+    public static String createKey() {
+        return UUID.randomUUID().toString();
     }
 
     public String getId() {

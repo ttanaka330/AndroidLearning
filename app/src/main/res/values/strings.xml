@@ -9,7 +9,7 @@
     <string name="cancel">キャンセル</string>
 
     <!-- Realm user -->
-    <string name="realm_user_name">名前</string>
+    <string name="realm_user_name">名前（必須）</string>
     <string name="realm_user_age">年齢</string>
     <string name="realm_user_url">サイトURL</string>
     <string name="realm_user_register">ユーザー登録</string>

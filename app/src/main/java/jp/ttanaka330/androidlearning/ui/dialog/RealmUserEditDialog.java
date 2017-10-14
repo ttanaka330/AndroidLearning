@@ -10,9 +10,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import jp.ttanaka330.androidlearning.R;
@@ -112,6 +115,12 @@ public class RealmUserEditDialog extends DialogFragment implements DialogInterfa
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        setCustomizeEvent((AlertDialog) getDialog());
+    }
+
+    @Override
     public void onClick(DialogInterface dialogInterface, int i) {
         switch (i) {
             case DialogInterface.BUTTON_POSITIVE:
@@ -128,6 +137,26 @@ public class RealmUserEditDialog extends DialogFragment implements DialogInterfa
                 result(RESULT_DELETE);
                 break;
         }
+    }
+
+    private void setCustomizeEvent(AlertDialog dialog) {
+        final Button positive = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        positive.setEnabled(!TextUtils.isEmpty(mEditName.getText()));
+
+        mEditName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                positive.setEnabled(!TextUtils.isEmpty(s));
+            }
+        });
     }
 
     private boolean isRegister() {
