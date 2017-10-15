@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import jp.ttanaka330.androidlearning.R;
-import jp.ttanaka330.androidlearning.model.User;
+import jp.ttanaka330.androidlearning.repository.model.User;
 import jp.ttanaka330.androidlearning.repository.RealmDatabase;
 import jp.ttanaka330.androidlearning.ui.dialog.DialogListener;
 import jp.ttanaka330.androidlearning.ui.dialog.RealmUserEditDialog;

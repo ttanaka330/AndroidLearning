@@ -20,6 +20,10 @@ android {
         targetCompatibility rootProject.ext.JAVA_VERSION
     }
 
+    dataBinding {
+        enabled = true
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix ".debug"

@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.model;
+package jp.ttanaka330.androidlearning.repository.model;
 
 import android.text.TextUtils;
 
