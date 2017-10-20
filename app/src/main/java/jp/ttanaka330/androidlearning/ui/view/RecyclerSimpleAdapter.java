@@ -3,23 +3,21 @@ package jp.ttanaka330.androidlearning.ui.view;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.realm.RealmResults;
+import jp.ttanaka330.androidlearning.databinding.ViewSimpleListBinding;
+import jp.ttanaka330.androidlearning.viewmodel.SimpleListViewModel;
 
 /**
- * 1行の文字列を表示するだけのシンプルな {@link RecyclerView.Adapter}。
+ * 1つの文字列を表示するだけのシンプルな {@link RecyclerView.Adapter}。
  * {@link RecyclerSimpleAdapter} は以下の機能を有します。
  * <li>指定したオブジェクトの #toString をリストに表示</li>
  * <li>クリックイベントは {@link #onItemClicked(int, Object)} を override して実装</li>
- *
- * @see android.R.layout#simple_list_item_1
  */
 public class RecyclerSimpleAdapter<T> extends RecyclerView.Adapter<RecyclerSimpleAdapter.ViewHolder> {
 
@@ -42,20 +40,20 @@ public class RecyclerSimpleAdapter<T> extends RecyclerView.Adapter<RecyclerSimpl
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final ViewHolder holder = new ViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(android.R.layout.simple_list_item_1, parent, false));
-
-        holder.itemView.setOnClickListener(view -> {
-            final int position = holder.getAdapterPosition();
-            T item = mDataList.get(position);
-            onItemClicked(position, item);
-        });
-        return holder;
+        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        final ViewSimpleListBinding binding = ViewSimpleListBinding.inflate(inflater, parent, false);
+        return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textView.setText(mDataList.get(position).toString());
+        SimpleListViewModel model = new SimpleListViewModel();
+        model.setText(mDataList.get(position).toString());
+        holder.binding.setModel(model);
+        holder.binding.getRoot().setOnClickListener(v -> {
+            T item = mDataList.get(position);
+            onItemClicked(position, item);
+        });
     }
 
     @Override
@@ -111,11 +109,11 @@ public class RecyclerSimpleAdapter<T> extends RecyclerView.Adapter<RecyclerSimpl
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView textView;
+        final ViewSimpleListBinding binding;
 
-        ViewHolder(View itemView) {
-            super(itemView);
-            textView = itemView.findViewById(android.R.id.text1);
+        ViewHolder(@NonNull ViewSimpleListBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

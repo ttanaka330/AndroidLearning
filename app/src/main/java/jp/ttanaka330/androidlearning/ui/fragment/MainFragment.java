@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import jp.ttanaka330.androidlearning.R;
+import jp.ttanaka330.androidlearning.databinding.FragmentMainBinding;
 import jp.ttanaka330.androidlearning.ui.view.RecyclerSimpleAdapter;
 
 /**
@@ -24,10 +21,7 @@ import jp.ttanaka330.androidlearning.ui.view.RecyclerSimpleAdapter;
  */
 public class MainFragment extends BaseFragment {
 
-    @BindView(R.id.list_view)
-    RecyclerView mListView;
-
-    private Unbinder mUnbinder;
+    private FragmentMainBinding mBinding;
 
     public MainFragment() {
         // Required empty public constructor
@@ -48,18 +42,10 @@ public class MainFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        mUnbinder = ButterKnife.bind(this, view);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mBinding = FragmentMainBinding.inflate(inflater, container, false);
         initFragmentList();
-        return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        mUnbinder.unbind();
-        super.onDestroyView();
+        return mBinding.getRoot();
     }
 
     private void initFragmentList() {
@@ -79,8 +65,8 @@ public class MainFragment extends BaseFragment {
         Context context = getContext();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         DividerItemDecoration decoration = new DividerItemDecoration(context, layoutManager.getOrientation());
-        mListView.setAdapter(adapter);
-        mListView.setLayoutManager(layoutManager);
-        mListView.addItemDecoration(decoration);
+        mBinding.listView.setAdapter(adapter);
+        mBinding.listView.setLayoutManager(layoutManager);
+        mBinding.listView.addItemDecoration(decoration);
     }
 }

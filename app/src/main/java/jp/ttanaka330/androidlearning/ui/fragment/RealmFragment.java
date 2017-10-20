@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,27 +16,24 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import jp.ttanaka330.androidlearning.R;
-import jp.ttanaka330.androidlearning.repository.model.User;
+import jp.ttanaka330.androidlearning.databinding.FragmentRealmBinding;
 import jp.ttanaka330.androidlearning.repository.RealmDatabase;
+import jp.ttanaka330.androidlearning.repository.model.User;
 import jp.ttanaka330.androidlearning.ui.dialog.DialogListener;
 import jp.ttanaka330.androidlearning.ui.dialog.RealmUserEditDialog;
 import jp.ttanaka330.androidlearning.ui.view.RecyclerSimpleAdapter;
+import jp.ttanaka330.androidlearning.viewmodel.RealmViewModel;
 
-public class RealmFragment extends BaseFragment implements DialogListener {
+public class RealmFragment extends BaseFragment implements DialogListener, RealmViewModel.Callback {
 
     @Inject
     RealmDatabase mDatabase;
+    @Inject
+    RealmViewModel mViewModel;
 
-    @BindView(R.id.list_view)
-    RecyclerView mListView;
+    FragmentRealmBinding mBinding;
 
     private RecyclerSimpleAdapter<User> mAdapter;
-    private Unbinder mUnbinder;
 
     public static RealmFragment newInstance() {
         return new RealmFragment();
@@ -48,29 +44,23 @@ public class RealmFragment extends BaseFragment implements DialogListener {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mViewModel.setCallback(this);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_realm, container, false);
-        mUnbinder = ButterKnife.bind(this, view);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mBinding = FragmentRealmBinding.inflate(inflater, container, false);
+        mBinding.setModel(mViewModel);
         initUserList();
-        return view;
+        return mBinding.getRoot();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mDatabase.close();
-    }
-
-    @Override
-    public void onDestroyView() {
-        mUnbinder.unbind();
-        super.onDestroyView();
     }
 
     @Override
@@ -97,8 +87,8 @@ public class RealmFragment extends BaseFragment implements DialogListener {
         }
     }
 
-    @OnClick(R.id.fab)
-    void onRegisterClicked() {
+    @Override
+    public void onRegisterClicked() {
         showUserEditDialog(-1, null);
     }
 
@@ -113,9 +103,9 @@ public class RealmFragment extends BaseFragment implements DialogListener {
                 showUserEditDialog(position, item);
             }
         };
-        mListView.setAdapter(mAdapter);
-        mListView.setLayoutManager(layoutManager);
-        mListView.addItemDecoration(decoration);
+        mBinding.listView.setAdapter(mAdapter);
+        mBinding.listView.setLayoutManager(layoutManager);
+        mBinding.listView.addItemDecoration(decoration);
     }
 
     private User updateUserData(@NonNull User user, @NonNull Intent data) {
@@ -130,4 +120,5 @@ public class RealmFragment extends BaseFragment implements DialogListener {
         RealmUserEditDialog.createDialog(requestCode, user)
                 .show(getChildFragmentManager(), null);
     }
+
 }

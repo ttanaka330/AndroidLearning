@@ -1,25 +1,22 @@
 package jp.ttanaka330.androidlearning.ui.activity;
 
-import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import jp.ttanaka330.androidlearning.R;
+import jp.ttanaka330.androidlearning.databinding.ActivityMainBinding;
 import jp.ttanaka330.androidlearning.ui.fragment.MainFragment;
 
 public class MainActivity extends BaseActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+    ActivityMainBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        setSupportActionBar(mToolbar);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        setSupportActionBar(mBinding.toolbar);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -28,8 +25,4 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 }

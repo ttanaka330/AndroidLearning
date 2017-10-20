@@ -1,0 +1,21 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="model"
+            type="jp.ttanaka330.androidlearning.viewmodel.SimpleListViewModel" />
+    </data>
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeightSmall"
+        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+        android:text="@{model.text}"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+</layout>

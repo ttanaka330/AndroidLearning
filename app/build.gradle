@@ -55,9 +55,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:' + rootProject.ext.SUPPORT_CONSTRAINT_VERSION
     compile 'com.google.android.gms:play-services-ads:' + rootProject.ext.PLAY_SERVICES_VERSION
 
-    compile 'com.jakewharton:butterknife:' + rootProject.ext.BUTTER_KNIFE_VERSION
-    annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.ext.BUTTER_KNIFE_VERSION
-
     compile 'com.google.dagger:dagger:' + rootProject.ext.DAGGER_VERSION
     annotationProcessor 'com.google.dagger:dagger-compiler:' + rootProject.ext.DAGGER_VERSION
     compile 'com.google.dagger:dagger-android:' + rootProject.ext.DAGGER_VERSION

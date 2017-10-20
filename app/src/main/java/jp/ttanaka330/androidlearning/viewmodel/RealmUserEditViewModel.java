@@ -1,6 +1,5 @@
 package jp.ttanaka330.androidlearning.viewmodel;
 
-
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.annotation.NonNull;
@@ -33,7 +32,9 @@ public class RealmUserEditViewModel extends BaseObservable {
 
     public void setName(String name) {
         this.name = name;
-        this.callback.onNameChanged(name);
+        if (callback != null) {
+            callback.onNameChanged(name);
+        }
         notifyPropertyChanged(BR.name);
     }
 
