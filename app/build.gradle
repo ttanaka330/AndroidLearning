@@ -51,8 +51,6 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
     implementation 'com.android.support:support-v4:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
     implementation 'com.android.support:support-annotations:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
-    implementation 'com.android.support.constraint:constraint-layout:' + rootProject.ext.SUPPORT_CONSTRAINT_VERSION
-    implementation 'com.google.android.gms:play-services-ads:' + rootProject.ext.PLAY_SERVICES_VERSION
 
     implementation 'com.google.dagger:dagger:' + rootProject.ext.DAGGER_VERSION
     annotationProcessor 'com.google.dagger:dagger-compiler:' + rootProject.ext.DAGGER_VERSION
@@ -62,6 +60,11 @@ dependencies {
 
     implementation 'io.reactivex.rxjava2:rxandroid:' + rootProject.ext.RXANDROID_VERSION
     implementation 'io.reactivex.rxjava2:rxjava:' + rootProject.ext.RXJAVA_VERSION
+
+    implementation 'com.squareup.retrofit2:retrofit:' + rootProject.ext.RETROFIT_VERSION
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:' + rootProject.ext.RETROFIT_VERSION
+    implementation 'com.squareup.retrofit2:converter-gson:' + rootProject.ext.RETROFIT_VERSION
+    implementation 'com.squareup.picasso:picasso:' + rootProject.ext.PICASSO_VERSION
 
     implementation 'com.jakewharton.timber:timber:' + rootProject.ext.TIMBER_VERSION
 

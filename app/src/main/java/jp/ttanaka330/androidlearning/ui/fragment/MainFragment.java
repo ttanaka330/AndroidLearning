@@ -51,6 +51,8 @@ public class MainFragment extends BaseFragment {
     private void initFragmentList() {
         List<BaseFragment> list = new ArrayList<>();
         list.add(RealmFragment.newInstance());
+        list.add(RetrofitFragment.newInstance());
+
         RecyclerSimpleAdapter adapter = new RecyclerSimpleAdapter<BaseFragment>(list) {
             @Override
             protected void onItemClicked(int position, BaseFragment item) {

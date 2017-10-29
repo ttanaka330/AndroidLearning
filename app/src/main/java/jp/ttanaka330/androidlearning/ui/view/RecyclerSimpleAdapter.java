@@ -99,6 +99,15 @@ public class RecyclerSimpleAdapter<T> extends RecyclerView.Adapter<RecyclerSimpl
     }
 
     /**
+     * 全データクリア
+     */
+    public void clear() {
+        int size = mDataList.size();
+        mDataList.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+
+    /**
      * アイテムクリックイベント
      *
      * @param position クリックした行番号

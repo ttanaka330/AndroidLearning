@@ -7,6 +7,7 @@ import jp.ttanaka330.androidlearning.di.scope.FragmentScope;
 import jp.ttanaka330.androidlearning.ui.activity.MainActivity;
 import jp.ttanaka330.androidlearning.ui.fragment.MainFragment;
 import jp.ttanaka330.androidlearning.ui.fragment.RealmFragment;
+import jp.ttanaka330.androidlearning.ui.fragment.RetrofitFragment;
 
 @Module
 abstract class ActivityModule {
@@ -25,6 +26,10 @@ abstract class ActivityModule {
         @FragmentScope
         @ContributesAndroidInjector(modules = FragmentModule.class)
         abstract RealmFragment contributeRealmFragment();
+
+        @FragmentScope
+        @ContributesAndroidInjector(modules = FragmentModule.class)
+        abstract RetrofitFragment contributeRetrofitFragment();
     }
 
 }
