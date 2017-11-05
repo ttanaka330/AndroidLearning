@@ -7,6 +7,12 @@ import jp.ttanaka330.androidlearning.R;
 import jp.ttanaka330.androidlearning.databinding.ActivityMainBinding;
 import jp.ttanaka330.androidlearning.ui.fragment.MainFragment;
 
+/**
+ * アプリ起動時に表示される {@link android.app.Activity} です。
+ * 各 {@link android.app.Activity}  へのポータルを担います。
+ *
+ * @see MainFragment
+ */
 public class MainActivity extends BaseActivity {
 
     ActivityMainBinding mBinding;
@@ -15,13 +21,9 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
         setSupportActionBar(mBinding.toolbar);
-
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.content_view, MainFragment.newInstance(), null)
-                    .commit();
+            replaceFragment(R.id.content_view, MainFragment.newInstance());
         }
     }
 

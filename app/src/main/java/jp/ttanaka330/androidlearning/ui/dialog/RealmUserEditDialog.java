@@ -17,11 +17,11 @@ import android.widget.Button;
 
 import jp.ttanaka330.androidlearning.R;
 import jp.ttanaka330.androidlearning.databinding.DialogRealmUserBinding;
-import jp.ttanaka330.androidlearning.repository.model.User;
+import jp.ttanaka330.androidlearning.model.repository.User;
 import jp.ttanaka330.androidlearning.viewmodel.RealmUserEditViewModel;
 
 /**
- * {@link User} データ編集ダイアログ。
+ * {@link User} データ編集を行うダイアログです。
  * 編集結果は {@link DialogListener#onDialogResult(int, int, Intent)} にて返されます。
  */
 public class RealmUserEditDialog extends DialogFragment
@@ -41,13 +41,13 @@ public class RealmUserEditDialog extends DialogFragment
     private DialogRealmUserBinding mBinding;
 
     /**
-     * ダイアログ生成
+     * {@link RealmUserEditDialog} のインスタンスを生成します。
      *
      * @param requestCode リクエストコード
      * @param user        ユーザー情報
-     * @return ダイアログのインスタンス
+     * @return {@link RealmUserEditDialog} インスタンス
      */
-    public static RealmUserEditDialog createDialog(int requestCode, @Nullable User user) {
+    public static RealmUserEditDialog newInstance(int requestCode, @Nullable User user) {
         RealmUserEditDialog dialog = new RealmUserEditDialog();
         Bundle args = new Bundle();
         args.putInt(DATA_REQUEST_CODE, requestCode);

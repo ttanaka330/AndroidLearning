@@ -1,7 +1,7 @@
-package jp.ttanaka330.androidlearning.service;
+package jp.ttanaka330.androidlearning.api.net;
 
 import io.reactivex.Observable;
-import jp.ttanaka330.androidlearning.service.entity.WeatherResponse;
+import jp.ttanaka330.androidlearning.model.net.WeatherResponse;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 

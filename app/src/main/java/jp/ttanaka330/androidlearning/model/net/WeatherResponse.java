@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.service.entity;
+package jp.ttanaka330.androidlearning.model.net;
 
 import com.google.gson.annotations.SerializedName;
 

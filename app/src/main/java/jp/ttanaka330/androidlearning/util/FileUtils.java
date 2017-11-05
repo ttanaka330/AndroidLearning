@@ -12,16 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Tomohiro Tanaka on 2017/10/22.
+ * ファイルを取り扱うユーティリティクラスです。
  */
-
 public class FileUtils {
 
     private FileUtils() {
     }
 
     /**
-     * アセット内の CSV ファイルを読み込みます・
+     * アセット内の CSV ファイルを読み込みます。
      *
      * @param context        コンテキスト（リソース取得に使用）
      * @param assetsFileName アセットファイル名

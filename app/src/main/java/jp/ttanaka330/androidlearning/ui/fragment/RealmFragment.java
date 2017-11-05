@@ -17,8 +17,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import jp.ttanaka330.androidlearning.databinding.FragmentRealmBinding;
-import jp.ttanaka330.androidlearning.repository.RealmDatabase;
-import jp.ttanaka330.androidlearning.repository.model.User;
+import jp.ttanaka330.androidlearning.api.repository.RealmDatabase;
+import jp.ttanaka330.androidlearning.model.repository.User;
 import jp.ttanaka330.androidlearning.ui.dialog.DialogListener;
 import jp.ttanaka330.androidlearning.ui.dialog.RealmUserEditDialog;
 import jp.ttanaka330.androidlearning.ui.view.RecyclerSimpleAdapter;
@@ -31,10 +31,14 @@ public class RealmFragment extends BaseFragment implements DialogListener, Realm
     @Inject
     RealmViewModel mViewModel;
 
-    FragmentRealmBinding mBinding;
-
+    private FragmentRealmBinding mBinding;
     private RecyclerSimpleAdapter<User> mAdapter;
 
+    /**
+     * {@link RealmFragment} のインスタンスを生成します。
+     *
+     * @return {@link RealmFragment} の新規インスタンス
+     */
     public static RealmFragment newInstance() {
         return new RealmFragment();
     }
@@ -117,7 +121,7 @@ public class RealmFragment extends BaseFragment implements DialogListener, Realm
     }
 
     private void showUserEditDialog(int requestCode, @Nullable User user) {
-        RealmUserEditDialog.createDialog(requestCode, user)
+        RealmUserEditDialog.newInstance(requestCode, user)
                 .show(getChildFragmentManager(), null);
     }
 

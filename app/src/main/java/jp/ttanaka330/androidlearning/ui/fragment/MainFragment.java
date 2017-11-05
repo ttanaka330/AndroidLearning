@@ -1,7 +1,9 @@
 package jp.ttanaka330.androidlearning.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -11,14 +13,11 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.ttanaka330.androidlearning.R;
 import jp.ttanaka330.androidlearning.databinding.FragmentMainBinding;
+import jp.ttanaka330.androidlearning.ui.activity.RealmActivity;
+import jp.ttanaka330.androidlearning.ui.activity.RetrofitActivity;
 import jp.ttanaka330.androidlearning.ui.view.RecyclerSimpleAdapter;
 
-/**
- * アプリ起動時に表示される MainFragment。
- * 各画面へのポータルとなる。
- */
 public class MainFragment extends BaseFragment {
 
     private FragmentMainBinding mBinding;
@@ -28,9 +27,9 @@ public class MainFragment extends BaseFragment {
     }
 
     /**
-     * MainFragment インスタンス生成
+     * {@link MainFragment} のインスタンスを生成します。
      *
-     * @return MainFragment の新規インスタンス
+     * @return {@link MainFragment} の新規インスタンス
      */
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -42,25 +41,21 @@ public class MainFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = FragmentMainBinding.inflate(inflater, container, false);
         initFragmentList();
         return mBinding.getRoot();
     }
 
     private void initFragmentList() {
-        List<BaseFragment> list = new ArrayList<>();
-        list.add(RealmFragment.newInstance());
-        list.add(RetrofitFragment.newInstance());
+        List<Item> list = new ArrayList<>();
+        list.add(new Item(RealmActivity.createIntent(getContext())));
+        list.add(new Item(RetrofitActivity.createIntent(getContext())));
 
-        RecyclerSimpleAdapter adapter = new RecyclerSimpleAdapter<BaseFragment>(list) {
+        RecyclerSimpleAdapter adapter = new RecyclerSimpleAdapter<Item>(list) {
             @Override
-            protected void onItemClicked(int position, BaseFragment item) {
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_view, item)
-                        .addToBackStack(item.getClass().getSimpleName())
-                        .commit();
+            protected void onItemClicked(int position, Item item) {
+                startActivity(item.getIntent());
             }
         };
 
@@ -70,5 +65,25 @@ public class MainFragment extends BaseFragment {
         mBinding.listView.setAdapter(adapter);
         mBinding.listView.setLayoutManager(layoutManager);
         mBinding.listView.addItemDecoration(decoration);
+    }
+
+    private class Item {
+        private final Intent mIntent;
+
+        Item(@NonNull  Intent intent) {
+            mIntent = intent;
+        }
+
+        @NonNull
+        Intent getIntent() {
+            return mIntent;
+        }
+
+        @Override
+        public String toString() {
+            assert mIntent.getComponent() != null;
+            int pos = mIntent.getComponent().getClassName().lastIndexOf(".") + 1;
+            return mIntent.getComponent().getShortClassName().substring(pos);
+        }
     }
 }

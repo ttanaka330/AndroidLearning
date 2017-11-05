@@ -23,8 +23,8 @@ import io.reactivex.schedulers.Schedulers;
 import jp.ttanaka330.androidlearning.R;
 import jp.ttanaka330.androidlearning.databinding.FragmentRetrofitBinding;
 import jp.ttanaka330.androidlearning.databinding.ViewWeatherListBinding;
-import jp.ttanaka330.androidlearning.service.WeatherApi;
-import jp.ttanaka330.androidlearning.service.entity.WeatherResponse;
+import jp.ttanaka330.androidlearning.api.net.WeatherApi;
+import jp.ttanaka330.androidlearning.model.net.WeatherResponse;
 import jp.ttanaka330.androidlearning.util.FileUtils;
 import jp.ttanaka330.androidlearning.viewmodel.RetrofitWeatherViewModel;
 import retrofit2.Retrofit;
@@ -39,6 +39,11 @@ public class RetrofitFragment extends BaseFragment {
     private FragmentRetrofitBinding mBinding;
     private WeatherDataAdapter mAdapter;
 
+    /**
+     * {@link RetrofitFragment} のインスタンスを生成します。
+     *
+     * @return {@link RetrofitFragment} の新規インスタンス
+     */
     public static RetrofitFragment newInstance() {
         return new RetrofitFragment();
     }

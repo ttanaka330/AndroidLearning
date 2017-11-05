@@ -37,7 +37,7 @@ public class RetrofitWeatherViewModel {
         return convertString(celsius);
     }
 
-    @BindingAdapter("app:imageIcon")
+    @BindingAdapter("imageIcon")
     public static void imageIcon(ImageView imageView, String url) {
         Picasso.with(imageView.getContext()).load(url).into(imageView);
     }
