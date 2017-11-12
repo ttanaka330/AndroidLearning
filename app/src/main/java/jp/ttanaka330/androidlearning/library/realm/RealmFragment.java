@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.ui.fragment;
+package jp.ttanaka330.androidlearning.library.realm;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,12 +17,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import jp.ttanaka330.androidlearning.databinding.FragmentRealmBinding;
-import jp.ttanaka330.androidlearning.api.repository.RealmDatabase;
-import jp.ttanaka330.androidlearning.model.repository.User;
-import jp.ttanaka330.androidlearning.ui.dialog.DialogListener;
-import jp.ttanaka330.androidlearning.ui.dialog.RealmUserEditDialog;
-import jp.ttanaka330.androidlearning.ui.view.RecyclerSimpleAdapter;
-import jp.ttanaka330.androidlearning.viewmodel.RealmViewModel;
+import jp.ttanaka330.androidlearning.common.dialog.DialogListener;
+import jp.ttanaka330.androidlearning.common.fragment.BaseFragment;
+import jp.ttanaka330.androidlearning.common.view.RecyclerSimpleAdapter;
 
 public class RealmFragment extends BaseFragment implements DialogListener, RealmViewModel.Callback {
 

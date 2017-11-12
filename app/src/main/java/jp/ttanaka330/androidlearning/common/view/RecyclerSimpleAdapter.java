@@ -1,23 +1,23 @@
-package jp.ttanaka330.androidlearning.ui.view;
+package jp.ttanaka330.androidlearning.common.view;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.realm.RealmResults;
-import jp.ttanaka330.androidlearning.databinding.ViewSimpleListBinding;
-import jp.ttanaka330.androidlearning.viewmodel.SimpleListViewModel;
 
 /**
  * 1つの文字列を表示するだけのシンプルな {@link RecyclerView.Adapter}。
  * {@link RecyclerSimpleAdapter} は以下の機能を有します。
  * <li>指定したオブジェクトの #toString をリストに表示</li>
- * <li>クリックイベントは {@link #onItemClicked(int, Object)} を override して実装</li>
+ * <li>クリックイベントは実装元で {@link #onItemClicked(int, Object)} を override 可能</li>
  */
 public class RecyclerSimpleAdapter<T> extends RecyclerView.Adapter<RecyclerSimpleAdapter.ViewHolder> {
 
@@ -41,16 +41,13 @@ public class RecyclerSimpleAdapter<T> extends RecyclerView.Adapter<RecyclerSimpl
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        final ViewSimpleListBinding binding = ViewSimpleListBinding.inflate(inflater, parent, false);
-        return new ViewHolder(binding);
+        return new ViewHolder(inflater.inflate(android.R.layout.simple_list_item_1, parent, false));
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        SimpleListViewModel model = new SimpleListViewModel();
-        model.setText(mDataList.get(position).toString());
-        holder.binding.setModel(model);
-        holder.binding.getRoot().setOnClickListener(v -> {
+        holder.textView.setText(mDataList.get(position).toString());
+        holder.textView.setOnClickListener(v -> {
             T item = mDataList.get(position);
             onItemClicked(position, item);
         });
@@ -118,11 +115,11 @@ public class RecyclerSimpleAdapter<T> extends RecyclerView.Adapter<RecyclerSimpl
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        final ViewSimpleListBinding binding;
+        final TextView textView;
 
-        ViewHolder(@NonNull ViewSimpleListBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
+        ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textView = itemView.findViewById(android.R.id.text1);
         }
     }
 }

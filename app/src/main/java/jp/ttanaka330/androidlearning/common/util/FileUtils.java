@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.util;
+package jp.ttanaka330.androidlearning.common.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;

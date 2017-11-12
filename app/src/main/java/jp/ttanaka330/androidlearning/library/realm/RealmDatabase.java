@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.api.repository;
+package jp.ttanaka330.androidlearning.library.realm;
 
 import java.util.List;
 

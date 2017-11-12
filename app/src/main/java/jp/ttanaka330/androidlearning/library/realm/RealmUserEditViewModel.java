@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.viewmodel;
+package jp.ttanaka330.androidlearning.library.realm;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;

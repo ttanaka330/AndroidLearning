@@ -13,32 +13,19 @@ target : Android 4.0 以上
 
 ## Package 構成
 
-自身のベストプラクティスとなる Package 構成は思索中。  
-`view` と `viewmodel` を分ける必要があるのか...  
-
 ```
 package
-|- api              // ライブラリ等の API 群
-|  |- net
-|  |- repository
+|- common           // 共通機能
+|  |- activity
+|  |- dialog
+|  |- fragment
+|  |- util
+|  |- view
 |
 |- di               // Dagger2 の Component/Module
 |  |- scope
 |
-|- model            // データモデル
-|  |- net
-|  |- repository
-|
-|- receiver         // BroadcastReceiver
-|
-|- service          // Service/JobScheduler
-|
-|- ui               // UI/widget 群
-|  |- activity
-|  |- dialog
-|  |- fragment
-|  |- view
-|
-|- viewmodel        // DataBinding で使用するビューモデル
+|- library          // 各学習別機能（Activity他）
+
 ```
 

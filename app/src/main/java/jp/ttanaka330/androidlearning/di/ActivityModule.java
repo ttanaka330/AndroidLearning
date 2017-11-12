@@ -4,26 +4,13 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 import jp.ttanaka330.androidlearning.di.scope.ActivityScope;
 import jp.ttanaka330.androidlearning.di.scope.FragmentScope;
-import jp.ttanaka330.androidlearning.ui.activity.MainActivity;
-import jp.ttanaka330.androidlearning.ui.activity.RealmActivity;
-import jp.ttanaka330.androidlearning.ui.activity.RetrofitActivity;
-import jp.ttanaka330.androidlearning.ui.fragment.MainFragment;
-import jp.ttanaka330.androidlearning.ui.fragment.RealmFragment;
-import jp.ttanaka330.androidlearning.ui.fragment.RetrofitFragment;
+import jp.ttanaka330.androidlearning.library.realm.RealmActivity;
+import jp.ttanaka330.androidlearning.library.retrofit.RetrofitActivity;
+import jp.ttanaka330.androidlearning.library.realm.RealmFragment;
+import jp.ttanaka330.androidlearning.library.retrofit.RetrofitFragment;
 
 @Module
 abstract class ActivityModule {
-
-    @ActivityScope
-    @ContributesAndroidInjector(modules = MainActivityModule.class)
-    abstract MainActivity contributeMainActivity();
-
-    @Module
-    abstract class MainActivityModule {
-        @FragmentScope
-        @ContributesAndroidInjector(modules = FragmentModule.class)
-        abstract MainFragment contributeMainFragment();
-    }
 
     @ActivityScope
     @ContributesAndroidInjector(modules = RealmActivityModule.class)

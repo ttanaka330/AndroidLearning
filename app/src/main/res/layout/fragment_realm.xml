@@ -1,13 +1,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="jp.ttanaka330.androidlearning.ui.fragment.RealmFragment">
+    tools:context="jp.ttanaka330.androidlearning.library.realm.RealmFragment">
 
     <data>
 
         <variable
             name="model"
-            type="jp.ttanaka330.androidlearning.viewmodel.RealmViewModel" />
+            type="jp.ttanaka330.androidlearning.library.realm.RealmViewModel" />
     </data>
 
     <RelativeLayout

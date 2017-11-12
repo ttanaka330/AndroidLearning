@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.model.net;
+package jp.ttanaka330.androidlearning.library.retrofit;
 
 import com.google.gson.annotations.SerializedName;
 

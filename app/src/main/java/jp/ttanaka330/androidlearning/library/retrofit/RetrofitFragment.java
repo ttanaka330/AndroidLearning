@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.ui.fragment;
+package jp.ttanaka330.androidlearning.library.retrofit;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -23,10 +23,8 @@ import io.reactivex.schedulers.Schedulers;
 import jp.ttanaka330.androidlearning.R;
 import jp.ttanaka330.androidlearning.databinding.FragmentRetrofitBinding;
 import jp.ttanaka330.androidlearning.databinding.ViewWeatherListBinding;
-import jp.ttanaka330.androidlearning.api.net.WeatherApi;
-import jp.ttanaka330.androidlearning.model.net.WeatherResponse;
-import jp.ttanaka330.androidlearning.util.FileUtils;
-import jp.ttanaka330.androidlearning.viewmodel.RetrofitWeatherViewModel;
+import jp.ttanaka330.androidlearning.common.fragment.BaseFragment;
+import jp.ttanaka330.androidlearning.common.util.FileUtils;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;

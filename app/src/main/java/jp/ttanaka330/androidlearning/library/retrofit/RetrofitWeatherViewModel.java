@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.viewmodel;
+package jp.ttanaka330.androidlearning.library.retrofit;
 
 import android.databinding.BindingAdapter;
 import android.widget.ImageView;

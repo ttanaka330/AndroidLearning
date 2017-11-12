@@ -4,7 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import jp.ttanaka330.androidlearning.api.repository.RealmDatabase;
+import jp.ttanaka330.androidlearning.library.realm.RealmDatabase;
 
 @Module
 class AppModule {

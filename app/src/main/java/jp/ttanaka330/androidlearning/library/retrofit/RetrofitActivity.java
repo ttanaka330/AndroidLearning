@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.ui.activity;
+package jp.ttanaka330.androidlearning.library.retrofit;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,13 +7,14 @@ import android.os.Bundle;
 
 import io.reactivex.annotations.NonNull;
 import jp.ttanaka330.androidlearning.R;
+import jp.ttanaka330.androidlearning.common.activity.BaseActivity;
 import jp.ttanaka330.androidlearning.databinding.ActivityRetrofitBinding;
-import jp.ttanaka330.androidlearning.ui.fragment.RetrofitFragment;
 
 /**
  * {@link retrofit2.Retrofit} を使用した天気情報表示 {@link android.app.Activity} です。
  *
  * @see RetrofitFragment
+ * @see <a href="http://square.github.io/retrofit/">Retrofit</a>
  * @see <a href="https://openweathermap.org/">OpenWeatherMap</a>
  */
 public class RetrofitActivity extends BaseActivity {

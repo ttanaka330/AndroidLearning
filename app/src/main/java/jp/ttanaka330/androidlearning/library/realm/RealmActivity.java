@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.ui.activity;
+package jp.ttanaka330.androidlearning.library.realm;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +8,7 @@ import android.os.Bundle;
 import io.reactivex.annotations.NonNull;
 import jp.ttanaka330.androidlearning.R;
 import jp.ttanaka330.androidlearning.databinding.ActivityRealmBinding;
-import jp.ttanaka330.androidlearning.ui.fragment.RealmFragment;
+import jp.ttanaka330.androidlearning.common.activity.BaseActivity;
 
 /**
  * {@link io.realm.Realm} に保存されたデータの表示、および、編集を行う {@link android.app.Activity} です。

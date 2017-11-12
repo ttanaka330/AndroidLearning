@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.ui.fragment;
+package jp.ttanaka330.androidlearning.common.fragment;
 
 import dagger.android.support.DaggerFragment;
 

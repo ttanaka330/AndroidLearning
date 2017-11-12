@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.ui.dialog;
+package jp.ttanaka330.androidlearning.common.dialog;
 
 import android.content.Intent;
 

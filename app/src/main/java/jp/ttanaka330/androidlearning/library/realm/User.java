@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.model.repository;
+package jp.ttanaka330.androidlearning.library.realm;
 
 import android.text.TextUtils;
 
@@ -6,12 +6,14 @@ import java.util.UUID;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import jp.ttanaka330.androidlearning.library.realm.RealmActivity;
+import jp.ttanaka330.androidlearning.library.realm.RealmFragment;
 
 /**
  * ユーザー情報の {@link RealmObject} です。
  *
- * @see jp.ttanaka330.androidlearning.ui.activity.RealmActivity
- * @see jp.ttanaka330.androidlearning.ui.fragment.RealmFragment
+ * @see RealmActivity
+ * @see RealmFragment
  */
 public class User extends RealmObject {
 

@@ -1,10 +1,10 @@
-package jp.ttanaka330.androidlearning.ui.activity;
+package jp.ttanaka330.androidlearning.common.activity;
 
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 
 import dagger.android.support.DaggerAppCompatActivity;
-import jp.ttanaka330.androidlearning.ui.fragment.BaseFragment;
+import jp.ttanaka330.androidlearning.common.fragment.BaseFragment;
 
 /**
  * {@link android.app.Activity} を実装する際の基盤となるクラスです。

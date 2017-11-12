@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.ui.dialog;
+package jp.ttanaka330.androidlearning.library.realm;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -17,8 +17,7 @@ import android.widget.Button;
 
 import jp.ttanaka330.androidlearning.R;
 import jp.ttanaka330.androidlearning.databinding.DialogRealmUserBinding;
-import jp.ttanaka330.androidlearning.model.repository.User;
-import jp.ttanaka330.androidlearning.viewmodel.RealmUserEditViewModel;
+import jp.ttanaka330.androidlearning.common.dialog.DialogListener;
 
 /**
  * {@link User} データ編集を行うダイアログです。
