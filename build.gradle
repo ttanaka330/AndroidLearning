@@ -1,9 +1,11 @@
 buildscript {
     repositories {
+        google()
         jcenter()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:3.0.1"
+        classpath "com.google.gms:oss-licenses:0.9.1"
 
         // Stetho-Realm を使うため少し古いバージョンを使用する
         // https://github.com/uPhyca/stetho-realm/issues/59
@@ -28,6 +30,7 @@ ext {
 
     SUPPORT_LIBRARY_VERSION = '27.0.2'
     SUPPORT_CONSTRAINT_VERSION = '1.0.2'
+    GOOGLE_PLAY_SERVICE_VERSION = '11.8.0'
 
     DAGGER_VERSION = '2.11'
     PICASSO_VERSION = '2.5.2'

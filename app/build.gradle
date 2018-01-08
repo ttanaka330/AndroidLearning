@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: 'realm-android'
 
 android {
@@ -51,6 +52,8 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$rootProject.ext.SUPPORT_LIBRARY_VERSION"
     implementation "com.android.support:support-v4:$rootProject.ext.SUPPORT_LIBRARY_VERSION"
     implementation "com.android.support:support-annotations:$rootProject.ext.SUPPORT_LIBRARY_VERSION"
+
+    implementation "com.google.android.gms:play-services-oss-licenses:$rootProject.ext.GOOGLE_PLAY_SERVICE_VERSION"
 
     implementation "com.google.dagger:dagger:$rootProject.ext.DAGGER_VERSION"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.DAGGER_VERSION"

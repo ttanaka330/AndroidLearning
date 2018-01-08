@@ -11,6 +11,7 @@
     <!-- Title -->
     <string name="title_realm">Realm</string>
     <string name="title_retrofit">Retrofit (OpenWeatherMap)</string>
+    <string name="title_licenses">Licenses</string>
 
     <!-- Realm user -->
     <string name="realm_user_name">名前（必須）</string>

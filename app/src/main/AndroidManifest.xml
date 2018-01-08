@@ -30,6 +30,13 @@
             android:name=".library.retrofit.RetrofitActivity"
             android:exported="false"
             android:label="@string/title_retrofit" />
+
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/AppTheme.Licenses" />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:theme="@style/AppTheme.Licenses" />
     </application>
 
 </manifest>
