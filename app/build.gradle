@@ -46,36 +46,36 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // サポートライブラリ
-    implementation 'com.android.support:appcompat-v7:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
-    implementation 'com.android.support:design:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
-    implementation 'com.android.support:recyclerview-v7:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
-    implementation 'com.android.support:support-v4:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
-    implementation 'com.android.support:support-annotations:' + rootProject.ext.SUPPORT_LIBRARY_VERSION
+    implementation "com.android.support:appcompat-v7:$rootProject.ext.SUPPORT_LIBRARY_VERSION"
+    implementation "com.android.support:design:$rootProject.ext.SUPPORT_LIBRARY_VERSION"
+    implementation "com.android.support:recyclerview-v7:$rootProject.ext.SUPPORT_LIBRARY_VERSION"
+    implementation "com.android.support:support-v4:$rootProject.ext.SUPPORT_LIBRARY_VERSION"
+    implementation "com.android.support:support-annotations:$rootProject.ext.SUPPORT_LIBRARY_VERSION"
 
-    implementation 'com.google.dagger:dagger:' + rootProject.ext.DAGGER_VERSION
-    annotationProcessor 'com.google.dagger:dagger-compiler:' + rootProject.ext.DAGGER_VERSION
-    implementation 'com.google.dagger:dagger-android:' + rootProject.ext.DAGGER_VERSION
-    annotationProcessor 'com.google.dagger:dagger-android-processor:' + rootProject.ext.DAGGER_VERSION
-    implementation 'com.google.dagger:dagger-android-support:' + rootProject.ext.DAGGER_VERSION
+    implementation "com.google.dagger:dagger:$rootProject.ext.DAGGER_VERSION"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.DAGGER_VERSION"
+    implementation "com.google.dagger:dagger-android:$rootProject.ext.DAGGER_VERSION"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.ext.DAGGER_VERSION"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.ext.DAGGER_VERSION"
 
-    implementation 'io.reactivex.rxjava2:rxandroid:' + rootProject.ext.RXANDROID_VERSION
-    implementation 'io.reactivex.rxjava2:rxjava:' + rootProject.ext.RXJAVA_VERSION
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.RXANDROID_VERSION"
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.RXJAVA_VERSION"
 
-    implementation 'com.squareup.retrofit2:retrofit:' + rootProject.ext.RETROFIT_VERSION
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:' + rootProject.ext.RETROFIT_VERSION
-    implementation 'com.squareup.retrofit2:converter-gson:' + rootProject.ext.RETROFIT_VERSION
-    implementation 'com.squareup.picasso:picasso:' + rootProject.ext.PICASSO_VERSION
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.RETROFIT_VERSION"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.RETROFIT_VERSION"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.RETROFIT_VERSION"
+    implementation "com.squareup.picasso:picasso:$rootProject.ext.PICASSO_VERSION"
 
-    implementation 'com.jakewharton.timber:timber:' + rootProject.ext.TIMBER_VERSION
+    implementation "com.jakewharton.timber:timber:$rootProject.ext.TIMBER_VERSION"
 
     // デバッグ用
-    debugImplementation 'com.facebook.stetho:stetho:' + rootProject.ext.STETHO_VERSION
-    debugImplementation 'com.uphyca:stetho_realm:' + rootProject.ext.STETHO_REALM_VERSION
+    debugImplementation "com.facebook.stetho:stetho:$rootProject.ext.STETHO_VERSION"
+    debugImplementation "com.uphyca:stetho_realm:$rootProject.ext.STETHO_REALM_VERSION"
 
     // テストライブラリ
-    testImplementation 'junit:junit:' + rootProject.ext.JUNIT_VERSION
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:' + rootProject.ext.ESPRESSO_VERSION, {
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    testImplementation "junit:junit:$rootProject.ext.JUNIT_VERSION"
+    androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.ext.ESPRESSO_VERSION", {
+        exclude group: "com.android.support", module: "support-annotations"
+        exclude group: "com.google.code.findbugs", module: "jsr305"
     })
 }
