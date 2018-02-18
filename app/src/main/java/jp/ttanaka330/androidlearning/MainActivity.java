@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.ttanaka330.androidlearning.common.view.RecyclerSimpleAdapter;
-import jp.ttanaka330.androidlearning.library.realm.RealmActivity;
-import jp.ttanaka330.androidlearning.library.retrofit.RetrofitActivity;
+import jp.ttanaka330.androidlearning.presentation.realm.RealmActivity;
+import jp.ttanaka330.androidlearning.presentation.retrofit.RetrofitActivity;
 
 /**
  * アプリ起動時に表示される {@link android.app.Activity} です。

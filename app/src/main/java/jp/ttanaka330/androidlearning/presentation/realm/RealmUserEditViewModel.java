@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.library.realm;
+package jp.ttanaka330.androidlearning.presentation.realm;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;

@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.library.retrofit;
+package jp.ttanaka330.androidlearning.presentation.retrofit;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

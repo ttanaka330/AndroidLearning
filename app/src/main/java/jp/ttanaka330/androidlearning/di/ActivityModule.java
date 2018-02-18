@@ -4,10 +4,10 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 import jp.ttanaka330.androidlearning.di.scope.ActivityScope;
 import jp.ttanaka330.androidlearning.di.scope.FragmentScope;
-import jp.ttanaka330.androidlearning.library.realm.RealmActivity;
-import jp.ttanaka330.androidlearning.library.retrofit.RetrofitActivity;
-import jp.ttanaka330.androidlearning.library.realm.RealmFragment;
-import jp.ttanaka330.androidlearning.library.retrofit.RetrofitFragment;
+import jp.ttanaka330.androidlearning.presentation.realm.RealmActivity;
+import jp.ttanaka330.androidlearning.presentation.retrofit.RetrofitActivity;
+import jp.ttanaka330.androidlearning.presentation.realm.RealmFragment;
+import jp.ttanaka330.androidlearning.presentation.retrofit.RetrofitFragment;
 
 @Module
 abstract class ActivityModule {

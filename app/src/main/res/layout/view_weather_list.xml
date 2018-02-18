@@ -4,7 +4,7 @@
 
         <variable
             name="model"
-            type="jp.ttanaka330.androidlearning.library.retrofit.RetrofitWeatherViewModel" />
+            type="jp.ttanaka330.androidlearning.presentation.retrofit.RetrofitWeatherViewModel" />
     </data>
 
     <RelativeLayout

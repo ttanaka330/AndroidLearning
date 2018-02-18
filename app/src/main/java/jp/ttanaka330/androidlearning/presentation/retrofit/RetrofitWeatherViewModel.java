@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.library.retrofit;
+package jp.ttanaka330.androidlearning.presentation.retrofit;
 
 import android.databinding.BindingAdapter;
 import android.widget.ImageView;
