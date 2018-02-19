@@ -88,6 +88,5 @@ dependencies {
 
     androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.ext.ESPRESSO_VERSION", {
         exclude group: "com.android.support", module: "support-annotations"
-        exclude group: "com.google.code.findbugs", module: "jsr305"
     })
 }
