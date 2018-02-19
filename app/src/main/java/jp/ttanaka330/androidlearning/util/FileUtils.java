@@ -1,4 +1,4 @@
-package jp.ttanaka330.androidlearning.common.util;
+package jp.ttanaka330.androidlearning.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -25,30 +25,21 @@ public class FileUtils {
      * @param context        コンテキスト（リソース取得に使用）
      * @param assetsFileName アセットファイル名
      * @return CSV ファイルデータ
-     * @throws IOException
+     * @throws IOException ファイル読み込みに失敗した場合に呼ばれます。
      */
     @NonNull
-    public static List<String> readAssetsCsv(@NonNull Context context, @NonNull String assetsFileName)
+    public static List<String> readAssetsCsv(@NonNull Context context,
+                                             @NonNull String assetsFileName)
             throws IOException {
         List<String> list = new ArrayList<>();
-
         AssetManager assetManager = context.getResources().getAssets();
-        InputStream in = null;
-        InputStreamReader isr = null;
-        BufferedReader br = null;
-        try {
-            in = assetManager.open(assetsFileName);
-            isr = new InputStreamReader(in);
-            br = new BufferedReader(isr);
-
+        try (InputStream in = assetManager.open(assetsFileName);
+             InputStreamReader isr = new InputStreamReader(in);
+             BufferedReader br = new BufferedReader(isr)) {
             String line;
             while ((line = br.readLine()) != null) {
                 list.add(line);
             }
-        } finally {
-            if (br != null) br.close();
-            if (isr != null) isr.close();
-            if (in != null) in.close();
         }
         return list;
     }

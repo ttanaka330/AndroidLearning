@@ -35,6 +35,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 repositories {
@@ -77,6 +83,9 @@ dependencies {
 
     // テストライブラリ
     testImplementation "junit:junit:$rootProject.ext.JUNIT_VERSION"
+    testImplementation "org.mockito:mockito-android:$rootProject.ext.MOCKITO_VERSION"
+    testImplementation "org.robolectric:robolectric:$rootProject.ext.ROBOLECTRIC_VERSION"
+
     androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.ext.ESPRESSO_VERSION", {
         exclude group: "com.android.support", module: "support-annotations"
         exclude group: "com.google.code.findbugs", module: "jsr305"

@@ -7,8 +7,7 @@
 ## 環境
 
 OS:  Windows 10  
-IDE: Android Studio 3.0  
-gradle: 3.0.0  
+IDE: Android Studio 3.0.1  
 target : Android 4.0 以上  
 
 ## Package 構成
@@ -19,13 +18,14 @@ package
 |  |- activity
 |  |- dialog
 |  |- fragment
-|  |- util
 |  |- view
 |
 |- di               // Dagger2 の Component/Module
 |  |- scope
 |
-|- library          // 各学習別機能（Activity他）
+|- presentation     // 各学習別機能（Activity他）
+|
+|- util             // 本プロジェクトに依存しないユーティリティ
 
 ```
 

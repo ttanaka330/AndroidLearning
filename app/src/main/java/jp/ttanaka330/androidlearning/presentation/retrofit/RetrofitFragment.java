@@ -24,7 +24,7 @@ import jp.ttanaka330.androidlearning.R;
 import jp.ttanaka330.androidlearning.databinding.FragmentRetrofitBinding;
 import jp.ttanaka330.androidlearning.databinding.ViewWeatherListBinding;
 import jp.ttanaka330.androidlearning.common.fragment.BaseFragment;
-import jp.ttanaka330.androidlearning.common.util.FileUtils;
+import jp.ttanaka330.androidlearning.util.FileUtils;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;

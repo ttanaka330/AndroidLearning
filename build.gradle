@@ -46,6 +46,8 @@ ext {
     // テストライブラリ
     JUNIT_VERSION = '4.12'
     ESPRESSO_VERSION = '2.2.2'
+    MOCKITO_VERSION = '2.13.0'
+    ROBOLECTRIC_VERSION = '3.7.1'
 }
 
 task clean(type: Delete) {
