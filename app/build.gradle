@@ -3,21 +3,21 @@ apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion rootProject.ext.COMPILE_SDK_VERSION
-    buildToolsVersion rootProject.ext.BUILD_TOOLS_VERSION
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
 
     defaultConfig {
         applicationId "jp.ttanaka330.androidlearning"
-        minSdkVersion rootProject.ext.MIN_SDK_VERSION
-        targetSdkVersion rootProject.ext.TARGET_SDK_VERSION
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
-        sourceCompatibility rootProject.ext.JAVA_VERSION
-        targetCompatibility rootProject.ext.JAVA_VERSION
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     dataBinding {
@@ -52,41 +52,36 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    // サポートライブラリ
-    implementation "com.android.support:appcompat-v7:$rootProject.ext.SUPPORT_LIBRARY_VERSION"
-    implementation "com.android.support:design:$rootProject.ext.SUPPORT_LIBRARY_VERSION"
-    implementation "com.android.support:recyclerview-v7:$rootProject.ext.SUPPORT_LIBRARY_VERSION"
-    implementation "com.android.support:support-v4:$rootProject.ext.SUPPORT_LIBRARY_VERSION"
-    implementation "com.android.support:support-annotations:$rootProject.ext.SUPPORT_LIBRARY_VERSION"
+    implementation deps.support.annotations
+    implementation deps.support.appcompat
+    implementation deps.support.design
+    implementation deps.support.recyclerview
+    implementation deps.support.v4
 
-    implementation "com.google.android.gms:play-services-oss-licenses:$rootProject.ext.GOOGLE_PLAY_SERVICE_VERSION"
+    implementation deps.google.licenses
 
-    implementation "com.google.dagger:dagger:$rootProject.ext.DAGGER_VERSION"
-    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.DAGGER_VERSION"
-    implementation "com.google.dagger:dagger-android:$rootProject.ext.DAGGER_VERSION"
-    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.ext.DAGGER_VERSION"
-    implementation "com.google.dagger:dagger-android-support:$rootProject.ext.DAGGER_VERSION"
+    implementation deps.dagger.core
+    implementation deps.dagger.android
+    implementation deps.dagger.androidSupport
+    annotationProcessor deps.dagger.compiler
+    annotationProcessor deps.dagger.androidProcessor
 
-    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.RXANDROID_VERSION"
-    implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.RXJAVA_VERSION"
+    implementation deps.rx.android
+    implementation deps.rx.java
 
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.RETROFIT_VERSION"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.RETROFIT_VERSION"
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.RETROFIT_VERSION"
-    implementation "com.squareup.picasso:picasso:$rootProject.ext.PICASSO_VERSION"
+    implementation deps.retrofit.core
+    implementation deps.retrofit.rxjava
+    implementation deps.retrofit.gson
+    implementation deps.retrofit.picasso
 
-    implementation "com.jakewharton.timber:timber:$rootProject.ext.TIMBER_VERSION"
+    // Debug
+    implementation deps.timber
+    debugImplementation deps.stetho.core
+    debugImplementation deps.stetho.realm
 
-    // デバッグ用
-    debugImplementation "com.facebook.stetho:stetho:$rootProject.ext.STETHO_VERSION"
-    debugImplementation "com.uphyca:stetho_realm:$rootProject.ext.STETHO_REALM_VERSION"
-
-    // テストライブラリ
-    testImplementation "junit:junit:$rootProject.ext.JUNIT_VERSION"
-    testImplementation "org.mockito:mockito-android:$rootProject.ext.MOCKITO_VERSION"
-    testImplementation "org.robolectric:robolectric:$rootProject.ext.ROBOLECTRIC_VERSION"
-
-    androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.ext.ESPRESSO_VERSION", {
-        exclude group: "com.android.support", module: "support-annotations"
-    })
+    // Test
+    testImplementation deps.junit
+    testImplementation deps.mockito
+    testImplementation deps.robolectric
+    androidTestImplementation deps.espresso
 }
