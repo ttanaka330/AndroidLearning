@@ -59,6 +59,7 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation deps.kotlin
+    kapt deps.databinding
 
     implementation deps.support.annotations
     implementation deps.support.appcompat

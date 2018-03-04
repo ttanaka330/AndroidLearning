@@ -20,6 +20,7 @@ ext {
 
     deps = [
             kotlin     : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin",
+            databinding: "com.android.databinding:compiler:$versions.gradlePlugin",
             support    : [
                     v4          : "com.android.support:support-v4:$versions.supportLibrary",
                     annotations : "com.android.support:support-annotations:$versions.supportLibrary",
