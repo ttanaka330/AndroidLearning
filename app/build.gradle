@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: 'realm-android'
 
@@ -36,6 +38,10 @@ android {
         }
     }
 
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
     testOptions {
         unitTests {
             includeAndroidResources = true
@@ -47,10 +53,12 @@ repositories {
     maven {
         url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
     }
+    mavenCentral()
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation deps.kotlin
 
     implementation deps.support.annotations
     implementation deps.support.appcompat
@@ -63,8 +71,8 @@ dependencies {
     implementation deps.dagger.core
     implementation deps.dagger.android
     implementation deps.dagger.androidSupport
-    annotationProcessor deps.dagger.compiler
-    annotationProcessor deps.dagger.androidProcessor
+    kapt deps.dagger.compiler
+    kapt deps.dagger.androidProcessor
 
     implementation deps.rx.android
     implementation deps.rx.java
