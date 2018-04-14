@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.ttanaka330.androidlearning.common.view.RecyclerSimpleAdapter;
+import jp.ttanaka330.androidlearning.presentation.butterknife.ButterKnifeActivity;
 import jp.ttanaka330.androidlearning.presentation.realm.RealmActivity;
 import jp.ttanaka330.androidlearning.presentation.retrofit.RetrofitActivity;
 
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initLearningList() {
         List<Item> list = new ArrayList<>();
+        list.add(new Item(ButterKnifeActivity.createIntent(this)));
         list.add(new Item(RealmActivity.createIntent(this)));
         list.add(new Item(RetrofitActivity.createIntent(this)));
 

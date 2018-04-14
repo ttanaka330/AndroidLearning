@@ -79,19 +79,22 @@ dependencies {
 
     implementation deps.google.licenses
 
+    implementation deps.butterknife.core
+    kapt deps.butterknife.compiler
+
     implementation deps.dagger.core
     implementation deps.dagger.android
     implementation deps.dagger.androidSupport
     kapt deps.dagger.compiler
     kapt deps.dagger.androidProcessor
 
-    implementation deps.rx.android
-    implementation deps.rx.java
-
     implementation deps.retrofit.core
     implementation deps.retrofit.rxjava
     implementation deps.retrofit.gson
     implementation deps.retrofit.picasso
+
+    implementation deps.rx.android
+    implementation deps.rx.java
 
     // Debug
     implementation deps.timber

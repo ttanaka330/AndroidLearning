@@ -9,9 +9,14 @@
     <string name="cancel">キャンセル</string>
 
     <!-- Title -->
+    <string name="title_butterknife">Butter Knife</string>
     <string name="title_realm">Realm</string>
     <string name="title_retrofit">Retrofit (OpenWeatherMap)</string>
     <string name="title_licenses">Licenses</string>
+
+    <!-- Butter Knife -->
+    <string name="butterknife_button">ボタン</string>
+    <string name="butterknife_edit">入力（半角英数字）</string>
 
     <!-- Realm user -->
     <string name="realm_user_name">名前（必須）</string>

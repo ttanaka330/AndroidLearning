@@ -4,11 +4,13 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$versions.gradlePlugin"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
         classpath "com.google.gms:oss-licenses:$versions.licensesPlugin"
+        classpath "com.jakewharton:butterknife-gradle-plugin:$versions.butterknife"
         classpath "io.realm:realm-gradle-plugin:$versions.realmPlugin"
     }
 }
@@ -17,6 +19,7 @@ allprojects {
     repositories {
         jcenter()
         google()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
 }
 

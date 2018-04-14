@@ -23,6 +23,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".presentation.butterknife.ButterKnifeActivity"
+            android:label="@string/title_butterknife" />
+        <activity
             android:name=".presentation.realm.RealmActivity"
             android:exported="false"
             android:label="@string/title_realm" />
@@ -30,7 +33,6 @@
             android:name=".presentation.retrofit.RetrofitActivity"
             android:exported="false"
             android:label="@string/title_retrofit" />
-
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/AppTheme.Licenses" />

@@ -14,6 +14,8 @@ ext {
 
             supportLibrary: '27.0.2',
             playServices  : '11.8.0',
+
+            butterknife   : '8.8.1',
             dagger        : '2.14.1',
             retrofit      : '2.3.0',
     ]
@@ -30,6 +32,10 @@ ext {
             ],
             google     : [
                     licenses: "com.google.android.gms:play-services-oss-licenses:$versions.playServices",
+            ],
+            butterknife: [
+                    core    : "com.jakewharton:butterknife:$versions.butterknife",
+                    compiler: "com.jakewharton:butterknife-compiler:$versions.butterknife",
             ],
             dagger     : [
                     core            : "com.google.dagger:dagger:$versions.dagger",
