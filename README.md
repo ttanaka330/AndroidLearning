@@ -7,8 +7,8 @@
 ## 環境
 
 OS:  Windows 10  
-IDE: Android Studio 3.0.1  
-target : Android 4.0 以上  
+IDE: Android Studio 3.1.1  
+target : Android 4.0(API 14) 以上  
 
 ## Package 構成
 

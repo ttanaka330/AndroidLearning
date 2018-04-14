@@ -6,7 +6,7 @@ ext {
             buildTools    : '27.0.3',
             kotlin        : '1.2.30',
 
-            gradlePlugin  : '3.0.1',
+            gradlePlugin  : '3.1.1',
             licensesPlugin: '0.9.1',
             // Stetho-Realm を使うため少し古いバージョンを使用する
             // https://github.com/uPhyca/stetho-realm/issues/59
