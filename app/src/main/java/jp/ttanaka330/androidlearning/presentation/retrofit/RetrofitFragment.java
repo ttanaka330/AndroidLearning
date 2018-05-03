@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -25,6 +27,7 @@ import jp.ttanaka330.androidlearning.databinding.FragmentRetrofitBinding;
 import jp.ttanaka330.androidlearning.databinding.ViewWeatherListBinding;
 import jp.ttanaka330.androidlearning.common.fragment.BaseFragment;
 import jp.ttanaka330.androidlearning.util.FileUtils;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -33,6 +36,9 @@ import timber.log.Timber;
 public class RetrofitFragment extends BaseFragment {
 
     private static final String CITY_FILE = "city_japan.txt";
+
+    @Inject
+    OkHttpClient mHttpClient;
 
     private FragmentRetrofitBinding mBinding;
     private WeatherDataAdapter mAdapter;
@@ -102,6 +108,7 @@ public class RetrofitFragment extends BaseFragment {
         if (TextUtils.isEmpty(id)) return;
 
         Retrofit retrofit = new Retrofit.Builder()
+                .client(mHttpClient)
                 .baseUrl(WeatherApi.ENDPOINT)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

@@ -8,9 +8,7 @@ ext {
 
             gradlePlugin  : '3.1.1',
             licensesPlugin: '0.9.1',
-            // Stetho-Realm を使うため少し古いバージョンを使用する
-            // https://github.com/uPhyca/stetho-realm/issues/59
-            realmPlugin   : '3.5.0',
+            realmPlugin   : '5.0.1',
 
             supportLibrary: '27.0.2',
             playServices  : '11.8.0',
@@ -18,6 +16,7 @@ ext {
             butterknife   : '8.8.1',
             dagger        : '2.14.1',
             retrofit      : '2.3.0',
+            stetho        : '1.5.0',
     ]
 
     deps = [
@@ -44,6 +43,9 @@ ext {
                     androidSupport  : "com.google.dagger:dagger-android-support:$versions.dagger",
                     compiler        : "com.google.dagger:dagger-compiler:$versions.dagger",
             ],
+            okhttp3    : [
+                    intercepter: "com.squareup.okhttp3:logging-interceptor:3.10.0"
+            ],
             retrofit   : [
                     core   : "com.squareup.retrofit2:retrofit:$versions.retrofit",
                     rxjava : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
@@ -57,8 +59,8 @@ ext {
 
             // Debug -------------------------------------------------------------------------------
             stetho     : [
-                    core : "com.facebook.stetho:stetho:1.5.0",
-                    realm: "com.uphyca:stetho_realm:2.1.0",
+                    core : "com.facebook.stetho:stetho:$versions.stetho",
+                    http3: "com.facebook.stetho:stetho-okhttp3:$versions.stetho"
             ],
             timber     : "com.jakewharton.timber:timber:4.6.1",
 

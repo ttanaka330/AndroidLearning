@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: 'realm-android'
 
 android {
@@ -36,6 +36,7 @@ android {
             debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // TODO signingConfig signingConfigs.release
         }
     }
 
@@ -46,10 +47,15 @@ android {
             keyAlias = "androiddebugkey"
             keyPassword = "android"
         }
+        release {
+            // TODO リリースビルドのkeystoreを環境変数から取得させる
+        }
     }
 
     sourceSets {
+        debug.java.srcDirs += 'src/debug/kotlin'
         main.java.srcDirs += 'src/main/kotlin'
+        release.java.srcDirs += 'src/release/kotlin'
     }
 
     testOptions {
@@ -69,18 +75,29 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation deps.kotlin
-    kapt deps.databinding
 
+    // Support Library ===============================================
     implementation deps.support.annotations
     implementation deps.support.appcompat
     implementation deps.support.design
     implementation deps.support.recyclerview
     implementation deps.support.v4
 
+    // Play Services =================================================
     implementation deps.google.licenses
 
+    // Network =======================================================
+    implementation deps.retrofit.core
+    implementation deps.retrofit.rxjava
+    implementation deps.retrofit.gson
+    implementation deps.retrofit.picasso
+    implementation deps.okhttp3.intercepter
+
+    // Structure =====================================================
     implementation deps.butterknife.core
     kapt deps.butterknife.compiler
+
+    kapt deps.databinding
 
     implementation deps.dagger.core
     implementation deps.dagger.android
@@ -88,20 +105,15 @@ dependencies {
     kapt deps.dagger.compiler
     kapt deps.dagger.androidProcessor
 
-    implementation deps.retrofit.core
-    implementation deps.retrofit.rxjava
-    implementation deps.retrofit.gson
-    implementation deps.retrofit.picasso
-
     implementation deps.rx.android
     implementation deps.rx.java
 
-    // Debug
+    // Debug =========================================================
     implementation deps.timber
     debugImplementation deps.stetho.core
-    debugImplementation deps.stetho.realm
+    debugImplementation deps.stetho.http3
 
-    // Test
+    // Test ==========================================================
     testImplementation deps.junit
     testImplementation deps.mockito
     testImplementation deps.robolectric
