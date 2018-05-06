@@ -1,10 +1,5 @@
 package jp.ttanaka330.androidlearning.presentation.retrofit;
 
-import android.databinding.BindingAdapter;
-import android.widget.ImageView;
-
-import com.squareup.picasso.Picasso;
-
 import java.util.Locale;
 
 public class RetrofitWeatherViewModel {
@@ -14,7 +9,7 @@ public class RetrofitWeatherViewModel {
     private String icon;
     private Double celsius;
 
-    public RetrofitWeatherViewModel(String datetime, String weather, String icon, Double celsius) {
+    RetrofitWeatherViewModel(String datetime, String weather, String icon, Double celsius) {
         this.datetime = datetime;
         this.weather = weather;
         this.icon = icon;
@@ -35,11 +30,6 @@ public class RetrofitWeatherViewModel {
 
     public String getCelsius() {
         return convertString(celsius);
-    }
-
-    @BindingAdapter("imageIcon")
-    public static void imageIcon(ImageView imageView, String url) {
-        Picasso.with(imageView.getContext()).load(url).into(imageView);
     }
 
     private String convertString(Double value) {

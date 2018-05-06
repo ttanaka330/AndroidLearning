@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +25,8 @@ import butterknife.OnItemSelected;
 import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 import jp.ttanaka330.androidlearning.R;
-import jp.ttanaka330.androidlearning.common.fragment.BaseFragment;
 
-public class ButterKnifeFragment extends BaseFragment {
+public class ButterKnifeFragment extends Fragment {
 
     @BindView(R.id.button)
     Button mButton;

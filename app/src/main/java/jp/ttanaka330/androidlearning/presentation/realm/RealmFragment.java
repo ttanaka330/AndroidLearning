@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,19 +18,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import jp.ttanaka330.androidlearning.databinding.FragmentRealmBinding;
+import jp.ttanaka330.androidlearning.R;
 import jp.ttanaka330.androidlearning.common.dialog.DialogListener;
-import jp.ttanaka330.androidlearning.common.fragment.BaseFragment;
 import jp.ttanaka330.androidlearning.common.view.RecyclerSimpleAdapter;
 
-public class RealmFragment extends BaseFragment implements DialogListener, RealmViewModel.Callback {
+public class RealmFragment extends Fragment implements DialogListener, View.OnClickListener {
 
     @Inject
     RealmDatabase mDatabase;
-    @Inject
-    RealmViewModel mViewModel;
 
-    private FragmentRealmBinding mBinding;
     private RecyclerSimpleAdapter<User> mAdapter;
 
     /**
@@ -47,21 +45,34 @@ public class RealmFragment extends BaseFragment implements DialogListener, Realm
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel.setCallback(this);
+        // Realm 自体の初期化は Application クラスにて実施
+        mDatabase = new RealmDatabase();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding = FragmentRealmBinding.inflate(inflater, container, false);
-        mBinding.setModel(mViewModel);
-        initUserList();
-        return mBinding.getRoot();
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_realm, container, false);
+        view.findViewById(R.id.fab).setOnClickListener(this);
+        initUserList(view);
+        return view;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mDatabase.close();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab:
+                showUserEditDialog(-1, null);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -88,13 +99,8 @@ public class RealmFragment extends BaseFragment implements DialogListener, Realm
         }
     }
 
-    @Override
-    public void onRegisterClicked() {
-        showUserEditDialog(-1, null);
-    }
-
-    private void initUserList() {
-        Context context = getContext();
+    private void initUserList(@NonNull View view) {
+        Context context = view.getContext();
         List<User> users = mDatabase.findAll(User.class);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         DividerItemDecoration decoration = new DividerItemDecoration(context, layoutManager.getOrientation());
@@ -104,9 +110,10 @@ public class RealmFragment extends BaseFragment implements DialogListener, Realm
                 showUserEditDialog(position, item);
             }
         };
-        mBinding.listView.setAdapter(mAdapter);
-        mBinding.listView.setLayoutManager(layoutManager);
-        mBinding.listView.addItemDecoration(decoration);
+        RecyclerView listView = view.findViewById(R.id.list_view);
+        listView.setAdapter(mAdapter);
+        listView.setLayoutManager(layoutManager);
+        listView.addItemDecoration(decoration);
     }
 
     private User updateUserData(@NonNull User user, @NonNull Intent data) {
@@ -121,5 +128,4 @@ public class RealmFragment extends BaseFragment implements DialogListener, Realm
         RealmUserEditDialog.newInstance(requestCode, user)
                 .show(getChildFragmentManager(), null);
     }
-
 }

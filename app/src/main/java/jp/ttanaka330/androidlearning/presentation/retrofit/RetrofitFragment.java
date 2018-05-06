@@ -3,6 +3,7 @@ package jp.ttanaka330.androidlearning.presentation.retrofit;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,13 +21,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.android.support.DaggerFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import jp.ttanaka330.androidlearning.R;
-import jp.ttanaka330.androidlearning.databinding.FragmentRetrofitBinding;
-import jp.ttanaka330.androidlearning.databinding.ViewWeatherListBinding;
-import jp.ttanaka330.androidlearning.common.fragment.BaseFragment;
 import jp.ttanaka330.androidlearning.util.FileUtils;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -33,14 +33,13 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
-public class RetrofitFragment extends BaseFragment {
+public class RetrofitFragment extends DaggerFragment {
 
     private static final String CITY_FILE = "city_japan.txt";
 
     @Inject
     OkHttpClient mHttpClient;
 
-    private FragmentRetrofitBinding mBinding;
     private WeatherDataAdapter mAdapter;
 
     /**
@@ -57,16 +56,16 @@ public class RetrofitFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        mBinding = FragmentRetrofitBinding.inflate(inflater, container, false);
-        initCity();
-        initWeather();
-        return mBinding.getRoot();
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_retrofit, container, false);
+        initCity(view);
+        initWeather(view);
+        return view;
     }
 
-    private void initCity() {
-        Context context = getContext();
+    private void initCity(@NonNull View view) {
+        Context context = view.getContext();
         List<City> list = new ArrayList<>();
         try {
             List<String> cityData = FileUtils.readAssetsCsv(context, CITY_FILE);
@@ -77,9 +76,10 @@ public class RetrofitFragment extends BaseFragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mBinding.spinnerCity.setAdapter(
+        Spinner spinner = view.findViewById(R.id.spinner_city);
+        spinner.setAdapter(
                 new ArrayAdapter<>(context, R.layout.support_simple_spinner_dropdown_item, list));
-        mBinding.spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 City city = (City) parent.getItemAtPosition(position);
@@ -92,14 +92,15 @@ public class RetrofitFragment extends BaseFragment {
         });
     }
 
-    private void initWeather() {
-        Context context = getContext();
+    private void initWeather(@NonNull View view) {
+        Context context = view.getContext();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         DividerItemDecoration decoration = new DividerItemDecoration(context, layoutManager.getOrientation());
         mAdapter = new WeatherDataAdapter();
-        mBinding.listView.setAdapter(mAdapter);
-        mBinding.listView.setLayoutManager(layoutManager);
-        mBinding.listView.addItemDecoration(decoration);
+        RecyclerView listView = view.findViewById(R.id.list_view);
+        listView.setAdapter(mAdapter);
+        listView.setLayoutManager(layoutManager);
+        listView.addItemDecoration(decoration);
     }
 
     private void search(final String id, final String name) {
@@ -187,53 +188,4 @@ public class RetrofitFragment extends BaseFragment {
         }
     }
 
-    private class WeatherDataAdapter extends RecyclerView.Adapter<WeatherDataAdapter.BindingViewHolder> {
-
-        private final Object lock = new Object();
-        List<RetrofitWeatherViewModel> mDataList = new ArrayList<>();
-
-        @Override
-        public WeatherDataAdapter.BindingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            final ViewWeatherListBinding binding = ViewWeatherListBinding.inflate(inflater, parent, false);
-            return new WeatherDataAdapter.BindingViewHolder(binding);
-        }
-
-        @Override
-        public void onBindViewHolder(WeatherDataAdapter.BindingViewHolder holder, int position) {
-            RetrofitWeatherViewModel model = mDataList.get(position);
-            holder.binding.setModel(model);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mDataList.size();
-        }
-
-        public void add(RetrofitWeatherViewModel model) {
-            final int position;
-            synchronized (lock) {
-                position = mDataList.size();
-                mDataList.add(model);
-            }
-            notifyItemChanged(position);
-        }
-
-        public void clear() {
-            int size = mDataList.size();
-            mDataList.clear();
-            notifyItemRangeRemoved(0, size);
-        }
-
-        class BindingViewHolder extends RecyclerView.ViewHolder {
-
-            private final ViewWeatherListBinding binding;
-
-            BindingViewHolder(@NonNull ViewWeatherListBinding binding) {
-                super(binding.getRoot());
-                this.binding = binding;
-            }
-
-        }
-    }
 }

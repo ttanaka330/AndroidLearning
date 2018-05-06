@@ -12,10 +12,6 @@ internal class AppModule {
 
     @Singleton
     @Provides
-    fun provideRealm(): RealmDatabase = RealmDatabase()
-
-    @Singleton
-    @Provides
     fun provideHttpClient(loggingInterceptors: Set<@JvmSuppressWildcards Interceptor>): OkHttpClient =
             OkHttpClient.Builder().apply {
                 loggingInterceptors.forEach { addInterceptor(it) }

@@ -3,18 +3,18 @@ package jp.ttanaka330.androidlearning.presentation.butterknife;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.annotations.NonNull;
 import jp.ttanaka330.androidlearning.R;
-import jp.ttanaka330.androidlearning.common.activity.BaseActivity;
 
 /**
  * @see <a href="http://jakewharton.github.io/butterknife/">Butter Knife</a>
  */
-public class ButterKnifeActivity extends BaseActivity {
+public class ButterKnifeActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -30,7 +30,9 @@ public class ButterKnifeActivity extends BaseActivity {
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         if (savedInstanceState == null) {
-            replaceFragment(R.id.content_view, ButterKnifeFragment.newInstance());
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_view, ButterKnifeFragment.newInstance())
+                    .commit();
         }
     }
 

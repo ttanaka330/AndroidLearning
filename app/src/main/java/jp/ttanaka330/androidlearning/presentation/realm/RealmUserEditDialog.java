@@ -4,27 +4,28 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import jp.ttanaka330.androidlearning.R;
-import jp.ttanaka330.androidlearning.databinding.DialogRealmUserBinding;
 import jp.ttanaka330.androidlearning.common.dialog.DialogListener;
 
 /**
  * {@link User} データ編集を行うダイアログです。
  * 編集結果は {@link DialogListener#onDialogResult(int, int, Intent)} にて返されます。
  */
-public class RealmUserEditDialog extends DialogFragment
-        implements DialogInterface.OnClickListener, RealmUserEditViewModel.Callback {
+public class RealmUserEditDialog extends DialogFragment implements DialogInterface.OnClickListener {
 
     private static final String DATA_REQUEST_CODE = "request_code";
     public static final String DATA_NAME = "name";
@@ -37,7 +38,9 @@ public class RealmUserEditDialog extends DialogFragment
     public static final int RESULT_DELETE = 9;
 
     private DialogListener mListener;
-    private DialogRealmUserBinding mBinding;
+    private EditText mEditName;
+    private EditText mEditAge;
+    private EditText mEditUrl;
 
     /**
      * {@link RealmUserEditDialog} のインスタンスを生成します。
@@ -62,22 +65,8 @@ public class RealmUserEditDialog extends DialogFragment
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_realm_user, null, false);
-
-        // TODO: dagger に DaggerDialogFragment が実装されたら Inject させる
-        RealmUserEditViewModel model = new RealmUserEditViewModel();
-        model.setCallback(this);
-        if (getArguments().containsKey(DATA_NAME)) {
-            model.setName(getArguments().getString(DATA_NAME));
-            model.setAge(getArguments().getString(DATA_AGE));
-            model.setUrl(getArguments().getString(DATA_URL));
-        }
-        mBinding.setModel(model);
-        mBinding.executePendingBindings();
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.DialogTheme)
-                .setView(mBinding.getRoot());
+                .setView(createInputView());
         if (isRegister()) {
             builder.setTitle(R.string.realm_user_register)
                     .setPositiveButton(R.string.register, this)
@@ -116,7 +105,7 @@ public class RealmUserEditDialog extends DialogFragment
     @Override
     public void onStart() {
         super.onStart();
-        updatePositiveButton(mBinding.getModel().getName());
+        updatePositiveButton(mEditName.getText().toString());
     }
 
     @Override
@@ -138,9 +127,34 @@ public class RealmUserEditDialog extends DialogFragment
         }
     }
 
-    @Override
-    public void onNameChanged(String name) {
-        updatePositiveButton(name);
+    private View createInputView() {
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View view = inflater.inflate(R.layout.dialog_realm_user, null, false);
+        mEditName = view.findViewById(R.id.edit_name);
+        mEditAge = view.findViewById(R.id.edit_age);
+        mEditUrl = view.findViewById(R.id.edit_url);
+
+        Bundle args = getArguments();
+        mEditName.setText(args.getString(DATA_NAME));
+        mEditAge.setText(args.getString(DATA_AGE));
+        mEditUrl.setText(args.getString(DATA_URL));
+
+        mEditName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                updatePositiveButton(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        return view;
     }
 
     private void updatePositiveButton(String name) {
@@ -158,19 +172,19 @@ public class RealmUserEditDialog extends DialogFragment
     private void result(int resultCode) {
         Intent data = null;
         if (resultCode == RESULT_REGISTER || resultCode == RESULT_UPDATE) {
-            RealmUserEditViewModel model = mBinding.getModel();
             data = new Intent();
-            data.putExtra(DATA_NAME, convertResult(model.getName()));
-            data.putExtra(DATA_AGE, convertResult(model.getAge()));
-            data.putExtra(DATA_URL, convertResult(model.getUrl()));
+            data.putExtra(DATA_NAME, convertResult(mEditName));
+            data.putExtra(DATA_AGE, convertResult(mEditAge));
+            data.putExtra(DATA_URL, convertResult(mEditUrl));
         }
         mListener.onDialogResult(getArguments().getInt(DATA_REQUEST_CODE), resultCode, data);
     }
 
-    private String convertResult(String value) {
-        if (TextUtils.isEmpty(value)) {
+    private String convertResult(@NonNull EditText editText) {
+        CharSequence text = editText.getText();
+        if (TextUtils.isEmpty(text)) {
             return null;
         }
-        return value;
+        return text.toString();
     }
 }
