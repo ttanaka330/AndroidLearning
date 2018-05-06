@@ -4,10 +4,10 @@
 主にライブラリなどの動作確認として `java` `kotlin` 問わず雑多に取り扱っていきます。  
 ライブラリの使い方などは [Wiki](https://github.com/ttanaka330/AndroidLearning/wiki) に記載していく予定です。  
 
-## 環境
+## 動作確認環境
 
 OS:  Windows 10  
-IDE: Android Studio 3.1.1  
+IDE: Android Studio 3.1.2  
 target : Android 4.0(API 14) 以上  
 
 ## Package 構成

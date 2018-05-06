@@ -23,19 +23,20 @@ public class WeatherDataAdapter extends RecyclerView.Adapter<WeatherDataAdapter.
     private final Object lock = new Object();
     private final List<RetrofitWeatherViewModel> mDataList = new ArrayList<>();
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return new ViewHolder(inflater.inflate(R.layout.view_weather_list, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         RetrofitWeatherViewModel model = mDataList.get(position);
         holder.datetimeView.setText(model.getDatetime());
         holder.weatherView.setText(model.getWeather());
         holder.celsiusView.setText(model.getCelsius());
-        Picasso.with(holder.iconView.getContext()).load(model.getIcon()).into(holder.iconView);
+        Picasso.get().load(model.getIcon()).into(holder.iconView);
     }
 
     @Override
