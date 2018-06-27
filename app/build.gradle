@@ -3,6 +3,7 @@ apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
+apply from: '../tools/ktlint.gradle'
 
 android {
     compileSdkVersion versions.compileSdk

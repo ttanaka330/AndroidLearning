@@ -9,12 +9,14 @@ ext {
             gradlePlugin  : '3.1.2',
             licensesPlugin: '0.9.2',
             realmPlugin   : '5.1.0',
+            ktlintPlugin  : '4.1.0',
 
             supportLibrary: '27.1.1',
             playServices  : '15.0.1',
 
             butterknife   : '8.8.1',
             dagger        : '2.15',
+            ktlint        : '0.24.0',
             retrofit      : '2.4.0',
             stetho        : '1.5.0',
     ]
