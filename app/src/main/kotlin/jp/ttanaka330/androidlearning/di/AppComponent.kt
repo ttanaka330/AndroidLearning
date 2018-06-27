@@ -7,14 +7,15 @@ import jp.ttanaka330.androidlearning.MainApplication
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [
-    AndroidSupportInjectionModule::class,
-    AppModule::class,
-    ActivityModule::class
-])
+@Component(
+    modules = [
+        AndroidSupportInjectionModule::class,
+        AppModule::class,
+        ActivityModule::class
+    ]
+)
 interface AppComponent : AndroidInjector<MainApplication> {
 
     @Component.Builder
     abstract class Builder : AndroidInjector.Builder<MainApplication>()
-
 }
