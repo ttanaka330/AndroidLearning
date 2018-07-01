@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 apply from: '../tools/ktlint.gradle'
+apply from: '../tools/configurations.gradle'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -57,6 +58,10 @@ android {
         debug.java.srcDirs += 'src/debug/kotlin'
         main.java.srcDirs += 'src/main/kotlin'
         release.java.srcDirs += 'src/release/kotlin'
+    }
+
+    lintOptions {
+        xmlReport true
     }
 
     testOptions {
