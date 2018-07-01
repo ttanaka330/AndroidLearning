@@ -2,7 +2,7 @@
 github.dismiss_out_of_range_messages
 
 # PR check
-warn("PRのサイズが大きいです。分割することをお勧めします。") if git.lines_of_code > 10
+warn("PRのサイズが大きいです。分割することをお勧めします。") if git.lines_of_code > 500
 
 # ktlint
 checkstyle_format.base_path = Dir.pwd

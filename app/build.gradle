@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 apply from: '../tools/ktlint.gradle'
+apply from: '../tools/configurations.gradle'
 
 android {
     compileSdkVersion versions.compileSdk
