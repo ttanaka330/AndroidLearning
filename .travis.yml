@@ -1,0 +1,23 @@
+# https://docs.travis-ci.com/user/languages/android/
+language: android
+branches:
+  only:
+    - master
+    - /^feature.*$/
+android:
+  components:
+    - tools
+    - platform-tools
+    - tools
+    - build-tools-27.0.3
+    - android-27
+script:
+  - ./gradlew clean testDebug --stacktrace
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
