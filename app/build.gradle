@@ -59,6 +59,10 @@ android {
         release.java.srcDirs += 'src/release/kotlin'
     }
 
+    lintOptions {
+        xmlReport true
+    }
+
     testOptions {
         unitTests {
             includeAndroidResources = true
