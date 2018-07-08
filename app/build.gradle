@@ -100,9 +100,6 @@ dependencies {
     implementation deps.okhttp3.intercepter
 
     // Structure =====================================================
-    implementation deps.butterknife.core
-    kapt deps.butterknife.compiler
-
     kapt deps.databinding
 
     implementation deps.dagger.core

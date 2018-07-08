@@ -23,9 +23,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.butterknife.ButterKnifeActivity"
-            android:label="@string/title_butterknife" />
-        <activity
             android:name=".presentation.realm.RealmActivity"
             android:exported="false"
             android:label="@string/title_realm" />
