@@ -4,6 +4,9 @@ branches:
   only:
     - master
     - /^feature.*$/
+env:
+  global:
+    - secure:  "BEiZIP1bnUX8OOmn+Odh1OomMuZJHBT82wM44K9EAr0ayzFqgYLGrK0reTkAIvgXJ+j35eVb51DaU9oqrA42VnaBfa7+oJ8CCpoS4pbCNbiO6Y5//09mSrZosTjYkXoI7bYJWK2K/YS3EyRogCO0HcKTdrOpqPNnHO97SJRMZ6WmTamRz4G2IVaC9kZVH5gYKv6mIwcgc+StGo+P+GSMu5AZSVm3kxcFS/Q6PUwnQHWy+uQ31eC1+95CpZr9ySPTqmB+ULI2K2yUGKxao5UtrsH6DJpP4utXyEgKU4E5rmuiuJPZipT16KF0v3HSKVTBJJNxtl+7jLWFYo7DfWFDCdtt2Bl6+J/eXKlN0AbmtGTzgNccYw49ECLVaVDfoCNGStGpDGIfRFiKKuz4Hl0s+xLKJxIQ88AuhZZcBWv91pM/OCmQFjy5IqWPPEkt3LdJTKV9dxWu+d77fzInO9QSLqz69XFiUzk5Nllw7vqtY/f25fqKlZz/fPhKaQtSIevlQRwQOPyNYCcw3HsmIIUC66ihnhCci2B8a3sZHHDQfFhC4eLgajhzGEI/G0jvQxNU1rOF1wUI/4crTckdJTEHuOYbI6VjlKsValhfIy/ItlccmSlJ1gZcmzNknXQo9g18KrSW94tKAewbDU7Onz6AQmXYEuLrJRNFe/eRwB/W6ms="
 android:
   components:
     - tools
@@ -11,8 +14,11 @@ android:
     - tools
     - build-tools-27.0.3
     - android-27
+install:
+  - bundle install
 script:
-  - ./gradlew clean testDebug --stacktrace
+  - ./gradlew clean testDebug ktlintCheck --stacktrace
+  - bundle exec danger
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
