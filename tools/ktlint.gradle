@@ -7,5 +7,5 @@ ktlint {
     android = true
     outputToConsole = true
     reporters = ["PLAIN", "CHECKSTYLE"]
-    ignoreFailures = false
+    ignoreFailures = true
 }
