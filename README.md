@@ -8,7 +8,7 @@
 
 OS:  Windows 10  
 IDE: Android Studio 3.1.3  
-target : Android 4.0(API 14) 以上  
+target : Android 4.1(API 16) 以上
 
 ## Package 構成
 
