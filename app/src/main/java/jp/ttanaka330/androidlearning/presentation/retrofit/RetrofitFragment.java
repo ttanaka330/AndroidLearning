@@ -15,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.android.learning.common.utils.FileUtils;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import jp.ttanaka330.androidlearning.R;
-import jp.ttanaka330.androidlearning.util.FileUtils;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
