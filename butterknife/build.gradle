@@ -47,5 +47,5 @@ dependencies {
     kapt deps.butterknife.compiler
 
     testImplementation deps.junit
-    androidTestImplementation deps.espresso
+    androidTestImplementation deps.test.espresso
 }

@@ -81,6 +81,7 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation deps.kotlin
+    implementation project(':common')
 
     // Support Library ===============================================
     implementation deps.support.annotations
@@ -118,7 +119,5 @@ dependencies {
 
     // Test ==========================================================
     testImplementation deps.junit
-    testImplementation deps.mockito
-    testImplementation deps.robolectric
-    androidTestImplementation deps.espresso
+    androidTestImplementation deps.test.espresso
 }
