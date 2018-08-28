@@ -7,25 +7,5 @@
 ## 動作確認環境
 
 OS:  Windows 10  
-IDE: Android Studio 3.1.3  
+IDE: Android Studio 3.1.4  
 target : Android 4.1(API 16) 以上
-
-## Package 構成
-
-```
-package
-|- common           // 共通機能
-|  |- activity
-|  |- dialog
-|  |- fragment
-|  |- view
-|
-|- di               // Dagger2 の Component/Module
-|  |- scope
-|
-|- presentation     // 各学習別機能（Activity他）
-|
-|- util             // 本プロジェクトに依存しないユーティリティ
-
-```
-
