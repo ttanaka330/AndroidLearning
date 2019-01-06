@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Todo</string>
+
+    <string name="title">タイトル</string>
+    <string name="description">説明</string>
+    <string name="save">保存</string>
+    <string name="delete">削除</string>
+    <string name="message_empty">タスクがありません。</string>
+    <string name="message_delete">%1$sを削除しました。</string>
+</resources>
