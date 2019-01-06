@@ -1,2 +1,6 @@
 include ':common'
 include ':app', ':butterknife'
+
+include ':template_todo'
+def templateDir = new File('template')
+project(':template_todo').projectDir = new File(templateDir, 'todo')
