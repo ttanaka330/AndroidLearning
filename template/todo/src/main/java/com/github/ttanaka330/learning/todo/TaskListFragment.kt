@@ -3,6 +3,9 @@ package com.github.ttanaka330.learning.todo
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,11 +36,14 @@ class TaskListFragment : Fragment(), TaskListAdapter.ActionListener {
     private fun setupData(view: View) {
         val context = view.context
         repository = TaskRepositoryImpl.getInstance(context)
-
-        val adapter = TaskListAdapter(context, this)
         val data = repository.loadAll()
-        adapter.replaceData(data)
-        view.list.adapter = adapter
+
+        view.list.apply {
+            val orientation = RecyclerView.VERTICAL
+            adapter = TaskListAdapter(this@TaskListFragment).apply { replaceData(data) }
+            layoutManager = LinearLayoutManager(context, orientation, false)
+            addItemDecoration(DividerItemDecoration(context, orientation))
+        }
         view.empty.visibility = if (data.isNotEmpty()) View.GONE else View.VISIBLE
     }
 

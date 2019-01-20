@@ -1,6 +1,7 @@
 package com.github.ttanaka330.learning.todo
 
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
@@ -58,7 +59,10 @@ class TaskDetailFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_delete) {
-            taskId?.let { repository.delete(it) }
+            taskId?.let {
+                repository.delete(it)
+                showSnackbar(getString(R.string.message_delete, task.title))
+            }
             back()
             return true
         }
@@ -98,5 +102,12 @@ class TaskDetailFragment : Fragment() {
 
     private fun back() {
         fragmentManager?.popBackStack()
+    }
+
+    private fun showSnackbar(message: String) {
+        activity?.findViewById<View>(android.R.id.content)?.let {
+            Snackbar.make(it, message, Snackbar.LENGTH_SHORT).show()
+        }
+
     }
 }
