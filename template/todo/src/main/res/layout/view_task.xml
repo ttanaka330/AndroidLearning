@@ -35,6 +35,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textSize="@dimen/size_title"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/completed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title"
