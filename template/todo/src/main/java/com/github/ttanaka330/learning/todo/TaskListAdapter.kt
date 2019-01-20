@@ -1,21 +1,18 @@
 package com.github.ttanaka330.learning.todo
 
-import android.content.Context
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.TextView
 import com.github.ttanaka330.learning.todo.data.Task
 import kotlinx.android.synthetic.main.view_task.view.*
 
 class TaskListAdapter(
-    context: Context,
     private val actionListener: ActionListener
-) : BaseAdapter() {
+) : RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
 
-    private val inflater: LayoutInflater = LayoutInflater.from(context)
     private val tasks: MutableList<Task> = mutableListOf()
 
     interface ActionListener {
@@ -29,40 +26,32 @@ class TaskListAdapter(
         notifyDataSetChanged()
     }
 
-    override fun getCount(): Int = tasks.size
+    override fun getItemCount(): Int = tasks.size
 
-    override fun getItem(position: Int): Task? = tasks.getOrNull(position)
-
-    override fun getItemId(position: Int): Long = position.toLong()
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view: View
-        val viewHolder: ViewHolder
-        if (convertView == null) {
-            view = inflater.inflate(R.layout.view_task, null)
-            viewHolder = ViewHolder(view)
-            view.tag = viewHolder
-        } else {
-            view = convertView
-            viewHolder = view.tag as ViewHolder
-        }
-
-        val item = getItem(position)!!
-        viewHolder.title.text = item.title
-        viewHolder.description.text = item.description
-        viewHolder.completed.setOnCheckedChangeListener(null)
-        viewHolder.completed.isChecked = item.completed
-        viewHolder.completed.setOnCheckedChangeListener { _, isChecked ->
-            viewHolder.completed.isChecked = isChecked
-            actionListener.onCompletedChanged(item.copy(completed = isChecked))
-        }
-        view.setOnClickListener {
-            actionListener.onTaskClick(item)
-        }
-        return view
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return ViewHolder(inflater.inflate(R.layout.view_task, parent, false))
     }
 
-    inner class ViewHolder(view: View) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = tasks[position]
+        holder.title.text = item.title
+        holder.description.text = item.description
+        holder.completed.setOnCheckedChangeListener(null)
+        holder.completed.apply {
+            isChecked = item.completed
+            setOnCheckedChangeListener { buttonView, isChecked ->
+                buttonView.isChecked = isChecked
+                actionListener.onCompletedChanged(item.copy(completed = isChecked))
+            }
+        }
+        holder.layout.setOnClickListener {
+            actionListener.onTaskClick(item)
+        }
+    }
+
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val layout: ViewGroup = view.layout
         val title: TextView = view.title
         val description: TextView = view.description
         val completed: CheckBox = view.completed
