@@ -15,7 +15,7 @@ ext {
             supportLibrary: '27.1.1',
             playServices  : '15.0.1',
 
-            butterknife   : '8.8.1',
+            butterknife   : '9.0.0',
             dagger        : '2.15',
             ktlint        : '0.27.0',
             retrofit      : '2.4.0',
