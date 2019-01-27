@@ -6,6 +6,6 @@
 
 ## 動作確認環境
 
-OS:  Windows 10  
-IDE: Android Studio 3.2.1  
+OS:  macOS Mojave 10.14.2  
+IDE: Android Studio 3.3.0  
 target : Android 4.1(API 16) 以上
