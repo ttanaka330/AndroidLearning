@@ -5,7 +5,12 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
 import com.github.ttanaka330.learning.todo.data.TaskRepositoryImpl
@@ -41,7 +46,7 @@ class TaskDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_task_detail, container, false)
-        setHasOptionsMenu(true)
+        setupToolbar()
         setupData(rootView)
         setupListener(rootView)
         return rootView
@@ -67,6 +72,10 @@ class TaskDetailFragment : Fragment() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupToolbar() {
+        setHasOptionsMenu(true)
     }
 
     private fun setupData(view: View) {
@@ -108,6 +117,5 @@ class TaskDetailFragment : Fragment() {
         activity?.findViewById<View>(android.R.id.content)?.let {
             Snackbar.make(it, message, Snackbar.LENGTH_SHORT).show()
         }
-
     }
 }

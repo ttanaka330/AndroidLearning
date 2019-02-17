@@ -1,5 +1,6 @@
 package com.github.ttanaka330.learning.todo
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
@@ -14,35 +15,37 @@ import android.view.ViewGroup
 import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
 import com.github.ttanaka330.learning.todo.data.TaskRepositoryImpl
+import com.github.ttanaka330.learning.todo.widget.ConfirmMessageDialog
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
-class TaskListFragment : Fragment(), TaskListAdapter.ActionListener {
+class TaskCompletedFragment : Fragment(), TaskListAdapter.ActionListener,
+    ConfirmMessageDialog.ConfirmDialogListener {
 
     companion object {
-        fun newInstance() = TaskListFragment()
+        fun newInstance() = TaskCompletedFragment()
     }
 
     private lateinit var repository: TaskRepository
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_task_completed, container, false)
         setupToolbar()
         setupData(rootView)
-        setupListener(rootView)
         return rootView
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_tasks, menu)
+        inflater.inflate(R.menu.menu_detail, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_show_completed) {
-            navigationCompleted()
+        if (item.itemId == R.id.action_delete) {
+            ConfirmMessageDialog
+                .newInstance(R.string.message_confirm_delete_completed)
+                .show(childFragmentManager, null)
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -55,21 +58,15 @@ class TaskListFragment : Fragment(), TaskListAdapter.ActionListener {
     private fun setupData(view: View) {
         val context = view.context
         repository = TaskRepositoryImpl.getInstance(context)
-        val data = repository.loadList(false)
+        val data = repository.loadList(true)
 
         view.list.apply {
             val orientation = RecyclerView.VERTICAL
-            adapter = TaskListAdapter(this@TaskListFragment).apply { replaceData(data) }
+            adapter = TaskListAdapter(this@TaskCompletedFragment).apply { replaceData(data) }
             layoutManager = LinearLayoutManager(context, orientation, false)
             addItemDecoration(DividerItemDecoration(context, orientation))
         }
         updateShowEmpty(view)
-    }
-
-    private fun setupListener(view: View) {
-        view.fab.setOnClickListener {
-            navigationDetail()
-        }
     }
 
     private fun updateShowEmpty(view: View) {
@@ -79,16 +76,14 @@ class TaskListFragment : Fragment(), TaskListAdapter.ActionListener {
         }
     }
 
+    private fun deteleCompleted() {
+        repository.deleteCompleted()
+        view?.let { setupData(it) }
+    }
+
     private fun navigationDetail(taskId: Int? = null) {
         fragmentManager?.beginTransaction()
             ?.replace(R.id.container, TaskDetailFragment.newInstance(taskId))
-            ?.addToBackStack(null)
-            ?.commit()
-    }
-
-    private fun navigationCompleted() {
-        fragmentManager?.beginTransaction()
-            ?.replace(R.id.container, TaskCompletedFragment.newInstance())
             ?.addToBackStack(null)
             ?.commit()
     }
@@ -108,6 +103,12 @@ class TaskListFragment : Fragment(), TaskListAdapter.ActionListener {
                 it.removeData(task)
                 updateShowEmpty(view!!)
             }
+        }
+    }
+
+    override fun onDialogResult(which: Int) {
+        if (which == DialogInterface.BUTTON_POSITIVE) {
+            deteleCompleted()
         }
     }
 }

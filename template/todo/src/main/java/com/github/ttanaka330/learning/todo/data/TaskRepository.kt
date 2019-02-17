@@ -4,9 +4,11 @@ interface TaskRepository {
 
     fun load(id: Int): Task?
 
-    fun loadAll(): List<Task>
+    fun loadList(isCompleted: Boolean): List<Task>
 
     fun save(task: Task)
 
     fun delete(id: Int)
+
+    fun deleteCompleted()
 }
