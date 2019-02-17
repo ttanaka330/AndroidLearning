@@ -32,11 +32,13 @@ class TaskRepositoryImpl private constructor(context: Context) : TaskRepository 
         return task
     }
 
-    override fun loadAll(): List<Task> {
+    override fun loadList(isCompleted: Boolean): List<Task> {
         val query = "SELECT * FROM ${TodoDatabase.TABLE_NAME}" +
+                " WHERE ${TodoDatabase.COLUMN_COMPLETED} = ?" +
                 " ORDER BY ${TodoDatabase.COLUMN_ID} DESC"
-        var tasks: MutableList<Task> = mutableListOf()
-        database.rawQuery(query, null).use {
+        val queryArgs = arrayOf(toValue(isCompleted))
+        val tasks: MutableList<Task> = mutableListOf()
+        database.rawQuery(query, queryArgs).use {
             while (it.moveToNext()) {
                 tasks.add(createTask(it))
             }
@@ -63,6 +65,16 @@ class TaskRepositoryImpl private constructor(context: Context) : TaskRepository 
         val where = "${TodoDatabase.COLUMN_ID} = ?"
         val whereArgs = arrayOf(id.toString())
         database.delete(TodoDatabase.TABLE_NAME, where, whereArgs)
+    }
+
+    override fun deleteCompleted() {
+        val where = "${TodoDatabase.COLUMN_COMPLETED} = ?"
+        val whereArgs = arrayOf(toValue(true))
+        database.delete(TodoDatabase.TABLE_NAME, where, whereArgs)
+    }
+
+    private fun toValue(flag: Boolean): String {
+        return if (flag) "1" else "0"
     }
 
     private fun createTask(cursor: Cursor): Task =

@@ -1,10 +1,13 @@
 package com.github.ttanaka330.learning.todo
 
+import android.content.res.ColorStateList
+import android.os.Build
+import android.support.v4.widget.ImageViewCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import com.github.ttanaka330.learning.todo.data.Task
 import kotlinx.android.synthetic.main.view_task.view.*
@@ -26,6 +29,14 @@ class TaskListAdapter(
         notifyDataSetChanged()
     }
 
+    fun removeData(task: Task) {
+        val position = getPosition(task)
+        tasks.remove(task)
+        notifyItemRemoved(position)
+    }
+
+    fun getPosition(task: Task): Int = tasks.indexOf(task)
+
     override fun getItemCount(): Int = tasks.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,12 +48,13 @@ class TaskListAdapter(
         val item = tasks[position]
         holder.title.text = item.title
         holder.description.text = item.description
-        holder.completed.setOnCheckedChangeListener(null)
         holder.completed.apply {
-            isChecked = item.completed
-            setOnCheckedChangeListener { buttonView, isChecked ->
-                buttonView.isChecked = isChecked
-                actionListener.onCompletedChanged(item.copy(completed = isChecked))
+            var isCompleted = item.completed
+            setCheckboxColor(isCompleted)
+            setOnClickListener { view ->
+                isCompleted = !isCompleted
+                setCheckboxColor(isCompleted)
+                actionListener.onCompletedChanged(item.copy(completed = isCompleted))
             }
         }
         holder.layout.setOnClickListener {
@@ -50,10 +62,20 @@ class TaskListAdapter(
         }
     }
 
+    private fun ImageView.setCheckboxColor(isCompleted: Boolean) {
+        val colorId = if (isCompleted) R.color.checkCompleted else R.color.checkActive
+        val color = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            resources.getColor(colorId)
+        } else {
+            resources.getColor(colorId, null)
+        }
+        ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(color))
+    }
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val layout: ViewGroup = view.layout
         val title: TextView = view.title
         val description: TextView = view.description
-        val completed: CheckBox = view.completed
+        val completed: ImageView = view.completed
     }
 }
