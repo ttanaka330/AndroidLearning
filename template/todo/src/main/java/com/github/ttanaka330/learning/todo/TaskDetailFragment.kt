@@ -2,7 +2,6 @@ package com.github.ttanaka330.learning.todo
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -13,13 +12,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
-import com.github.ttanaka330.learning.todo.data.TaskRepositoryImpl
+import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
 import kotlinx.android.synthetic.main.fragment_task_detail.view.*
 
-class TaskDetailFragment : Fragment() {
+class TaskDetailFragment : BaseFragment() {
 
     companion object {
-        private const val ARG_TASK_ID = "task_id"
+        private const val ARG_TASK_ID = "TASK_ID"
 
         fun newInstance(taskId: Int? = null) = TaskDetailFragment().apply {
             arguments = Bundle().apply {
@@ -75,17 +74,24 @@ class TaskDetailFragment : Fragment() {
     }
 
     private fun setupToolbar() {
+        setToolBar(R.string.title_detail, true)
         setHasOptionsMenu(true)
     }
 
     private fun setupData(view: View) {
         val context = view.context
-        repository = TaskRepositoryImpl.getInstance(context)
+        repository = TaskRepositoryDataSource.getInstance(context)
         task = taskId?.let { repository.load(it) } ?: Task()
 
         view.title.setText(task.title)
         view.description.setText(task.description)
-        view.save.isEnabled = task.title.isNotBlank()
+        if (task.completed) {
+            view.title.isEnabled = false
+            view.description.isEnabled = false
+            view.save.visibility = View.GONE
+        } else {
+            view.save.isEnabled = task.title.isNotBlank()
+        }
     }
 
     private fun setupListener(view: View) {

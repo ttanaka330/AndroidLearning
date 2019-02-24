@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Todo</string>
 
+    <string name="title_list">タスク一覧</string>
+    <string name="title_completed">完了済みのタスク</string>
+    <string name="title_detail">タスク詳細</string>
+
     <string name="title">タイトル</string>
     <string name="description">説明</string>
     <string name="completed">完了済み</string>
