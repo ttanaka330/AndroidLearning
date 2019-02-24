@@ -1,7 +1,7 @@
 package com.github.ttanaka330.learning.todo.widget
 
 import android.app.Dialog
-import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.v4.app.DialogFragment
@@ -18,37 +18,18 @@ class ConfirmMessageDialog : DialogFragment() {
             }
     }
 
-    interface ConfirmDialogListener {
-        fun onDialogResult(which: Int)
-    }
-
-    private var listener: ConfirmDialogListener? = null
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        when {
-            targetFragment is ConfirmDialogListener ->
-                listener = (targetFragment as ConfirmDialogListener)
-            parentFragment is ConfirmDialogListener ->
-                listener = (parentFragment as ConfirmDialogListener)
-            activity is ConfirmDialogListener ->
-                listener = (activity as ConfirmDialogListener)
-        }
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         if (activity == null) {
             return super.onCreateDialog(savedInstanceState)
         }
+        val listener = DialogInterface.OnClickListener { _, which ->
+            targetFragment?.onActivityResult(targetRequestCode, which, null)
+        }
         val builder = AlertDialog.Builder(activity!!)
         arguments?.let { builder.setMessage(it.getInt(ARG_MESSAGE_ID)) }
         return builder
-            .setPositiveButton(android.R.string.ok) { _, which ->
-                listener?.onDialogResult(which)
-            }
-            .setNegativeButton(android.R.string.cancel) { _, which ->
-                listener?.onDialogResult(which)
-            }
+            .setPositiveButton(android.R.string.ok, listener)
+            .setNegativeButton(android.R.string.cancel, listener)
             .create()
     }
 }

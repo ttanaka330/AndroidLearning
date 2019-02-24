@@ -1,6 +1,7 @@
 package com.github.ttanaka330.learning.todo
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
@@ -18,10 +19,11 @@ import com.github.ttanaka330.learning.todo.data.TaskRepositoryImpl
 import com.github.ttanaka330.learning.todo.widget.ConfirmMessageDialog
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
-class TaskCompletedFragment : Fragment(), TaskListAdapter.ActionListener,
-    ConfirmMessageDialog.ConfirmDialogListener {
+class TaskCompletedFragment : Fragment(), TaskListAdapter.ActionListener {
 
     companion object {
+        private const val REQUEST_DELETE_MESSAGE = 1
+
         fun newInstance() = TaskCompletedFragment()
     }
 
@@ -43,9 +45,9 @@ class TaskCompletedFragment : Fragment(), TaskListAdapter.ActionListener,
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_delete) {
-            ConfirmMessageDialog
-                .newInstance(R.string.message_confirm_delete_completed)
-                .show(childFragmentManager, null)
+            val dialog = ConfirmMessageDialog.newInstance(R.string.message_confirm_delete_completed)
+            dialog.setTargetFragment(this, REQUEST_DELETE_MESSAGE)
+            dialog.show(fragmentManager, null)
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -92,6 +94,16 @@ class TaskCompletedFragment : Fragment(), TaskListAdapter.ActionListener,
     // Callback
     // ---------------------------------------------------------------------------------------------
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_DELETE_MESSAGE) {
+            if (resultCode == DialogInterface.BUTTON_POSITIVE) {
+                deteleCompleted()
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
     override fun onTaskClick(task: Task) {
         navigationDetail(task.id)
     }
@@ -103,12 +115,6 @@ class TaskCompletedFragment : Fragment(), TaskListAdapter.ActionListener,
                 it.removeData(task)
                 updateShowEmpty(view!!)
             }
-        }
-    }
-
-    override fun onDialogResult(which: Int) {
-        if (which == DialogInterface.BUTTON_POSITIVE) {
-            deteleCompleted()
         }
     }
 }
