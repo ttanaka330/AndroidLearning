@@ -1,7 +1,6 @@
 package com.github.ttanaka330.learning.todo
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -13,10 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
-import com.github.ttanaka330.learning.todo.data.TaskRepositoryImpl
+import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
-class TaskListFragment : Fragment(), TaskListAdapter.ActionListener {
+class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     companion object {
         fun newInstance() = TaskListFragment()
@@ -49,12 +48,13 @@ class TaskListFragment : Fragment(), TaskListAdapter.ActionListener {
     }
 
     private fun setupToolbar() {
+        setToolBar(R.string.title_list)
         setHasOptionsMenu(true)
     }
 
     private fun setupData(view: View) {
         val context = view.context
-        repository = TaskRepositoryImpl.getInstance(context)
+        repository = TaskRepositoryDataSource.getInstance(context)
         val data = repository.loadList(false)
 
         view.list.apply {

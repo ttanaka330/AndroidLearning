@@ -5,15 +5,15 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 
-class TaskRepositoryImpl private constructor(context: Context) : TaskRepository {
+class TaskRepositoryDataSource private constructor(context: Context) : TaskRepository {
 
     companion object {
         @Volatile
-        private var INSTANCE: TaskRepositoryImpl? = null
+        private var INSTANCE: TaskRepositoryDataSource? = null
 
         fun getInstance(context: Context): TaskRepository =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: TaskRepositoryImpl(context).also { INSTANCE = it }
+                INSTANCE ?: TaskRepositoryDataSource(context).also { INSTANCE = it }
             }
     }
 
