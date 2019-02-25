@@ -10,9 +10,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.realm.RealmResults;
-
 /**
  * 1つの文字列を表示するだけのシンプルな {@link RecyclerView.Adapter}。
  * {@link RecyclerSimpleAdapter} は以下の機能を有します。
@@ -29,13 +26,7 @@ public class RecyclerSimpleAdapter<T> extends RecyclerView.Adapter<RecyclerSimpl
     }
 
     public RecyclerSimpleAdapter(@NonNull List<T> list) {
-        if (list instanceof RealmResults) {
-            mDataList = Observable.fromIterable(list)
-                    .toList()
-                    .blockingGet();
-        } else {
-            mDataList = list;
-        }
+        mDataList = list;
     }
 
     @Override

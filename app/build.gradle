@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'realm-android'
 apply from: '../tools/ktlint.gradle'
 apply from: '../tools/configurations.gradle'
 
@@ -72,9 +71,6 @@ android {
 }
 
 repositories {
-    maven {
-        url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
-    }
     mavenCentral()
 }
 

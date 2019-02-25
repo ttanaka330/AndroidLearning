@@ -1,0 +1,52 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'realm-android'
+apply from: '../../../tools/ktlint.gradle'
+
+android {
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
+
+    defaultConfig {
+        applicationId "com.github.ttanaka330.learning.todo.realm"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    maven {
+        // 公式のstetho-realmは更新停止中。Realm 3.7.1以上を使う場合はForkされたものを使用する。
+        // url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
+        url 'https://github.com/WickeDev/stetho-realm/raw/master/maven-repo'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation deps.kotlin
+    implementation deps.support.v4
+    implementation deps.support.appcompat
+    implementation deps.support.constraint
+    implementation deps.support.design
+
+    debugImplementation deps.stetho.core
+    debugImplementation deps.stetho.realm
+
+    testImplementation deps.junit
+    androidTestImplementation deps.test.espresso
+    androidTestImplementation deps.test.runner
+}

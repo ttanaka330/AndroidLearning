@@ -23,10 +23,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.realm.RealmActivity"
-            android:exported="false"
-            android:label="@string/title_realm" />
-        <activity
             android:name=".presentation.retrofit.RetrofitActivity"
             android:exported="false"
             android:label="@string/title_retrofit" />

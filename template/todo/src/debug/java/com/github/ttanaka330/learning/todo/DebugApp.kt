@@ -7,9 +7,9 @@ import com.facebook.stetho.Stetho
 class DebugApp : Application() {
 
     override fun onCreate() {
-        setupStetho()
         setupStrict()
         super.onCreate()
+        setupStetho()
     }
 
     private fun setupStetho() {
