@@ -80,7 +80,7 @@ class TaskDetailFragment : BaseFragment() {
 
     private fun setupData(view: View) {
         val context = view.context
-        repository = TaskRepositoryDataSource.getInstance(context)
+        repository = TaskRepositoryDataSource.getInstance()
         task = taskId?.let { repository.load(it) } ?: Task()
 
         view.title.setText(task.title)

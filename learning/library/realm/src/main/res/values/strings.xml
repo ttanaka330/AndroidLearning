@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Todo</string>
+    <string name="app_name">Todo Realm</string>
 
     <string name="title_list">Tasks</string>
     <string name="title_completed">Completed</string>

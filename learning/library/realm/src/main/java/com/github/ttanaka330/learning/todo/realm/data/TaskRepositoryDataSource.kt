@@ -1,87 +1,95 @@
 package com.github.ttanaka330.learning.todo.realm.data
 
-import android.content.ContentValues
-import android.content.Context
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
+import io.realm.Realm
+import io.realm.Sort
 
-class TaskRepositoryDataSource private constructor(context: Context) : TaskRepository {
+class TaskRepositoryDataSource private constructor() : TaskRepository {
 
     companion object {
         @Volatile
         private var INSTANCE: TaskRepositoryDataSource? = null
 
-        fun getInstance(context: Context): TaskRepository =
+        fun getInstance(): TaskRepository =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: TaskRepositoryDataSource(context).also { INSTANCE = it }
+                INSTANCE ?: TaskRepositoryDataSource().also { INSTANCE = it }
             }
     }
 
-    private val database: SQLiteDatabase = TodoDatabase(context).writableDatabase
+    private val database: Realm = Realm.getDefaultInstance()
 
     override fun load(id: Int): Task? {
-        val query = "SELECT * FROM ${TodoDatabase.TABLE_NAME}" +
-                " WHERE ${TodoDatabase.COLUMN_ID} = ?"
-        val queryArgs = arrayOf(id.toString())
-        var task: Task? = null
-        database.rawQuery(query, queryArgs).use {
-            if (it.moveToNext()) {
-                task = createTask(it)
-            }
-        }
-        return task
+        val result = database.where(TaskObject::class.java)
+            .equalTo(TaskObject::id.name, id)
+            .findFirst()
+        return result?.toModel()
     }
 
     override fun loadList(isCompleted: Boolean): List<Task> {
-        val query = "SELECT * FROM ${TodoDatabase.TABLE_NAME}" +
-                " WHERE ${TodoDatabase.COLUMN_COMPLETED} = ?" +
-                " ORDER BY ${TodoDatabase.COLUMN_ID} DESC"
-        val queryArgs = arrayOf(toValue(isCompleted))
         val tasks: MutableList<Task> = mutableListOf()
-        database.rawQuery(query, queryArgs).use {
-            while (it.moveToNext()) {
-                tasks.add(createTask(it))
-            }
-        }
+        val results = database.where(TaskObject::class.java)
+            .equalTo(TaskObject::completed.name, isCompleted)
+            .sort(TaskObject::id.name, Sort.DESCENDING)
+            .findAll()
+        results.forEach { tasks.add(it.toModel()) }
         return tasks
     }
 
     override fun save(task: Task) {
-        val values = ContentValues().apply {
-            put(TodoDatabase.COLUMN_TITLE, task.title)
-            put(TodoDatabase.COLUMN_DESCRIPTION, task.description)
-            put(TodoDatabase.COLUMN_COMPLETED, task.completed)
-        }
         if (task.id == null) {
-            database.insert(TodoDatabase.TABLE_NAME, null, values)
+            database.executeTransaction {
+                val taskObject = database.createObject(TaskObject::class.java, incrementId())
+                taskObject.setTask(task)
+                it.insertOrUpdate(taskObject)
+            }
         } else {
-            val where = "${TodoDatabase.COLUMN_ID} = ?"
-            val whereArgs = arrayOf(task.id.toString())
-            database.update(TodoDatabase.TABLE_NAME, values, where, whereArgs)
+            database.executeTransaction {
+                it.copyToRealmOrUpdate(task.toEntity())
+            }
         }
     }
 
     override fun delete(id: Int) {
-        val where = "${TodoDatabase.COLUMN_ID} = ?"
-        val whereArgs = arrayOf(id.toString())
-        database.delete(TodoDatabase.TABLE_NAME, where, whereArgs)
+        database.executeTransaction { realm ->
+            realm.where(TaskObject::class.java)
+                .equalTo(TaskObject::id.name, id)
+                .findFirst()
+                ?.deleteFromRealm()
+        }
     }
 
     override fun deleteCompleted() {
-        val where = "${TodoDatabase.COLUMN_COMPLETED} = ?"
-        val whereArgs = arrayOf(toValue(true))
-        database.delete(TodoDatabase.TABLE_NAME, where, whereArgs)
+        database.executeTransaction { realm ->
+            realm.where(TaskObject::class.java)
+                .equalTo(TaskObject::completed.name, true)
+                .findAll()
+                .forEach { it.deleteFromRealm() }
+        }
     }
 
-    private fun toValue(flag: Boolean): String {
-        return if (flag) "1" else "0"
+    private fun incrementId(): Int {
+        val max = database.where(TaskObject::class.java).max(TaskObject::id.name)?.toInt() ?: 0
+        return max + 1
     }
 
-    private fun createTask(cursor: Cursor): Task =
+    private fun Task.toEntity(): TaskObject =
+        TaskObject().also {
+            it.id = this.id ?: incrementId()
+            it.title = this.title
+            it.description = this.description
+            it.completed = this.completed
+        }
+
+    private fun TaskObject.toModel(): Task =
         Task(
-            id = cursor.getInt(cursor.getColumnIndex(TodoDatabase.COLUMN_ID)),
-            title = cursor.getString(cursor.getColumnIndex(TodoDatabase.COLUMN_TITLE)),
-            description = cursor.getString(cursor.getColumnIndex(TodoDatabase.COLUMN_DESCRIPTION)),
-            completed = cursor.getInt(cursor.getColumnIndex(TodoDatabase.COLUMN_COMPLETED)) > 0
+            id = this.id,
+            title = this.title,
+            description = this.description,
+            completed = this.completed
         )
+
+    private fun TaskObject.setTask(task: Task) {
+        title = task.title
+        description = task.description
+        completed = task.completed
+    }
 }

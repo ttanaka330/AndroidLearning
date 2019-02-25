@@ -18,8 +18,7 @@ import com.github.ttanaka330.learning.todo.realm.data.TaskRepositoryDataSource
 import com.github.ttanaka330.learning.todo.realm.widget.ConfirmMessageDialog
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
-class TaskCompletedFragment : BaseFragment(),
-    TaskListAdapter.ActionListener {
+class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     companion object {
         private const val REQUEST_DELETE_MESSAGE = 1
@@ -46,9 +45,7 @@ class TaskCompletedFragment : BaseFragment(),
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_delete) {
             val dialog = ConfirmMessageDialog.newInstance(R.string.message_confirm_delete_completed)
-            dialog.setTargetFragment(this,
-                REQUEST_DELETE_MESSAGE
-            )
+            dialog.setTargetFragment(this, REQUEST_DELETE_MESSAGE)
             dialog.show(fragmentManager, null)
             return true
         }
@@ -62,13 +59,12 @@ class TaskCompletedFragment : BaseFragment(),
 
     private fun setupData(view: View) {
         val context = view.context
-        repository = TaskRepositoryDataSource.getInstance(context)
+        repository = TaskRepositoryDataSource.getInstance()
         val data = repository.loadList(true)
 
         view.list.apply {
             val orientation = RecyclerView.VERTICAL
-            adapter = TaskListAdapter(this@TaskCompletedFragment)
-                .apply { replaceData(data) }
+            adapter = TaskListAdapter(this@TaskCompletedFragment).apply { replaceData(data) }
             layoutManager = LinearLayoutManager(context, orientation, false)
             addItemDecoration(DividerItemDecoration(context, orientation))
         }
@@ -89,11 +85,7 @@ class TaskCompletedFragment : BaseFragment(),
 
     private fun navigationDetail(taskId: Int? = null) {
         fragmentManager?.beginTransaction()
-            ?.replace(R.id.container,
-                TaskDetailFragment.newInstance(
-                    taskId
-                )
-            )
+            ?.replace(R.id.container, TaskDetailFragment.newInstance(taskId))
             ?.addToBackStack(null)
             ?.commit()
     }

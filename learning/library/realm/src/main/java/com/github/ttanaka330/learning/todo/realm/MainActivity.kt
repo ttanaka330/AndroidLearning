@@ -12,9 +12,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container,
-                    TaskListFragment.newInstance()
-                )
+                .replace(R.id.container, TaskListFragment.newInstance())
                 .commitNow()
         }
     }

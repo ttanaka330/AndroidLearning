@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'realm-android'
 apply from: '../../../tools/ktlint.gradle'
 
 android {
@@ -25,6 +27,14 @@ android {
     }
 }
 
+repositories {
+    maven {
+        // 公式のstetho-realmは更新停止中。Realm 3.7.1以上を使う場合はForkされたものを使用する。
+        // url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
+        url 'https://github.com/WickeDev/stetho-realm/raw/master/maven-repo'
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation deps.kotlin
@@ -34,6 +44,7 @@ dependencies {
     implementation deps.support.design
 
     debugImplementation deps.stetho.core
+    debugImplementation deps.stetho.realm
 
     testImplementation deps.junit
     androidTestImplementation deps.test.espresso

@@ -15,8 +15,7 @@ import com.github.ttanaka330.learning.todo.realm.data.TaskRepository
 import com.github.ttanaka330.learning.todo.realm.data.TaskRepositoryDataSource
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
-class TaskListFragment : BaseFragment(),
-    TaskListAdapter.ActionListener {
+class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     companion object {
         fun newInstance() = TaskListFragment()
@@ -55,13 +54,12 @@ class TaskListFragment : BaseFragment(),
 
     private fun setupData(view: View) {
         val context = view.context
-        repository = TaskRepositoryDataSource.getInstance(context)
+        repository = TaskRepositoryDataSource.getInstance()
         val data = repository.loadList(false)
 
         view.list.apply {
             val orientation = RecyclerView.VERTICAL
-            adapter = TaskListAdapter(this@TaskListFragment)
-                .apply { replaceData(data) }
+            adapter = TaskListAdapter(this@TaskListFragment).apply { replaceData(data) }
             layoutManager = LinearLayoutManager(context, orientation, false)
             addItemDecoration(DividerItemDecoration(context, orientation))
         }
@@ -83,20 +81,14 @@ class TaskListFragment : BaseFragment(),
 
     private fun navigationDetail(taskId: Int? = null) {
         fragmentManager?.beginTransaction()
-            ?.replace(R.id.container,
-                TaskDetailFragment.newInstance(
-                    taskId
-                )
-            )
+            ?.replace(R.id.container, TaskDetailFragment.newInstance(taskId))
             ?.addToBackStack(null)
             ?.commit()
     }
 
     private fun navigationCompleted() {
         fragmentManager?.beginTransaction()
-            ?.replace(R.id.container,
-                TaskCompletedFragment.newInstance()
-            )
+            ?.replace(R.id.container, TaskCompletedFragment.newInstance())
             ?.addToBackStack(null)
             ?.commit()
     }
