@@ -35,8 +35,6 @@ class TaskListAdapter(
         notifyItemRemoved(position)
     }
 
-    fun getPosition(task: Task): Int = tasks.indexOf(task)
-
     override fun getItemCount(): Int = tasks.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -51,7 +49,7 @@ class TaskListAdapter(
         holder.completed.apply {
             var isCompleted = item.completed
             setCheckboxColor(isCompleted)
-            setOnClickListener { view ->
+            setOnClickListener {
                 isCompleted = !isCompleted
                 setCheckboxColor(isCompleted)
                 actionListener.onCompletedChanged(item.copy(completed = isCompleted))
@@ -61,6 +59,8 @@ class TaskListAdapter(
             actionListener.onTaskClick(item)
         }
     }
+
+    private fun getPosition(task: Task): Int = tasks.indexOf(task)
 
     private fun ImageView.setCheckboxColor(isCompleted: Boolean) {
         val colorId = if (isCompleted) R.color.checkCompleted else R.color.checkActive
