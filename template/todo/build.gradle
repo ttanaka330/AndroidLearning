@@ -36,5 +36,6 @@ dependencies {
 
     testImplementation deps.junit
     androidTestImplementation deps.test.espresso
+    androidTestImplementation deps.test.junit
     androidTestImplementation deps.test.runner
 }

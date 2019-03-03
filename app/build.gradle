@@ -112,4 +112,5 @@ dependencies {
     // Test ==========================================================
     testImplementation deps.junit
     androidTestImplementation deps.test.espresso
+    androidTestImplementation deps.test.junit
 }
