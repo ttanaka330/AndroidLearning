@@ -3,9 +3,9 @@ package com.github.ttanaka330.learning.todo.realm.widget
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.support.annotation.StringRes
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 
 class ConfirmMessageDialog : DialogFragment() {
 

@@ -1,7 +1,7 @@
 package com.android.learning.common.ext
 
 import android.app.Activity
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 
 inline fun <reified T> Activity.lazyWithArgs(key: String): Lazy<T> =
     lazy { intent.extras.get(key) as T }
