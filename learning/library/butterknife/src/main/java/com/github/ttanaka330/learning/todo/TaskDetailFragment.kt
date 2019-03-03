@@ -3,17 +3,22 @@ package com.github.ttanaka330.learning.todo
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import butterknife.BindView
+import butterknife.ButterKnife
+import butterknife.OnClick
+import butterknife.OnTextChanged
+import butterknife.Unbinder
 import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
 import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
-import kotlinx.android.synthetic.main.fragment_task_detail.view.*
 
 class TaskDetailFragment : BaseFragment() {
 
@@ -27,9 +32,17 @@ class TaskDetailFragment : BaseFragment() {
         }
     }
 
+    private lateinit var unbinder: Unbinder
     private lateinit var repository: TaskRepository
     private lateinit var task: Task
     private var taskId: Int? = null
+
+    @BindView(R.id.title)
+    lateinit var editTitle: EditText
+    @BindView(R.id.description)
+    lateinit var editDescription: EditText
+    @BindView(R.id.save)
+    lateinit var buttonSave: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +58,15 @@ class TaskDetailFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_task_detail, container, false)
+        unbinder = ButterKnife.bind(this, rootView)
         setupToolbar()
         setupData(rootView)
-        setupListener(rootView)
         return rootView
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        unbinder.unbind()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -73,6 +91,22 @@ class TaskDetailFragment : BaseFragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    @OnTextChanged(R.id.title, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    fun onTitleChanged(editable: Editable) {
+        buttonSave.isEnabled = editable.isNotBlank()
+    }
+
+    @OnClick(R.id.save)
+    fun onSaveClicked() {
+        repository.save(
+            task.copy(
+                title = editTitle.text.toString(),
+                description = editDescription.text.toString()
+            )
+        )
+        back()
+    }
+
     private fun setupToolbar() {
         setToolBar(R.string.title_detail, true)
         setHasOptionsMenu(true)
@@ -83,35 +117,14 @@ class TaskDetailFragment : BaseFragment() {
         repository = TaskRepositoryDataSource.getInstance(context)
         task = taskId?.let { repository.load(it) } ?: Task()
 
-        view.title.setText(task.title)
-        view.description.setText(task.description)
+        editTitle.setText(task.title)
+        editDescription.setText(task.description)
         if (task.completed) {
-            view.title.isEnabled = false
-            view.description.isEnabled = false
-            view.save.visibility = View.GONE
+            editTitle.isEnabled = false
+            editDescription.isEnabled = false
+            buttonSave.visibility = View.GONE
         } else {
-            view.save.isEnabled = task.title.isNotBlank()
-        }
-    }
-
-    private fun setupListener(view: View) {
-        view.title.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable) {
-                view.save.isEnabled = s.isNotBlank()
-            }
-        })
-        view.save.setOnClickListener {
-            repository.save(
-                task.copy(
-                    title = view.title.text.toString(),
-                    description = view.description.text.toString()
-                )
-            )
-            back()
+            buttonSave.isEnabled = task.title.isNotBlank()
         }
     }
 

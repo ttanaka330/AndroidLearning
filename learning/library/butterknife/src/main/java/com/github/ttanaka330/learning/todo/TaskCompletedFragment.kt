@@ -12,11 +12,13 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import butterknife.BindView
+import butterknife.ButterKnife
+import butterknife.Unbinder
 import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
 import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
 import com.github.ttanaka330.learning.todo.widget.ConfirmMessageDialog
-import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
 class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
@@ -26,16 +28,28 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
         fun newInstance() = TaskCompletedFragment()
     }
 
+    private lateinit var unbinder: Unbinder
     private lateinit var repository: TaskRepository
+
+    @BindView(R.id.list)
+    lateinit var recyclerView: RecyclerView
+    @BindView(R.id.empty)
+    lateinit var emptyView: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_task_completed, container, false)
+        unbinder = ButterKnife.bind(this, rootView)
         setupToolbar()
         setupData(rootView)
         return rootView
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        unbinder.unbind()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -62,7 +76,7 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
         repository = TaskRepositoryDataSource.getInstance(context)
         val data = repository.loadList(true)
 
-        view.list.apply {
+        recyclerView.apply {
             val orientation = RecyclerView.VERTICAL
             adapter = TaskListAdapter(this@TaskCompletedFragment).apply { replaceData(data) }
             layoutManager = LinearLayoutManager(context, orientation, false)
@@ -73,8 +87,8 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     private fun updateShowEmpty(view: View) {
         view.apply {
-            val count = list?.adapter?.itemCount ?: 0
-            empty.visibility = if (count > 0) View.GONE else View.VISIBLE
+            val count = recyclerView.adapter?.itemCount ?: 0
+            emptyView.visibility = if (count > 0) View.GONE else View.VISIBLE
         }
     }
 
@@ -110,7 +124,7 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     override fun onCompletedChanged(task: Task) {
         repository.save(task)
-        view?.list?.adapter?.let {
+        recyclerView.adapter?.let {
             if (it is TaskListAdapter) {
                 it.removeData(task)
                 updateShowEmpty(view!!)

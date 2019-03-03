@@ -10,10 +10,13 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import butterknife.BindView
+import butterknife.ButterKnife
+import butterknife.OnClick
+import butterknife.Unbinder
 import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
 import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
-import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
 class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
@@ -21,7 +24,13 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
         fun newInstance() = TaskListFragment()
     }
 
+    private lateinit var unbinder: Unbinder
     private lateinit var repository: TaskRepository
+
+    @BindView(R.id.list)
+    lateinit var recyclerView: RecyclerView
+    @BindView(R.id.empty)
+    lateinit var emptyView: View
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,10 +38,15 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
+        unbinder = ButterKnife.bind(this, rootView)
         setupToolbar()
         setupData(rootView)
-        setupListener(rootView)
         return rootView
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        unbinder.unbind()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -47,6 +61,11 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
         return super.onOptionsItemSelected(item)
     }
 
+    @OnClick(R.id.fab)
+    fun onFabClicked() {
+        navigationDetail()
+    }
+
     private fun setupToolbar() {
         setToolBar(R.string.title_list)
         setHasOptionsMenu(true)
@@ -57,7 +76,7 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
         repository = TaskRepositoryDataSource.getInstance(context)
         val data = repository.loadList(false)
 
-        view.list.apply {
+        recyclerView.apply {
             val orientation = RecyclerView.VERTICAL
             adapter = TaskListAdapter(this@TaskListFragment).apply { replaceData(data) }
             layoutManager = LinearLayoutManager(context, orientation, false)
@@ -66,16 +85,10 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
         updateShowEmpty(view)
     }
 
-    private fun setupListener(view: View) {
-        view.fab.setOnClickListener {
-            navigationDetail()
-        }
-    }
-
     private fun updateShowEmpty(view: View) {
         view.apply {
-            val count = list?.adapter?.itemCount ?: 0
-            empty.visibility = if (count > 0) View.GONE else View.VISIBLE
+            val count = recyclerView.adapter?.itemCount ?: 0
+            emptyView.visibility = if (count > 0) View.GONE else View.VISIBLE
         }
     }
 
@@ -103,7 +116,7 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     override fun onCompletedChanged(task: Task) {
         repository.save(task)
-        view?.list?.adapter?.let {
+        recyclerView.adapter?.let {
             if (it is TaskListAdapter) {
                 it.removeData(task)
                 updateShowEmpty(view!!)

@@ -9,8 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.github.ttanaka330.learning.todo.data.Task
-import kotlinx.android.synthetic.main.view_task.view.*
 
 class TaskListAdapter(
     private val actionListener: ActionListener
@@ -73,9 +74,17 @@ class TaskListAdapter(
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val layout: ViewGroup = view.layout
-        val title: TextView = view.title
-        val description: TextView = view.description
-        val completed: ImageView = view.completed
+        init {
+            ButterKnife.bind(this, view)
+        }
+
+        @BindView(R.id.layout)
+        lateinit var layout: ViewGroup
+        @BindView(R.id.title)
+        lateinit var title: TextView
+        @BindView(R.id.description)
+        lateinit var description: TextView
+        @BindView(R.id.completed)
+        lateinit var completed: ImageView
     }
 }

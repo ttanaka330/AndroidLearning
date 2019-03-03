@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply from: '../../../tools/ktlint.gradle'
 
 android {
@@ -15,6 +16,12 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    // ButterKnifeのコンパイルにはJava8が必要
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -33,6 +40,9 @@ dependencies {
     implementation deps.support.appcompat
     implementation deps.support.constraint
     implementation deps.support.design
+
+    implementation deps.butterknife.core
+    kapt deps.butterknife.compiler
 
     debugImplementation deps.stetho.core
 
