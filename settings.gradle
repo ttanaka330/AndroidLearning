@@ -1,10 +1,11 @@
 include ':common'
-include ':app', ':butterknife'
+include ':app'
 
 include ':template_todo'
 def templateDir = new File('template')
 project(':template_todo').projectDir = new File(templateDir, 'todo')
 
-include ':realm'
+include ':butterknife', ':realm'
 def libraryDir = new File('learning/library')
+project(':butterknife').projectDir = new File(libraryDir, 'butterknife')
 project(':realm').projectDir = new File(libraryDir, 'realm')
