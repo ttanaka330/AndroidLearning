@@ -22,7 +22,7 @@ before_install:
 install:
   - bundle install
 script:
-  - ./gradlew clean testDebug ktlintCheck --stacktrace
+  - ./gradlew clean testDebug ktlintCheck
   - bundle exec danger
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock

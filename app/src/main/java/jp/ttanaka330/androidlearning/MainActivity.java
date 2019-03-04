@@ -2,11 +2,6 @@ package jp.ttanaka330.androidlearning;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -15,6 +10,11 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import jp.ttanaka330.androidlearning.common.view.RecyclerSimpleAdapter;
 import jp.ttanaka330.androidlearning.presentation.retrofit.RetrofitActivity;
 

@@ -1,11 +1,14 @@
 apply plugin: 'org.jlleitschuh.gradle.ktlint'
 
+// 外部スクリプトファイルでは import 出来ないため `root/build.gradle` に定義
+// import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+
 ktlint {
     version = versions.ktlint
     debug = true
     verbose = true
     android = true
     outputToConsole = true
-    reporters = ["PLAIN", "CHECKSTYLE"]
+    reporters = [ReporterType.PLAIN, ReporterType.CHECKSTYLE]
     ignoreFailures = true
 }

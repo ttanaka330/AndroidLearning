@@ -6,9 +6,13 @@ warn("PRのサイズが大きいです。分割することをお勧めします
 
 # ktlint
 checkstyle_format.base_path = Dir.pwd
-checkstyle_format.report "app/build/reports/ktlint/ktlint-debug.xml"
+Dir.glob("**/ktlint-*.xml").each { |report|
+  checkstyle_format.report report.to_s
+}
 
 # AndroidLint
-android_lint.report_file = "app/build/reports/lint-results.xml"
-android_lint.severity = "Error"
-android_lint.lint
+Dir.glob("**/lint-results.xml").each { |report|
+  android_lint.report_file = report.to_s
+  android_lint.severity = "Error"
+  android_lint.lint(inline_mode: true)
+}

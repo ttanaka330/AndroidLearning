@@ -1,7 +1,6 @@
 package com.github.ttanaka330.learning.todo
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.Menu
@@ -19,6 +18,7 @@ import butterknife.Unbinder
 import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
 import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
+import com.google.android.material.snackbar.Snackbar
 
 class TaskDetailFragment : BaseFragment() {
 

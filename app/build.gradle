@@ -15,7 +15,7 @@ android {
         targetSdkVersion versions.targetSdk
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
@@ -80,11 +80,9 @@ dependencies {
     implementation project(':common')
 
     // Support Library ===============================================
-    implementation deps.support.annotations
     implementation deps.support.appcompat
     implementation deps.support.design
     implementation deps.support.recyclerview
-    implementation deps.support.v4
 
     // Play Services =================================================
     implementation deps.google.licenses
@@ -114,4 +112,5 @@ dependencies {
     // Test ==========================================================
     testImplementation deps.junit
     androidTestImplementation deps.test.espresso
+    androidTestImplementation deps.test.junit
 }

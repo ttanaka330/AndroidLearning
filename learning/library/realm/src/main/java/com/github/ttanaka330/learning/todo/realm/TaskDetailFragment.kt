@@ -1,7 +1,6 @@
 package com.github.ttanaka330.learning.todo.realm
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ import android.view.ViewGroup
 import com.github.ttanaka330.learning.todo.realm.data.Task
 import com.github.ttanaka330.learning.todo.realm.data.TaskRepository
 import com.github.ttanaka330.learning.todo.realm.data.TaskRepositoryDataSource
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_task_detail.view.*
 
 class TaskDetailFragment : BaseFragment() {
