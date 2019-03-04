@@ -4,7 +4,7 @@ import android.os.StrictMode
 import com.facebook.stetho.Stetho
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider
 
-class DebugApp : App() {
+class DebugApp: App() {
 
     override fun onCreate() {
         setupStrict()

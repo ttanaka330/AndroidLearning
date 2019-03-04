@@ -5,7 +5,7 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 
-object FileUtils {
+object FileUtils{
 
     /**
      * アセット内の CSV ファイルを読み込みます。

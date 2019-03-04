@@ -20,8 +20,7 @@ import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
 class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
-    companion object {
-        private const val REQUEST_DELETE_MESSAGE = 1
+    companion object { private const val REQUEST_DELETE_MESSAGE = 1
 
         fun newInstance() = TaskCompletedFragment()
     }
