@@ -1,10 +1,10 @@
-package com.github.ttanaka330.learning.todo.realm
+package com.github.ttanaka330.learning.todo
 
+import android.app.Application
 import android.os.StrictMode
 import com.facebook.stetho.Stetho
-import com.uphyca.stetho_realm.RealmInspectorModulesProvider
 
-class DebugApp : App() {
+class DebugApp : Application() {
 
     override fun onCreate() {
         setupStrict()
@@ -13,12 +13,7 @@ class DebugApp : App() {
     }
 
     private fun setupStetho() {
-        Stetho.initialize(
-            Stetho.newInitializerBuilder(this)
-                .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
-                .build()
-        )
+        Stetho.initializeWithDefaults(this)
     }
 
     private fun setupStrict() {

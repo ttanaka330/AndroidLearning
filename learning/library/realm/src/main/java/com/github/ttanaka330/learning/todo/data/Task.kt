@@ -1,4 +1,4 @@
-package com.github.ttanaka330.learning.todo.realm.data
+package com.github.ttanaka330.learning.todo.data
 
 data class Task(
     val id: Int? = null,

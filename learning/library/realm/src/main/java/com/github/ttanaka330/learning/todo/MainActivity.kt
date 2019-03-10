@@ -1,4 +1,4 @@
-package com.github.ttanaka330.learning.todo.realm
+package com.github.ttanaka330.learning.todo
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
