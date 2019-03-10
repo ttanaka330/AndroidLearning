@@ -6,7 +6,7 @@ warn("PRのサイズが大きいです。分割することをお勧めします
 
 # ktlint
 checkstyle_format.base_path = Dir.pwd
-Dir.glob("**/ktlint-*.xml").each { |report|
+Dir.glob("**/ktlint*SourceSetCheck.xml").each { |report|
   checkstyle_format.report report.to_s
 }
 
