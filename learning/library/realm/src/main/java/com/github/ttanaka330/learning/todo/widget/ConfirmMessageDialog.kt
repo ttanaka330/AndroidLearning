@@ -1,4 +1,4 @@
-package com.github.ttanaka330.learning.todo.realm.widget
+package com.github.ttanaka330.learning.todo.widget
 
 import android.app.Dialog
 import android.content.DialogInterface

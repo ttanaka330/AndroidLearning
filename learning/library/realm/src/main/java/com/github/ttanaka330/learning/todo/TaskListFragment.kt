@@ -1,4 +1,4 @@
-package com.github.ttanaka330.learning.todo.realm
+package com.github.ttanaka330.learning.todo
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,9 +10,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.ttanaka330.learning.todo.realm.data.Task
-import com.github.ttanaka330.learning.todo.realm.data.TaskRepository
-import com.github.ttanaka330.learning.todo.realm.data.TaskRepositoryDataSource
+import com.github.ttanaka330.learning.todo.data.Task
+import com.github.ttanaka330.learning.todo.data.TaskRepository
+import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
 class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {

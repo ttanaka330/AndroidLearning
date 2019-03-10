@@ -1,4 +1,4 @@
-package com.github.ttanaka330.learning.todo.realm
+package com.github.ttanaka330.learning.todo
 
 import android.content.res.ColorStateList
 import android.os.Build
@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.github.ttanaka330.learning.todo.realm.data.Task
+import com.github.ttanaka330.learning.todo.data.Task
 import kotlinx.android.synthetic.main.view_task.view.*
 
 class TaskListAdapter(

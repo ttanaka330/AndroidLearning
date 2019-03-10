@@ -1,4 +1,4 @@
-package com.github.ttanaka330.learning.todo.butterknife
+package com.github.ttanaka330.learning.todo
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

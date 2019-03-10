@@ -1,4 +1,4 @@
-package com.github.ttanaka330.learning.todo.realm
+package com.github.ttanaka330.learning.todo
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
@@ -18,6 +18,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext: Context = ApplicationProvider.getApplicationContext()
-        assertEquals("com.github.ttanaka330.learning.todo.realm", appContext.packageName)
+        assertEquals("com.github.ttanaka330.learning.todo.butterknife", appContext.packageName)
     }
 }
