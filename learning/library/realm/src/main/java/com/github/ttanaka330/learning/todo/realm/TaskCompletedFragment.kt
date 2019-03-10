@@ -29,7 +29,8 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
     private lateinit var repository: TaskRepository
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_task_completed, container, false)
