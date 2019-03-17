@@ -1,9 +1,7 @@
 package com.github.ttanaka330.learning.todo.data
 
-import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
+import androidx.room.Room
 
 class TaskRepositoryDataSource private constructor(context: Context) : TaskRepository {
 
@@ -17,71 +15,46 @@ class TaskRepositoryDataSource private constructor(context: Context) : TaskRepos
             }
     }
 
-    private val database: SQLiteDatabase = TodoDatabase(context).writableDatabase
+    private val database =
+        Room.databaseBuilder(context, TodoDatabase::class.java, TodoDatabase.DATABASE_NAME)
+            .allowMainThreadQueries()
+            .build()
 
     override fun load(id: Int): Task? {
-        val query = "SELECT * FROM ${TodoDatabase.TABLE_NAME}" +
-                " WHERE ${TodoDatabase.COLUMN_ID} = ?"
-        val queryArgs = arrayOf(id.toString())
-        var task: Task? = null
-        database.rawQuery(query, queryArgs).use {
-            if (it.moveToNext()) {
-                task = createTask(it)
-            }
-        }
-        return task
+        return database.taskDao().load(id)?.toModel()
     }
 
     override fun loadList(isCompleted: Boolean): List<Task> {
-        val query = "SELECT * FROM ${TodoDatabase.TABLE_NAME}" +
-                " WHERE ${TodoDatabase.COLUMN_COMPLETED} = ?" +
-                " ORDER BY ${TodoDatabase.COLUMN_ID} DESC"
-        val queryArgs = arrayOf(toValue(isCompleted))
-        val tasks: MutableList<Task> = mutableListOf()
-        database.rawQuery(query, queryArgs).use {
-            while (it.moveToNext()) {
-                tasks.add(createTask(it))
-            }
-        }
-        return tasks
+        return database.taskDao().loadList(isCompleted).map { it.toModel() }
     }
 
     override fun save(task: Task) {
-        val values = ContentValues().apply {
-            put(TodoDatabase.COLUMN_TITLE, task.title)
-            put(TodoDatabase.COLUMN_DESCRIPTION, task.description)
-            put(TodoDatabase.COLUMN_COMPLETED, task.completed)
-        }
-        if (task.id == Task.NEW_TASK_ID) {
-            database.insert(TodoDatabase.TABLE_NAME, null, values)
-        } else {
-            val where = "${TodoDatabase.COLUMN_ID} = ?"
-            val whereArgs = arrayOf(task.id.toString())
-            database.update(TodoDatabase.TABLE_NAME, values, where, whereArgs)
-        }
+        database.taskDao().save(task.toEntity())
     }
 
     override fun delete(id: Int) {
-        val where = "${TodoDatabase.COLUMN_ID} = ?"
-        val whereArgs = arrayOf(id.toString())
-        database.delete(TodoDatabase.TABLE_NAME, where, whereArgs)
+        database.taskDao().load(id)?.let {
+            database.taskDao().delete(it)
+        }
     }
 
     override fun deleteCompleted() {
-        val where = "${TodoDatabase.COLUMN_COMPLETED} = ?"
-        val whereArgs = arrayOf(toValue(true))
-        database.delete(TodoDatabase.TABLE_NAME, where, whereArgs)
+        database.taskDao().deleteCompleted()
     }
 
-    private fun toValue(flag: Boolean): String {
-        return if (flag) "1" else "0"
-    }
+    private fun Task.toEntity(): TaskEntity =
+        TaskEntity(
+            id = if (this.id == Task.NEW_TASK_ID) null else this.id,
+            title = this.title,
+            description = this.description,
+            completed = this.completed
+        )
 
-    private fun createTask(cursor: Cursor): Task =
+    private fun TaskEntity.toModel(): Task =
         Task(
-            id = cursor.getInt(cursor.getColumnIndex(TodoDatabase.COLUMN_ID)),
-            title = cursor.getString(cursor.getColumnIndex(TodoDatabase.COLUMN_TITLE)),
-            description = cursor.getString(cursor.getColumnIndex(TodoDatabase.COLUMN_DESCRIPTION)),
-            completed = cursor.getInt(cursor.getColumnIndex(TodoDatabase.COLUMN_COMPLETED)) > 0
+            id = this.id ?: Task.NEW_TASK_ID,
+            title = this.title,
+            description = this.description,
+            completed = this.completed
         )
 }
