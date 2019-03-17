@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
 import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
@@ -17,27 +18,13 @@ import kotlinx.android.synthetic.main.fragment_task_detail.view.*
 
 class TaskDetailFragment : BaseFragment() {
 
-    companion object {
-        private const val ARG_TASK_ID = "TASK_ID"
-
-        fun newInstance(taskId: Int? = null) = TaskDetailFragment().apply {
-            arguments = Bundle().apply {
-                taskId?.let { putInt(ARG_TASK_ID, it) }
-            }
-        }
-    }
-
     private lateinit var repository: TaskRepository
     private lateinit var task: Task
-    private var taskId: Int? = null
+    private var taskId: Int = Task.NEW_TASK_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            if (it.containsKey(ARG_TASK_ID)) {
-                taskId = it.getInt(ARG_TASK_ID)
-            }
-        }
+        taskId = TaskDetailFragmentArgs.fromBundle(arguments!!).taskId
     }
 
     override fun onCreateView(
@@ -46,7 +33,7 @@ class TaskDetailFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_task_detail, container, false)
-        setupToolbar()
+        setHasOptionsMenu(true)
         setupData(rootView)
         setupListener(rootView)
         return rootView
@@ -57,32 +44,28 @@ class TaskDetailFragment : BaseFragment() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        if (taskId == null) {
+        if (taskId == Task.NEW_TASK_ID) {
             menu.findItem(R.id.action_delete).isVisible = false
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_delete) {
-            taskId?.let {
-                repository.delete(it)
-                showSnackbar(getString(R.string.message_delete, task.title))
-            }
+            repository.delete(taskId)
+            showSnackbar(getString(R.string.message_delete, task.title))
             back()
             return true
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setupToolbar() {
-        setToolBar(R.string.title_detail, true)
-        setHasOptionsMenu(true)
-    }
-
     private fun setupData(view: View) {
         val context = view.context
         repository = TaskRepositoryDataSource.getInstance(context)
-        task = taskId?.let { repository.load(it) } ?: Task()
+        task = when (taskId) {
+            Task.NEW_TASK_ID -> Task()
+            else -> repository.load(taskId) ?: Task()
+        }
 
         view.title.setText(task.title)
         view.description.setText(task.description)
@@ -117,7 +100,7 @@ class TaskDetailFragment : BaseFragment() {
     }
 
     private fun back() {
-        fragmentManager?.popBackStack()
+        findNavController(this).popBackStack()
     }
 
     private fun showSnackbar(message: String) {

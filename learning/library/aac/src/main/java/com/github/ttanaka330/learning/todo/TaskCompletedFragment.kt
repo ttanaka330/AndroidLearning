@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,8 +23,6 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     companion object {
         private const val REQUEST_DELETE_MESSAGE = 1
-
-        fun newInstance() = TaskCompletedFragment()
     }
 
     private lateinit var repository: TaskRepository
@@ -34,7 +33,7 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_task_completed, container, false)
-        setupToolbar()
+        setHasOptionsMenu(true)
         setupData(rootView)
         return rootView
     }
@@ -51,11 +50,6 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
             return true
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun setupToolbar() {
-        setToolBar(R.string.title_completed, true)
-        setHasOptionsMenu(true)
     }
 
     private fun setupData(view: View) {
@@ -84,11 +78,9 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
         view?.let { setupData(it) }
     }
 
-    private fun navigationDetail(taskId: Int? = null) {
-        fragmentManager?.beginTransaction()
-            ?.replace(R.id.container, TaskDetailFragment.newInstance(taskId))
-            ?.addToBackStack(null)
-            ?.commit()
+    private fun navigationDetail(taskId: Int) {
+        val direction = TaskCompletedFragmentDirections.actionTaskCompletedToTaskDetail(taskId)
+        findNavController(this).navigate(direction)
     }
 
     // ---------------------------------------------------------------------------------------------

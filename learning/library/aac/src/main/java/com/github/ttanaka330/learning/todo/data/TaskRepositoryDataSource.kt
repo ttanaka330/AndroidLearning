@@ -52,7 +52,7 @@ class TaskRepositoryDataSource private constructor(context: Context) : TaskRepos
             put(TodoDatabase.COLUMN_DESCRIPTION, task.description)
             put(TodoDatabase.COLUMN_COMPLETED, task.completed)
         }
-        if (task.id == null) {
+        if (task.id == Task.NEW_TASK_ID) {
             database.insert(TodoDatabase.TABLE_NAME, null, values)
         } else {
             val where = "${TodoDatabase.COLUMN_ID} = ?"

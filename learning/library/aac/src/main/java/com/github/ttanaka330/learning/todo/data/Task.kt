@@ -1,11 +1,15 @@
 package com.github.ttanaka330.learning.todo.data
 
 data class Task(
-    val id: Int? = null,
+    val id: Int = NEW_TASK_ID,
     val title: String = "",
     val description: String = "",
     val completed: Boolean = false
 ) {
+
+    companion object {
+        const val NEW_TASK_ID = -1
+    }
 
     override fun equals(other: Any?): Boolean {
         if (other === this) return true

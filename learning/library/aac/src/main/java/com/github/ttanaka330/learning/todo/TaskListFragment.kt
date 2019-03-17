@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,10 +18,6 @@ import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
 class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
-    companion object {
-        fun newInstance() = TaskListFragment()
-    }
-
     private lateinit var repository: TaskRepository
 
     override fun onCreateView(
@@ -29,7 +26,7 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
-        setupToolbar()
+        setHasOptionsMenu(true)
         setupData(rootView)
         setupListener(rootView)
         return rootView
@@ -45,11 +42,6 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
             return true
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun setupToolbar() {
-        setToolBar(R.string.title_list)
-        setHasOptionsMenu(true)
     }
 
     private fun setupData(view: View) {
@@ -79,18 +71,14 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
         }
     }
 
-    private fun navigationDetail(taskId: Int? = null) {
-        fragmentManager?.beginTransaction()
-            ?.replace(R.id.container, TaskDetailFragment.newInstance(taskId))
-            ?.addToBackStack(null)
-            ?.commit()
+    private fun navigationDetail(taskId: Int = Task.NEW_TASK_ID) {
+        val direction = TaskListFragmentDirections.actionTaskListToTaskDetail(taskId)
+        findNavController(this).navigate(direction)
     }
 
     private fun navigationCompleted() {
-        fragmentManager?.beginTransaction()
-            ?.replace(R.id.container, TaskCompletedFragment.newInstance())
-            ?.addToBackStack(null)
-            ?.commit()
+        val direction = TaskListFragmentDirections.actionTaskListToTaskCompleted()
+        findNavController(this).navigate(direction)
     }
 
     // ---------------------------------------------------------------------------------------------
