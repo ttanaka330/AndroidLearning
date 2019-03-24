@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Todo AAC</string>
+
+    <string name="title_list">Tasks</string>
+    <string name="title_completed">Completed</string>
+    <string name="title_detail">Details</string>
+
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="completed">Completed</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="delete_completed">Delete completed</string>
+
+    <string name="message_empty_task">No task.</string>
+    <string name="message_empty_completed">No completed.</string>
+    <string name="message_delete">%1$s deleted.</string>
+    <string name="message_confirm_delete_completed">Delete completed task?</string>
+</resources>

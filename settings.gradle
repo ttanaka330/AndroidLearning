@@ -5,7 +5,8 @@ include ':template_todo'
 def templateDir = new File('template')
 project(':template_todo').projectDir = new File(templateDir, 'todo')
 
-include ':butterknife', ':realm'
+include ':aac', ':butterknife', ':realm'
 def libraryDir = new File('learning/library')
+project(':aac').projectDir = new File(libraryDir, 'aac')
 project(':butterknife').projectDir = new File(libraryDir, 'butterknife')
 project(':realm').projectDir = new File(libraryDir, 'realm')
