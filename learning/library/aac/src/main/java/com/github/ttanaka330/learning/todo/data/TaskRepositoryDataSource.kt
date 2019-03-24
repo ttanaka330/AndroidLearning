@@ -1,6 +1,8 @@
 package com.github.ttanaka330.learning.todo.data
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.room.Room
 
 class TaskRepositoryDataSource private constructor(context: Context) : TaskRepository {
@@ -17,15 +19,17 @@ class TaskRepositoryDataSource private constructor(context: Context) : TaskRepos
 
     private val database =
         Room.databaseBuilder(context, TodoDatabase::class.java, TodoDatabase.DATABASE_NAME)
-            .allowMainThreadQueries()
+            //.allowMainThreadQueries() // メインスレッドで処理をする場合に使用する（基本使わない）
             .build()
 
-    override fun load(id: Int): Task? {
-        return database.taskDao().load(id)?.toModel()
+    override fun load(id: Int): LiveData<Task> {
+        return Transformations.map(database.taskDao().load(id)) { it?.toModel() }
     }
 
-    override fun loadList(isCompleted: Boolean): List<Task> {
-        return database.taskDao().loadList(isCompleted).map { it.toModel() }
+    override fun loadList(isCompleted: Boolean): LiveData<List<Task>> {
+        return Transformations.map(database.taskDao().loadList(isCompleted)) { list ->
+            list.map { it.toModel() }
+        }
     }
 
     override fun save(task: Task) {
@@ -33,9 +37,7 @@ class TaskRepositoryDataSource private constructor(context: Context) : TaskRepos
     }
 
     override fun delete(id: Int) {
-        database.taskDao().load(id)?.let {
-            database.taskDao().delete(it)
-        }
+        database.taskDao().delete(id)
     }
 
     override fun deleteCompleted() {

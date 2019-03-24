@@ -9,22 +9,19 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment.findNavController
-import com.github.ttanaka330.learning.todo.data.Task
-import com.github.ttanaka330.learning.todo.data.TaskRepository
-import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
+import com.github.ttanaka330.learning.todo.viewmodel.TaskDetailViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_task_detail.view.*
 
 class TaskDetailFragment : BaseFragment() {
 
-    private lateinit var repository: TaskRepository
-    private lateinit var task: Task
-    private var taskId: Int = Task.NEW_TASK_ID
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        taskId = TaskDetailFragmentArgs.fromBundle(arguments!!).taskId
+    private val viewModel: TaskDetailViewModel by lazy {
+        val taskId = TaskDetailFragmentArgs.fromBundle(arguments!!).taskId
+        val factory = TaskDetailViewModel.Factory(requireContext(), taskId)
+        ViewModelProviders.of(this, factory).get(TaskDetailViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -44,38 +41,34 @@ class TaskDetailFragment : BaseFragment() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        if (taskId == Task.NEW_TASK_ID) {
+        if (viewModel.isNewTask()) {
             menu.findItem(R.id.action_delete).isVisible = false
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_delete) {
-            repository.delete(taskId)
-            showSnackbar(getString(R.string.message_delete, task.title))
-            back()
+            viewModel.deleteTask().observe(viewLifecycleOwner, Observer {
+                showSnackbar(getString(R.string.message_delete, view!!.title.text))
+                back()
+            })
             return true
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun setupData(view: View) {
-        val context = view.context
-        repository = TaskRepositoryDataSource.getInstance(context)
-        task = when (taskId) {
-            Task.NEW_TASK_ID -> Task()
-            else -> repository.load(taskId) ?: Task()
-        }
-
-        view.title.setText(task.title)
-        view.description.setText(task.description)
-        if (task.completed) {
-            view.title.isEnabled = false
-            view.description.isEnabled = false
-            view.save.visibility = View.GONE
-        } else {
-            view.save.isEnabled = task.title.isNotBlank()
-        }
+        viewModel.loadTask().observe(viewLifecycleOwner, Observer { task ->
+            view.title.setText(task.title)
+            view.description.setText(task.description)
+            if (task.completed) {
+                view.title.isEnabled = false
+                view.description.isEnabled = false
+                view.save.visibility = View.GONE
+            } else {
+                view.save.isEnabled = task.title.isNotBlank()
+            }
+        })
     }
 
     private fun setupListener(view: View) {
@@ -89,13 +82,10 @@ class TaskDetailFragment : BaseFragment() {
             }
         })
         view.save.setOnClickListener {
-            repository.save(
-                task.copy(
-                    title = view.title.text.toString(),
-                    description = view.description.text.toString()
-                )
-            )
-            back()
+            viewModel.saveTask(
+                view.title.text.toString(),
+                view.description.text.toString()
+            ).observe(viewLifecycleOwner, Observer { back() })
         }
     }
 

@@ -7,18 +7,23 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ttanaka330.learning.todo.data.Task
-import com.github.ttanaka330.learning.todo.data.TaskRepository
-import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
+import com.github.ttanaka330.learning.todo.viewmodel.TaskListViewModel
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
 class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
-    private lateinit var repository: TaskRepository
+    private val listAdapter = TaskListAdapter(this)
+    private val viewModel: TaskListViewModel by lazy {
+        ViewModelProviders.of(this, TaskListViewModel.Factory(requireContext()))
+            .get(TaskListViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,28 +51,21 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     private fun setupData(view: View) {
         val context = view.context
-        repository = TaskRepositoryDataSource.getInstance(context)
-        val data = repository.loadList(false)
-
         view.list.apply {
             val orientation = RecyclerView.VERTICAL
-            adapter = TaskListAdapter(this@TaskListFragment).apply { replaceData(data) }
+            adapter = listAdapter
             layoutManager = LinearLayoutManager(context, orientation, false)
             addItemDecoration(DividerItemDecoration(context, orientation))
         }
-        updateShowEmpty(view)
+        viewModel.loadList().observe(viewLifecycleOwner, Observer {
+            listAdapter.replaceData(it)
+            view.empty.visibility = if (listAdapter.itemCount > 0) View.GONE else View.VISIBLE
+        })
     }
 
     private fun setupListener(view: View) {
         view.fab.setOnClickListener {
             navigationDetail()
-        }
-    }
-
-    private fun updateShowEmpty(view: View) {
-        view.apply {
-            val count = list?.adapter?.itemCount ?: 0
-            empty.visibility = if (count > 0) View.GONE else View.VISIBLE
         }
     }
 
@@ -90,12 +88,8 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
     }
 
     override fun onCompletedChanged(task: Task) {
-        repository.save(task)
-        view?.list?.adapter?.let {
-            if (it is TaskListAdapter) {
-                it.removeData(task)
-                updateShowEmpty(view!!)
-            }
-        }
+        viewModel.updateCompleted(task).observe(viewLifecycleOwner, Observer {
+            listAdapter.removeData(task)
+        })
     }
 }
