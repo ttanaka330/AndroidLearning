@@ -25,39 +25,41 @@ class TaskDetailViewModel(
     }
 
     private val io = Executors.newSingleThreadExecutor()
-    private var task: Task? = null
+    val title: MutableLiveData<String> = MutableLiveData()
+    val description: MutableLiveData<String> = MutableLiveData()
+    val completed: MutableLiveData<Boolean> = MutableLiveData()
 
     fun isNewTask(): Boolean = (taskId == Task.NEW_TASK_ID)
 
-    fun loadTask(): LiveData<Task> {
-        if (task != null) {
-            return MutableLiveData()
-        } else {
-            return when (taskId) {
-                Task.NEW_TASK_ID -> {
-                    val liveData: MutableLiveData<Task> = MutableLiveData()
-                    io.execute {
-                        task = Task()
-                        liveData.postValue(task)
-                    }
-                    liveData
-                }
-                else -> {
-                    val liveData = repository.load(taskId)
-                    liveData.observeForever { task = it }
-                    return liveData
-                }
+    fun loadTask() {
+        val liveData: LiveData<Task>
+        when (taskId) {
+            Task.NEW_TASK_ID -> {
+                liveData = MutableLiveData()
+                io.execute { liveData.postValue(Task()) }
+            }
+            else -> {
+                liveData = repository.load(taskId)
+            }
+        }
+        liveData.observeForever {
+            it?.let { task ->
+                title.postValue(task.title)
+                description.postValue(task.description)
+                completed.postValue(task.completed)
             }
         }
     }
 
-    fun saveTask(title: String, description: String): LiveData<Unit> {
+    fun saveTask(): LiveData<Unit> {
         val liveData: MutableLiveData<Unit> = MutableLiveData()
         io.execute {
             repository.save(
-                task!!.copy(
-                    title = title,
-                    description = description
+                Task(
+                    id = taskId,
+                    title = title.value!!,
+                    description = description.value!!,
+                    completed = completed.value!!
                 )
             )
             liveData.postValue(Unit)

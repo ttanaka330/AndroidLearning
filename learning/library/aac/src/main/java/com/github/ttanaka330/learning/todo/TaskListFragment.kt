@@ -14,11 +14,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ttanaka330.learning.todo.data.Task
+import com.github.ttanaka330.learning.todo.databinding.FragmentTaskListBinding
 import com.github.ttanaka330.learning.todo.viewmodel.TaskListViewModel
-import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
 class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
+    private lateinit var binding: FragmentTaskListBinding
     private val listAdapter = TaskListAdapter(this)
     private val viewModel: TaskListViewModel by lazy {
         ViewModelProviders.of(this, TaskListViewModel.Factory(requireContext()))
@@ -30,11 +31,11 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
+        binding = FragmentTaskListBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
-        setupData(rootView)
-        setupListener(rootView)
-        return rootView
+        setupData()
+        setupListener()
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -49,9 +50,8 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setupData(view: View) {
-        val context = view.context
-        view.list.apply {
+    private fun setupData() {
+        binding.list.apply {
             val orientation = RecyclerView.VERTICAL
             adapter = listAdapter
             layoutManager = LinearLayoutManager(context, orientation, false)
@@ -59,12 +59,12 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
         }
         viewModel.loadList().observe(viewLifecycleOwner, Observer {
             listAdapter.replaceData(it)
-            view.empty.visibility = if (listAdapter.itemCount > 0) View.GONE else View.VISIBLE
+            binding.empty.visibility = if (listAdapter.itemCount > 0) View.GONE else View.VISIBLE
         })
     }
 
-    private fun setupListener(view: View) {
-        view.fab.setOnClickListener {
+    private fun setupListener() {
+        binding.fab.setOnClickListener {
             navigationDetail()
         }
     }

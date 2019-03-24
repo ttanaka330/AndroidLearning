@@ -1,61 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/completed"
-        style="@style/CheckImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/view_margin"
-        android:layout_marginLeft="@dimen/view_margin"
-        android:layout_marginEnd="@dimen/view_margin"
-        android:layout_marginRight="@dimen/view_margin"
-        android:contentDescription="@string/completed"
-        android:padding="@dimen/icon_padding"
-        android:src="@drawable/ic_check"
-        app:layout_constraintBottom_toBottomOf="@+id/description"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/title"
-        tools:tint="@color/checkActive" />
+    <data>
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/view_margin"
-        android:layout_marginLeft="@dimen/view_margin"
-        android:layout_marginTop="@dimen/view_margin"
-        android:layout_marginEnd="@dimen/view_margin"
-        android:layout_marginRight="@dimen/view_margin"
-        android:maxLines="1"
-        android:textSize="@dimen/size_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/completed"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Title" />
+        <variable
+            name="task"
+            type="com.github.ttanaka330.learning.todo.data.Task" />
+    </data>
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/view_margin"
-        android:layout_marginLeft="@dimen/view_margin"
-        android:layout_marginEnd="@dimen/view_margin"
-        android:layout_marginRight="@dimen/view_margin"
-        android:layout_marginBottom="@dimen/view_margin"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textSize="@dimen/size_title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/completed"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        tools:text="Description" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/completed"
+            style="@style/CheckImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/view_margin"
+            android:layout_marginLeft="@dimen/view_margin"
+            android:layout_marginEnd="@dimen/view_margin"
+            android:layout_marginRight="@dimen/view_margin"
+            android:contentDescription="@string/completed"
+            android:padding="@dimen/icon_padding"
+            android:src="@drawable/ic_check"
+            app:layout_constraintBottom_toBottomOf="@+id/description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/title"
+            app:tintBind="@{task.completed ? @color/checkCompleted : @color/checkActive}"
+            tools:tint="@color/checkActive" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/view_margin"
+            android:layout_marginLeft="@dimen/view_margin"
+            android:layout_marginTop="@dimen/view_margin"
+            android:layout_marginEnd="@dimen/view_margin"
+            android:layout_marginRight="@dimen/view_margin"
+            android:maxLines="1"
+            android:text="@{task.title}"
+            android:textSize="@dimen/size_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/completed"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Title" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/view_margin"
+            android:layout_marginLeft="@dimen/view_margin"
+            android:layout_marginEnd="@dimen/view_margin"
+            android:layout_marginRight="@dimen/view_margin"
+            android:layout_marginBottom="@dimen/view_margin"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{task.description}"
+            android:textSize="@dimen/size_title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/completed"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            tools:text="Description" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
