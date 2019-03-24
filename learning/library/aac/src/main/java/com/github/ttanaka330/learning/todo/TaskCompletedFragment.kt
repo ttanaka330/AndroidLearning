@@ -26,9 +26,9 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
         private const val REQUEST_DELETE_MESSAGE = 1
     }
 
-    private lateinit var binding:FragmentTaskCompletedBinding
+    private lateinit var binding: FragmentTaskCompletedBinding
     private val listAdapter = TaskListAdapter(this)
-    private val viewModel :TaskCompletedViewModel by lazy {
+    private val viewModel: TaskCompletedViewModel by lazy {
         ViewModelProviders.of(this, TaskCompletedViewModel.Factory(requireContext()))
             .get(TaskCompletedViewModel::class.java)
     }

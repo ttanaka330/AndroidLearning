@@ -19,7 +19,7 @@ class TaskRepositoryDataSource private constructor(context: Context) : TaskRepos
 
     private val database =
         Room.databaseBuilder(context, TodoDatabase::class.java, TodoDatabase.DATABASE_NAME)
-            //.allowMainThreadQueries() // メインスレッドで処理をする場合に使用する（基本使わない）
+            // .allowMainThreadQueries() // メインスレッドで処理をする場合に使用する（基本使わない）
             .build()
 
     override fun load(id: Int): LiveData<Task> {
