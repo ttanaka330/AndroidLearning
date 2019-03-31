@@ -39,8 +39,8 @@ ext {
             ],
             navigation : [
                     safeArgsPlugin: "androidx.navigation:navigation-safe-args-gradle-plugin:2.0.0",
-                    fragment: "androidx.navigation:navigation-fragment:2.0.0",
-                    ui: "androidx.navigation:navigation-ui:2.0.0"
+                    fragment      : "androidx.navigation:navigation-fragment:2.0.0",
+                    ui            : "androidx.navigation:navigation-ui:2.0.0"
             ],
             google     : [
                     licenses: "com.google.android.gms:play-services-oss-licenses:$versions.playServices",
@@ -55,6 +55,9 @@ ext {
                     androidProcessor: "com.google.dagger:dagger-android-processor:$versions.dagger",
                     androidSupport  : "com.google.dagger:dagger-android-support:$versions.dagger",
                     compiler        : "com.google.dagger:dagger-compiler:$versions.dagger",
+            ],
+            koin       : [
+                    core: "org.koin:koin-android:1.0.2"
             ],
             okhttp3    : [
                     intercepter: "com.squareup.okhttp3:logging-interceptor:3.10.0"
