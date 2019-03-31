@@ -32,6 +32,8 @@ dependencies {
     implementation deps.support.constraint
     implementation deps.support.design
 
+    implementation deps.koin.core
+
     debugImplementation deps.stetho.core
 
     testImplementation deps.junit

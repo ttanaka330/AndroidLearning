@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Todo</string>
+    <string name="app_name">Todo Koin</string>
 
     <string name="title_list">タスク一覧</string>
     <string name="title_completed">完了済みのタスク</string>

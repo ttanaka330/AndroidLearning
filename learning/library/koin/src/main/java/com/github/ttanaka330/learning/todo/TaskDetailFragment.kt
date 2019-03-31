@@ -11,9 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
-import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_task_detail.view.*
+import org.koin.android.ext.android.inject
 
 class TaskDetailFragment : BaseFragment() {
 
@@ -27,7 +27,7 @@ class TaskDetailFragment : BaseFragment() {
         }
     }
 
-    private lateinit var repository: TaskRepository
+    private val repository: TaskRepository by inject()
     private lateinit var task: Task
     private var taskId: Int? = null
 
@@ -80,8 +80,6 @@ class TaskDetailFragment : BaseFragment() {
     }
 
     private fun setupData(view: View) {
-        val context = view.context
-        repository = TaskRepositoryDataSource.getInstance(context)
         task = taskId?.let { repository.load(it) } ?: Task()
 
         view.title.setText(task.title)

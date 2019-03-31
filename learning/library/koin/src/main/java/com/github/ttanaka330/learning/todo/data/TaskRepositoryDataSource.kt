@@ -5,17 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 
-class TaskRepositoryDataSource private constructor(context: Context) : TaskRepository {
-
-    companion object {
-        @Volatile
-        private var INSTANCE: TaskRepositoryDataSource? = null
-
-        fun getInstance(context: Context): TaskRepository =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: TaskRepositoryDataSource(context).also { INSTANCE = it }
-            }
-    }
+class TaskRepositoryDataSource(context: Context) : TaskRepository {
 
     private val database: SQLiteDatabase = TodoDatabase(context).writableDatabase
 
