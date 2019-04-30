@@ -77,7 +77,6 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation deps.kotlin
-    implementation project(':common')
 
     // Support Library ===============================================
     implementation deps.support.appcompat
@@ -88,10 +87,6 @@ dependencies {
     implementation deps.google.licenses
 
     // Network =======================================================
-    implementation deps.retrofit.core
-    implementation deps.retrofit.rxjava
-    implementation deps.retrofit.gson
-    implementation deps.retrofit.picasso
     implementation deps.okhttp3.intercepter
 
     // Structure =====================================================
@@ -100,9 +95,6 @@ dependencies {
     implementation deps.dagger.androidSupport
     kapt deps.dagger.compiler
     kapt deps.dagger.androidProcessor
-
-    implementation deps.rx.android
-    implementation deps.rx.java
 
     // Debug =========================================================
     implementation deps.timber
