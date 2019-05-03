@@ -2,9 +2,9 @@ package com.github.ttanaka330.learning.todo
 
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import dagger.android.support.DaggerFragment
 
-open class BaseFragment : Fragment() {
+open class BaseFragment : DaggerFragment() {
 
     fun setToolBar(@StringRes titleId: Int, isHomeUpEnabled: Boolean = false) {
         (activity as? AppCompatActivity)?.supportActionBar?.let {

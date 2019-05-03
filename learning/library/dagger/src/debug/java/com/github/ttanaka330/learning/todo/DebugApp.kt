@@ -1,10 +1,9 @@
 package com.github.ttanaka330.learning.todo
 
-import android.app.Application
 import android.os.StrictMode
 import com.facebook.stetho.Stetho
 
-class DebugApp : Application() {
+class DebugApp : App() {
 
     override fun onCreate() {
         setupStrict()

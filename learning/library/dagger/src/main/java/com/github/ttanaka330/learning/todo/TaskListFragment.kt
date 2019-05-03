@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
-import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
+import javax.inject.Inject
 
 class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
@@ -21,7 +21,8 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
         fun newInstance() = TaskListFragment()
     }
 
-    private lateinit var repository: TaskRepository
+    @Inject
+    lateinit var repository: TaskRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +55,6 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     private fun setupData(view: View) {
         val context = view.context
-        repository = TaskRepositoryDataSource.getInstance(context)
         val data = repository.loadList(false)
 
         view.list.apply {

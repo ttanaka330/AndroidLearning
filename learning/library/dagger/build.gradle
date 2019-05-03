@@ -34,6 +34,11 @@ dependencies {
     implementation deps.support.constraint
     implementation deps.support.design
 
+    implementation deps.dagger.android
+    implementation deps.dagger.androidSupport
+    kapt deps.dagger.compiler
+    kapt deps.dagger.androidProcessor
+
     debugImplementation deps.stetho.core
 
     testImplementation deps.junit
