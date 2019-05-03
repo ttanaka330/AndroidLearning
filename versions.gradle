@@ -15,7 +15,7 @@ ext {
             playServices  : '15.0.1',
 
             butterknife   : '10.1.0',
-            dagger        : '2.21',
+            dagger        : '2.22.1',
             ktlint        : '0.32.0',
             retrofit      : '2.5.0',
             stetho        : '1.5.0',
