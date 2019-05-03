@@ -16,6 +16,13 @@ import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
 import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
 import com.github.ttanaka330.learning.todo.widget.ConfirmMessageDialog
+import io.reactivex.Completable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
 class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
@@ -27,6 +34,7 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
     }
 
     private lateinit var repository: TaskRepository
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +45,11 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
         setupToolbar()
         setupData(rootView)
         return rootView
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        compositeDisposable.clear()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -61,15 +74,20 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
     private fun setupData(view: View) {
         val context = view.context
         repository = TaskRepositoryDataSource.getInstance(context)
-        val data = repository.loadList(true)
 
-        view.list.apply {
-            val orientation = RecyclerView.VERTICAL
-            adapter = TaskListAdapter(this@TaskCompletedFragment).apply { replaceData(data) }
-            layoutManager = LinearLayoutManager(context, orientation, false)
-            addItemDecoration(DividerItemDecoration(context, orientation))
-        }
-        updateShowEmpty(view)
+        Single.just(repository.loadList(true))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy {
+                view.list.apply {
+                    val orientation = RecyclerView.VERTICAL
+                    adapter = TaskListAdapter(this@TaskCompletedFragment).apply { replaceData(it) }
+                    layoutManager = LinearLayoutManager(context, orientation, false)
+                    addItemDecoration(DividerItemDecoration(context, orientation))
+                }
+                updateShowEmpty(view)
+            }
+            .addTo(compositeDisposable)
     }
 
     private fun updateShowEmpty(view: View) {
@@ -80,8 +98,11 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
     }
 
     private fun deleteCompleted() {
-        repository.deleteCompleted()
-        view?.let { setupData(it) }
+        Completable.fromAction { repository.deleteCompleted() }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { view?.let { setupData(it) } }
+            .addTo(compositeDisposable)
     }
 
     private fun navigationDetail(taskId: Int? = null) {
@@ -110,12 +131,17 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
     }
 
     override fun onCompletedChanged(task: Task) {
-        repository.save(task)
-        view?.list?.adapter?.let {
-            if (it is TaskListAdapter) {
-                it.removeData(task)
-                updateShowEmpty(view!!)
+        Completable.fromAction { repository.save(task) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy {
+                view?.list?.adapter?.let {
+                    if (it is TaskListAdapter) {
+                        it.removeData(task)
+                        updateShowEmpty(view!!)
+                    }
+                }
             }
-        }
+            .addTo(compositeDisposable)
     }
 }

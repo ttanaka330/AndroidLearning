@@ -13,6 +13,13 @@ import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
 import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.Completable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_task_detail.view.*
 
 class TaskDetailFragment : BaseFragment() {
@@ -30,6 +37,7 @@ class TaskDetailFragment : BaseFragment() {
     private lateinit var repository: TaskRepository
     private lateinit var task: Task
     private var taskId: Int? = null
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +60,11 @@ class TaskDetailFragment : BaseFragment() {
         return rootView
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        compositeDisposable.clear()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_detail, menu)
     }
@@ -64,11 +77,14 @@ class TaskDetailFragment : BaseFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_delete) {
-            taskId?.let {
-                repository.delete(it)
-                showSnackbar(getString(R.string.message_delete, task.title))
-            }
-            back()
+            Completable.fromAction { taskId?.let { repository.delete(it) } }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy {
+                    showSnackbar(getString(R.string.message_delete, task.title))
+                    back()
+                }
+                .addTo(compositeDisposable)
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -82,17 +98,23 @@ class TaskDetailFragment : BaseFragment() {
     private fun setupData(view: View) {
         val context = view.context
         repository = TaskRepositoryDataSource.getInstance(context)
-        task = taskId?.let { repository.load(it) } ?: Task()
 
-        view.title.setText(task.title)
-        view.description.setText(task.description)
-        if (task.completed) {
-            view.title.isEnabled = false
-            view.description.isEnabled = false
-            view.save.visibility = View.GONE
-        } else {
-            view.save.isEnabled = task.title.isNotBlank()
-        }
+        Single.just(taskId?.let { repository.load(it) } ?: Task())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy {
+                task = it
+                view.title.setText(task.title)
+                view.description.setText(task.description)
+                if (task.completed) {
+                    view.title.isEnabled = false
+                    view.description.isEnabled = false
+                    view.save.visibility = View.GONE
+                } else {
+                    view.save.isEnabled = task.title.isNotBlank()
+                }
+            }
+            .addTo(compositeDisposable)
     }
 
     private fun setupListener(view: View) {
@@ -106,14 +128,21 @@ class TaskDetailFragment : BaseFragment() {
             }
         })
         view.save.setOnClickListener {
-            repository.save(
-                task.copy(
-                    title = view.title.text.toString(),
-                    description = view.description.text.toString()
-                )
-            )
-            back()
+            Completable.fromAction { saveTask(view) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy { back() }
+                .addTo(compositeDisposable)
         }
+    }
+
+    private fun saveTask(view: View) {
+        repository.save(
+            task.copy(
+                title = view.title.text.toString(),
+                description = view.description.text.toString()
+            )
+        )
     }
 
     private fun back() {
