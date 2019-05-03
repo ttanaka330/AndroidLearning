@@ -1,0 +1,7 @@
+<resources>
+    <dimen name="size_title">16sp</dimen>
+    <dimen name="size_description">12sp</dimen>
+    <dimen name="view_margin">8dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="icon_padding">8dp</dimen>
+</resources>
