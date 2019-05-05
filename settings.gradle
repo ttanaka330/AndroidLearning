@@ -7,10 +7,11 @@ def templateDir = new File('template')
 project(':template_todo').projectDir = new File(templateDir, 'todo')
 
 // Library
-include ':aac', ':butterknife', ':dagger', ':koin', ':realm', ':rx'
+include ':aac', ':butterknife', ':coroutines', ':dagger', ':koin', ':realm', ':rx'
 def libraryDir = new File('learning/library')
 project(':aac').projectDir = new File(libraryDir, 'aac')
 project(':butterknife').projectDir = new File(libraryDir, 'butterknife')
+project(':coroutines').projectDir = new File(libraryDir, 'coroutines')
 project(':dagger').projectDir = new File(libraryDir, 'dagger')
 project(':koin').projectDir = new File(libraryDir, 'koin')
 project(':realm').projectDir = new File(libraryDir, 'realm')

@@ -76,7 +76,7 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation deps.kotlin
+    implementation deps.kotlin.jvm
 
     // Support Library ===============================================
     implementation deps.support.appcompat
