@@ -19,7 +19,7 @@ class TaskRepositoryDataSource private constructor(context: Context) : TaskRepos
 
     private val database: SQLiteDatabase = TodoDatabase(context).writableDatabase
 
-    override fun load(id: Int): Task? {
+    override suspend fun load(id: Int): Task? {
         val query = "SELECT * FROM ${TodoDatabase.TABLE_NAME}" +
                 " WHERE ${TodoDatabase.COLUMN_ID} = ?"
         val queryArgs = arrayOf(id.toString())
@@ -32,7 +32,7 @@ class TaskRepositoryDataSource private constructor(context: Context) : TaskRepos
         return task
     }
 
-    override fun loadList(isCompleted: Boolean): List<Task> {
+    override suspend fun loadList(isCompleted: Boolean): List<Task> {
         val query = "SELECT * FROM ${TodoDatabase.TABLE_NAME}" +
                 " WHERE ${TodoDatabase.COLUMN_COMPLETED} = ?" +
                 " ORDER BY ${TodoDatabase.COLUMN_ID} DESC"
@@ -46,7 +46,7 @@ class TaskRepositoryDataSource private constructor(context: Context) : TaskRepos
         return tasks
     }
 
-    override fun save(task: Task) {
+    override suspend fun save(task: Task) {
         val values = ContentValues().apply {
             put(TodoDatabase.COLUMN_TITLE, task.title)
             put(TodoDatabase.COLUMN_DESCRIPTION, task.description)
@@ -61,13 +61,13 @@ class TaskRepositoryDataSource private constructor(context: Context) : TaskRepos
         }
     }
 
-    override fun delete(id: Int) {
+    override suspend fun delete(id: Int) {
         val where = "${TodoDatabase.COLUMN_ID} = ?"
         val whereArgs = arrayOf(id.toString())
         database.delete(TodoDatabase.TABLE_NAME, where, whereArgs)
     }
 
-    override fun deleteCompleted() {
+    override suspend fun deleteCompleted() {
         val where = "${TodoDatabase.COLUMN_COMPLETED} = ?"
         val whereArgs = arrayOf(toValue(true))
         database.delete(TodoDatabase.TABLE_NAME, where, whereArgs)

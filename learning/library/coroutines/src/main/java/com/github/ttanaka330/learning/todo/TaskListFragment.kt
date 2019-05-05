@@ -14,12 +14,22 @@ import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
 import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
-class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
+class TaskListFragment : BaseFragment(), CoroutineScope, TaskListAdapter.ActionListener {
 
     companion object {
         fun newInstance() = TaskListFragment()
     }
+
+    private val job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
 
     private lateinit var repository: TaskRepository
 
@@ -33,6 +43,11 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
         setupData(rootView)
         setupListener(rootView)
         return rootView
+    }
+
+    override fun onDestroy() {
+        job.cancel()
+        super.onDestroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -55,15 +70,19 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
     private fun setupData(view: View) {
         val context = view.context
         repository = TaskRepositoryDataSource.getInstance(context)
-        val data = repository.loadList(false)
 
-        view.list.apply {
-            val orientation = RecyclerView.VERTICAL
-            adapter = TaskListAdapter(this@TaskListFragment).apply { replaceData(data) }
-            layoutManager = LinearLayoutManager(context, orientation, false)
-            addItemDecoration(DividerItemDecoration(context, orientation))
+        launch {
+            val data = withContext(context = Dispatchers.IO) {
+                repository.loadList(false)
+            }
+            view.list.apply {
+                val orientation = RecyclerView.VERTICAL
+                adapter = TaskListAdapter(this@TaskListFragment).apply { replaceData(data) }
+                layoutManager = LinearLayoutManager(context, orientation, false)
+                addItemDecoration(DividerItemDecoration(context, orientation))
+            }
+            updateShowEmpty(view)
         }
-        updateShowEmpty(view)
     }
 
     private fun setupListener(view: View) {
@@ -102,11 +121,15 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
     }
 
     override fun onCompletedChanged(task: Task) {
-        repository.save(task)
-        view?.list?.adapter?.let {
-            if (it is TaskListAdapter) {
-                it.removeData(task)
-                updateShowEmpty(view!!)
+        launch {
+            withContext(context = Dispatchers.IO) {
+                repository.save(task)
+            }
+            view?.list?.adapter?.let {
+                if (it is TaskListAdapter) {
+                    it.removeData(task)
+                    updateShowEmpty(view!!)
+                }
             }
         }
     }

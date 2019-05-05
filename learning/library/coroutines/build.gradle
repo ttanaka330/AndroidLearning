@@ -28,8 +28,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation deps.kotlin
+    implementation deps.kotlin.jvm
+    implementation deps.kotlin.coroutinesCore
+    implementation deps.kotlin.coroutinesAndroid
     implementation deps.support.appcompat
     implementation deps.support.constraint
     implementation deps.support.design

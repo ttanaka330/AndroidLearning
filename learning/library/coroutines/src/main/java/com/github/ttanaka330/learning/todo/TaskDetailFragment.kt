@@ -14,8 +14,14 @@ import com.github.ttanaka330.learning.todo.data.TaskRepository
 import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_task_detail.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
-class TaskDetailFragment : BaseFragment() {
+class TaskDetailFragment : BaseFragment(), CoroutineScope {
 
     companion object {
         private const val ARG_TASK_ID = "TASK_ID"
@@ -26,6 +32,10 @@ class TaskDetailFragment : BaseFragment() {
             }
         }
     }
+
+    private val job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
 
     private lateinit var repository: TaskRepository
     private lateinit var task: Task
@@ -52,6 +62,11 @@ class TaskDetailFragment : BaseFragment() {
         return rootView
     }
 
+    override fun onDestroy() {
+        job.cancel()
+        super.onDestroy()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_detail, menu)
     }
@@ -64,11 +79,13 @@ class TaskDetailFragment : BaseFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_delete) {
-            taskId?.let {
-                repository.delete(it)
+            launch {
+                withContext(context = Dispatchers.IO) {
+                    taskId?.let { repository.delete(it) }
+                }
                 showSnackbar(getString(R.string.message_delete, task.title))
+                back()
             }
-            back()
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -82,16 +99,21 @@ class TaskDetailFragment : BaseFragment() {
     private fun setupData(view: View) {
         val context = view.context
         repository = TaskRepositoryDataSource.getInstance(context)
-        task = taskId?.let { repository.load(it) } ?: Task()
 
-        view.title.setText(task.title)
-        view.description.setText(task.description)
-        if (task.completed) {
-            view.title.isEnabled = false
-            view.description.isEnabled = false
-            view.save.visibility = View.GONE
-        } else {
-            view.save.isEnabled = task.title.isNotBlank()
+        launch {
+            task = withContext(context = Dispatchers.IO) {
+                taskId?.let { repository.load(it) } ?: Task()
+            }
+
+            view.title.setText(task.title)
+            view.description.setText(task.description)
+            if (task.completed) {
+                view.title.isEnabled = false
+                view.description.isEnabled = false
+                view.save.visibility = View.GONE
+            } else {
+                view.save.isEnabled = task.title.isNotBlank()
+            }
         }
     }
 
@@ -106,13 +128,16 @@ class TaskDetailFragment : BaseFragment() {
             }
         })
         view.save.setOnClickListener {
-            repository.save(
-                task.copy(
-                    title = view.title.text.toString(),
-                    description = view.description.text.toString()
-                )
-            )
-            back()
+            launch {
+                val title = view.title.text.toString()
+                val description = view.description.text.toString()
+                withContext(context = Dispatchers.IO) {
+                    repository.save(
+                        task.copy(title = title, description = description)
+                    )
+                }
+                back()
+            }
         }
     }
 
