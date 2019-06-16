@@ -1,9 +1,0 @@
-<resources>
-
-    <string name="app_name">Android Learning</string>
-
-    <!-- Title -->
-    <string name="title_retrofit">Retrofit (OpenWeatherMap)</string>
-    <string name="title_licenses">Licenses</string>
-
-</resources>
