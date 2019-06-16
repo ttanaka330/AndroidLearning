@@ -7,5 +7,5 @@
 ## 動作確認環境
 
 OS:  macOS Mojave 10.14.4  
-IDE: Android Studio 3.4.0  
+IDE: Android Studio 3.4.1  
 target : Android 4.1(API 16) 以上
