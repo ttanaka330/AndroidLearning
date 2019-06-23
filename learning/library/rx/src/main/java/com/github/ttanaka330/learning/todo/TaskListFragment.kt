@@ -69,19 +69,13 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
         val context = view.context
         repository = TaskRepositoryDataSource.getInstance(context)
 
-        Single.just(repository.loadList(false))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy {
-                view.list.apply {
-                    val orientation = RecyclerView.VERTICAL
-                    adapter = TaskListAdapter(this@TaskListFragment).apply { replaceData(it) }
-                    layoutManager = LinearLayoutManager(context, orientation, false)
-                    addItemDecoration(DividerItemDecoration(context, orientation))
-                }
-                updateShowEmpty(view)
-            }
-            .addTo(compositeDisposable)
+        view.list.apply {
+            val orientation = RecyclerView.VERTICAL
+            adapter = TaskListAdapter(this@TaskListFragment)
+            layoutManager = LinearLayoutManager(context, orientation, false)
+            addItemDecoration(DividerItemDecoration(context, orientation))
+        }
+        updateTasks(view)
     }
 
     private fun setupListener(view: View) {
@@ -90,11 +84,17 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
         }
     }
 
-    private fun updateShowEmpty(view: View) {
-        view.apply {
-            val count = list?.adapter?.itemCount ?: 0
-            empty.visibility = if (count > 0) View.GONE else View.VISIBLE
-        }
+    private fun updateTasks(view: View) {
+        Single.just(repository.loadList(false))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { tasks ->
+                (view.list.adapter as TaskListAdapter).let {
+                    it.submitList(tasks)
+                    view.empty.visibility = if (it.itemCount > 0) View.GONE else View.VISIBLE
+                }
+            }
+            .addTo(compositeDisposable)
     }
 
     private fun navigationDetail(taskId: Int? = null) {
@@ -121,16 +121,10 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     override fun onCompletedChanged(task: Task) {
         Completable.fromAction { repository.save(task) }
+            .andThen { view?.let { updateTasks(it) } }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy {
-                view?.list?.adapter?.let {
-                    if (it is TaskListAdapter) {
-                        it.removeData(task)
-                        updateShowEmpty(view!!)
-                    }
-                }
-            }
+            .subscribe()
             .addTo(compositeDisposable)
     }
 }

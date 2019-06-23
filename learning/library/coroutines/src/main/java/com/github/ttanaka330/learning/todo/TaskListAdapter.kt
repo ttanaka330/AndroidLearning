@@ -8,34 +8,20 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.widget.ImageViewCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ttanaka330.learning.todo.data.Task
 import kotlinx.android.synthetic.main.view_task.view.*
 
 class TaskListAdapter(
     private val actionListener: ActionListener
-) : RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
-
-    private val tasks: MutableList<Task> = mutableListOf()
+) : ListAdapter<Task, TaskListAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     interface ActionListener {
         fun onTaskClick(task: Task)
         fun onCompletedChanged(task: Task)
     }
-
-    fun replaceData(tasks: List<Task>) {
-        this.tasks.clear()
-        this.tasks.addAll(tasks)
-        notifyDataSetChanged()
-    }
-
-    fun removeData(task: Task) {
-        val position = getPosition(task)
-        tasks.remove(task)
-        notifyItemRemoved(position)
-    }
-
-    override fun getItemCount(): Int = tasks.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -43,7 +29,7 @@ class TaskListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = tasks[position]
+        val item = getItem(position)
         holder.title.text = item.title
         holder.description.text = item.description
         holder.completed.apply {
@@ -60,8 +46,6 @@ class TaskListAdapter(
         }
     }
 
-    private fun getPosition(task: Task): Int = tasks.indexOf(task)
-
     private fun ImageView.setCheckboxColor(isCompleted: Boolean) {
         val colorId = if (isCompleted) R.color.checkCompleted else R.color.checkActive
         val color = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -77,5 +61,18 @@ class TaskListAdapter(
         val title: TextView = view.title
         val description: TextView = view.description
         val completed: ImageView = view.completed
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Task>() {
+
+            override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: Task, newItem: Task): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }

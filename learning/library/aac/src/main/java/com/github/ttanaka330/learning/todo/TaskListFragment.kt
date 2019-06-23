@@ -20,7 +20,6 @@ import com.github.ttanaka330.learning.todo.viewmodel.TaskListViewModel
 class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     private lateinit var binding: FragmentTaskListBinding
-    private val listAdapter = TaskListAdapter(this)
     private val viewModel: TaskListViewModel by lazy {
         ViewModelProviders.of(this, TaskListViewModel.Factory(requireContext()))
             .get(TaskListViewModel::class.java)
@@ -53,13 +52,15 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
     private fun setupData() {
         binding.list.apply {
             val orientation = RecyclerView.VERTICAL
-            adapter = listAdapter
+            adapter = TaskListAdapter(this@TaskListFragment)
             layoutManager = LinearLayoutManager(context, orientation, false)
             addItemDecoration(DividerItemDecoration(context, orientation))
         }
-        viewModel.loadList().observe(viewLifecycleOwner, Observer {
-            listAdapter.replaceData(it)
-            binding.empty.visibility = if (listAdapter.itemCount > 0) View.GONE else View.VISIBLE
+        viewModel.loadList().observe(viewLifecycleOwner, Observer { tasks ->
+            (binding.list.adapter as TaskListAdapter).let {
+                it.submitList(tasks)
+                binding.empty.visibility = if (it.itemCount > 0) View.GONE else View.VISIBLE
+            }
         })
     }
 
@@ -88,8 +89,6 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
     }
 
     override fun onCompletedChanged(task: Task) {
-        viewModel.updateCompleted(task).observe(viewLifecycleOwner, Observer {
-            listAdapter.removeData(task)
-        })
+        viewModel.updateCompleted(task)
     }
 }

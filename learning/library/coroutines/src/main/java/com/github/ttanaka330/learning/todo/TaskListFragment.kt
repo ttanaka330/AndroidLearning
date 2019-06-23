@@ -18,6 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
@@ -71,18 +72,13 @@ class TaskListFragment : BaseFragment(), CoroutineScope, TaskListAdapter.ActionL
         val context = view.context
         repository = TaskRepositoryDataSource.getInstance(context)
 
-        launch {
-            val data = withContext(context = Dispatchers.IO) {
-                repository.loadList(false)
-            }
-            view.list.apply {
-                val orientation = RecyclerView.VERTICAL
-                adapter = TaskListAdapter(this@TaskListFragment).apply { replaceData(data) }
-                layoutManager = LinearLayoutManager(context, orientation, false)
-                addItemDecoration(DividerItemDecoration(context, orientation))
-            }
-            updateShowEmpty(view)
+        view.list.apply {
+            val orientation = RecyclerView.VERTICAL
+            adapter = TaskListAdapter(this@TaskListFragment)
+            layoutManager = LinearLayoutManager(context, orientation, false)
+            addItemDecoration(DividerItemDecoration(context, orientation))
         }
+        updateTasks(view)
     }
 
     private fun setupListener(view: View) {
@@ -91,10 +87,15 @@ class TaskListFragment : BaseFragment(), CoroutineScope, TaskListAdapter.ActionL
         }
     }
 
-    private fun updateShowEmpty(view: View) {
-        view.apply {
-            val count = list?.adapter?.itemCount ?: 0
-            empty.visibility = if (count > 0) View.GONE else View.VISIBLE
+    private fun updateTasks(view: View) {
+        launch {
+            val data = withContext(context = Dispatchers.IO) {
+                repository.loadList(false)
+            }
+            (view.list.adapter as TaskListAdapter).let {
+                it.submitList(data)
+                view.empty.visibility = if (it.itemCount > 0) View.GONE else View.VISIBLE
+            }
         }
     }
 
@@ -121,16 +122,11 @@ class TaskListFragment : BaseFragment(), CoroutineScope, TaskListAdapter.ActionL
     }
 
     override fun onCompletedChanged(task: Task) {
-        launch {
+        runBlocking {
             withContext(context = Dispatchers.IO) {
                 repository.save(task)
             }
-            view?.list?.adapter?.let {
-                if (it is TaskListAdapter) {
-                    it.removeData(task)
-                    updateShowEmpty(view!!)
-                }
-            }
+            view?.let { updateTasks(it) }
         }
     }
 }
