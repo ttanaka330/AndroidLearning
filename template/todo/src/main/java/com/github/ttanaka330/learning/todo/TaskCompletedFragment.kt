@@ -69,20 +69,13 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
             addItemDecoration(DividerItemDecoration(context, orientation))
         }
         updateTasks(view)
-        updateShowEmpty(view)
     }
 
     private fun updateTasks(view: View) {
         val data = repository.loadList(true)
-        view.list.adapter?.let {
-            (it as TaskListAdapter).submitList(data)
-        }
-    }
-
-    private fun updateShowEmpty(view: View) {
-        view.apply {
-            val count = list?.adapter?.itemCount ?: 0
-            empty.visibility = if (count > 0) View.GONE else View.VISIBLE
+        (view.list.adapter as TaskListAdapter).let {
+            it.submitList(data)
+            view.empty.visibility = if (it.itemCount > 0) View.GONE else View.VISIBLE
         }
     }
 
@@ -118,9 +111,6 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     override fun onCompletedChanged(task: Task) {
         repository.save(task)
-        view?.let {
-            updateTasks(it)
-            updateShowEmpty(it)
-        }
+        view?.let { updateTasks(it) }
     }
 }

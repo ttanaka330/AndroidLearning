@@ -27,7 +27,6 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
     }
 
     private lateinit var binding: FragmentTaskCompletedBinding
-    private val listAdapter = TaskListAdapter(this)
     private val viewModel: TaskCompletedViewModel by lazy {
         ViewModelProviders.of(this, TaskCompletedViewModel.Factory(requireContext()))
             .get(TaskCompletedViewModel::class.java)
@@ -61,13 +60,15 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
     private fun setupData() {
         binding.list.apply {
             val orientation = RecyclerView.VERTICAL
-            adapter = listAdapter
+            adapter = TaskListAdapter(this@TaskCompletedFragment)
             layoutManager = LinearLayoutManager(context, orientation, false)
             addItemDecoration(DividerItemDecoration(context, orientation))
         }
-        viewModel.loadList().observe(viewLifecycleOwner, Observer {
-            listAdapter.replaceData(it)
-            binding.empty.visibility = if (listAdapter.itemCount > 0) View.GONE else View.VISIBLE
+        viewModel.loadList().observe(viewLifecycleOwner, Observer { tasks ->
+            (binding.list.adapter as TaskListAdapter).let {
+                it.submitList(tasks)
+                binding.empty.visibility = if (it.itemCount > 0) View.GONE else View.VISIBLE
+            }
         })
     }
 
@@ -101,8 +102,6 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
     }
 
     override fun onCompletedChanged(task: Task) {
-        viewModel.updateCompleted(task).observe(viewLifecycleOwner, Observer {
-            listAdapter.removeData(task)
-        })
+        viewModel.updateCompleted(task)
     }
 }
