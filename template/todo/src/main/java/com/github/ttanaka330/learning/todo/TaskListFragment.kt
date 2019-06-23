@@ -55,20 +55,27 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
     private fun setupData(view: View) {
         val context = view.context
         repository = TaskRepositoryDataSource.getInstance(context)
-        val data = repository.loadList(false)
 
         view.list.apply {
             val orientation = RecyclerView.VERTICAL
-            adapter = TaskListAdapter(this@TaskListFragment).apply { replaceData(data) }
+            adapter = TaskListAdapter(this@TaskListFragment)
             layoutManager = LinearLayoutManager(context, orientation, false)
             addItemDecoration(DividerItemDecoration(context, orientation))
         }
+        updateTasks(view)
         updateShowEmpty(view)
     }
 
     private fun setupListener(view: View) {
         view.fab.setOnClickListener {
             navigationDetail()
+        }
+    }
+
+    private fun updateTasks(view: View) {
+        val data = repository.loadList(false)
+        view.list.adapter?.let {
+            (it as TaskListAdapter).submitList(data)
         }
     }
 
@@ -103,11 +110,9 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     override fun onCompletedChanged(task: Task) {
         repository.save(task)
-        view?.list?.adapter?.let {
-            if (it is TaskListAdapter) {
-                it.removeData(task)
-                updateShowEmpty(view!!)
-            }
+        view?.let {
+            updateTasks(it)
+            updateShowEmpty(it)
         }
     }
 }
