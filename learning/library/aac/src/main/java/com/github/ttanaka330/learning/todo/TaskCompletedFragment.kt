@@ -65,10 +65,7 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
             addItemDecoration(DividerItemDecoration(context, orientation))
         }
         viewModel.loadList().observe(viewLifecycleOwner, Observer { tasks ->
-            (binding.list.adapter as TaskListAdapter).let {
-                it.submitList(tasks)
-                binding.empty.visibility = if (it.itemCount > 0) View.GONE else View.VISIBLE
-            }
+            (binding.list.adapter as TaskListAdapter).submitList(tasks)
         })
     }
 
@@ -103,5 +100,9 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     override fun onCompletedChanged(task: Task) {
         viewModel.updateCompleted(task)
+    }
+
+    override fun onChangedItemCount(itemCount: Int) {
+        binding.empty.visibility = if (itemCount > 0) View.GONE else View.VISIBLE
     }
 }

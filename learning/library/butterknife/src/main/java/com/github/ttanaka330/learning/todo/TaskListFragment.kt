@@ -1,6 +1,7 @@
 package com.github.ttanaka330.learning.todo
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -17,6 +18,7 @@ import butterknife.Unbinder
 import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
 import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
+import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
 class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
@@ -81,15 +83,13 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
             layoutManager = LinearLayoutManager(context, orientation, false)
             addItemDecoration(DividerItemDecoration(context, orientation))
         }
-        updateTasks()
+        // onCreateView時点では view==null のため、Handlerで処理を後ろにずらす
+        Handler().post { updateTasks() }
     }
 
     private fun updateTasks() {
         val data = repository.loadList(false)
-        (recyclerView.adapter as TaskListAdapter).let {
-            it.submitList(data)
-            emptyView.visibility = if (it.itemCount > 0) View.GONE else View.VISIBLE
-        }
+        (recyclerView.adapter as TaskListAdapter).submitList(data)
     }
 
     private fun navigationDetail(taskId: Int? = null) {
@@ -117,5 +117,9 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
     override fun onCompletedChanged(task: Task) {
         repository.save(task)
         updateTasks()
+    }
+
+    override fun onChangedItemCount(itemCount: Int) {
+        view?.empty?.visibility = if (itemCount > 0) View.GONE else View.VISIBLE
     }
 }

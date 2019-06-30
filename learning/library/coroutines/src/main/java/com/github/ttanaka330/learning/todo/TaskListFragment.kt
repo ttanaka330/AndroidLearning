@@ -92,10 +92,7 @@ class TaskListFragment : BaseFragment(), CoroutineScope, TaskListAdapter.ActionL
             val data = withContext(context = Dispatchers.IO) {
                 repository.loadList(false)
             }
-            (view.list.adapter as TaskListAdapter).let {
-                it.submitList(data)
-                view.empty.visibility = if (it.itemCount > 0) View.GONE else View.VISIBLE
-            }
+            (view.list.adapter as TaskListAdapter).submitList(data)
         }
     }
 
@@ -128,5 +125,9 @@ class TaskListFragment : BaseFragment(), CoroutineScope, TaskListAdapter.ActionL
             }
             view?.let { updateTasks(it) }
         }
+    }
+
+    override fun onChangedItemCount(itemCount: Int) {
+        view?.empty?.visibility = if (itemCount > 0) View.GONE else View.VISIBLE
     }
 }

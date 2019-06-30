@@ -89,10 +89,7 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { tasks ->
-                (view.list.adapter as TaskListAdapter).let {
-                    it.submitList(tasks)
-                    view.empty.visibility = if (it.itemCount > 0) View.GONE else View.VISIBLE
-                }
+                (view.list.adapter as TaskListAdapter).submitList(tasks)
             }
             .addTo(compositeDisposable)
     }
@@ -126,5 +123,9 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
             .addTo(compositeDisposable)
+    }
+
+    override fun onChangedItemCount(itemCount: Int) {
+        view?.empty?.visibility = if (itemCount > 0) View.GONE else View.VISIBLE
     }
 }

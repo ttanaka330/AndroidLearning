@@ -1,6 +1,7 @@
 package com.github.ttanaka330.learning.todo
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -62,7 +63,8 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
             layoutManager = LinearLayoutManager(context, orientation, false)
             addItemDecoration(DividerItemDecoration(context, orientation))
         }
-        updateTasks(view)
+        // onCreateView時点では view==null のため、Handlerで処理を後ろにずらす
+        Handler().post { updateTasks(view) }
     }
 
     private fun setupListener(view: View) {
@@ -73,10 +75,7 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     private fun updateTasks(view: View) {
         val data = repository.loadList(false)
-        (view.list.adapter as TaskListAdapter).let {
-            it.submitList(data)
-            view.empty.visibility = if (it.itemCount > 0) View.GONE else View.VISIBLE
-        }
+        (view.list.adapter as TaskListAdapter).submitList(data)
     }
 
     private fun navigationDetail(taskId: Int? = null) {
@@ -104,5 +103,9 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
     override fun onCompletedChanged(task: Task) {
         repository.save(task)
         view?.let { updateTasks(it) }
+    }
+
+    override fun onChangedItemCount(itemCount: Int) {
+        view?.empty?.visibility = if (itemCount > 0) View.GONE else View.VISIBLE
     }
 }

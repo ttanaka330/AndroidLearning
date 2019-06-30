@@ -3,6 +3,7 @@ package com.github.ttanaka330.learning.todo
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -19,6 +20,7 @@ import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
 import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
 import com.github.ttanaka330.learning.todo.widget.ConfirmMessageDialog
+import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
 class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
@@ -82,15 +84,13 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
             layoutManager = LinearLayoutManager(context, orientation, false)
             addItemDecoration(DividerItemDecoration(context, orientation))
         }
-        updateTasks()
+        // onCreateView時点では view==null のため、Handlerで処理を後ろにずらす
+        Handler().post { updateTasks() }
     }
 
     private fun updateTasks() {
         val data = repository.loadList(true)
-        (recyclerView.adapter as TaskListAdapter).let {
-            it.submitList(data)
-            emptyView.visibility = if (it.itemCount > 0) View.GONE else View.VISIBLE
-        }
+        (recyclerView.adapter as TaskListAdapter).submitList(data)
     }
 
     private fun deleteCompleted() {
@@ -126,5 +126,9 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
     override fun onCompletedChanged(task: Task) {
         repository.save(task)
         updateTasks()
+    }
+
+    override fun onChangedItemCount(itemCount: Int) {
+        view?.empty?.visibility = if (itemCount > 0) View.GONE else View.VISIBLE
     }
 }
