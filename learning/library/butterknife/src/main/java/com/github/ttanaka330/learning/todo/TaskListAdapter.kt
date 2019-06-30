@@ -22,6 +22,19 @@ class TaskListAdapter(
     interface ActionListener {
         fun onTaskClick(task: Task)
         fun onCompletedChanged(task: Task)
+        fun onChangedItemCount(itemCount: Int)
+    }
+
+    init {
+        registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                actionListener.onChangedItemCount(getItemCount())
+            }
+
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                actionListener.onChangedItemCount(getItemCount())
+            }
+        })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
