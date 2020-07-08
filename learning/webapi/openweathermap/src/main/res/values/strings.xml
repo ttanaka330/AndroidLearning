@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">OpenWeatherMap</string>
-
-    <string name="celsius">%1$.2f℃</string>
-    <string name="error_weather">天気の取得に失敗しました</string>
-</resources>
