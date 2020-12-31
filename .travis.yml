@@ -10,15 +10,17 @@ env:
     - secure:  "BEiZIP1bnUX8OOmn+Odh1OomMuZJHBT82wM44K9EAr0ayzFqgYLGrK0reTkAIvgXJ+j35eVb51DaU9oqrA42VnaBfa7+oJ8CCpoS4pbCNbiO6Y5//09mSrZosTjYkXoI7bYJWK2K/YS3EyRogCO0HcKTdrOpqPNnHO97SJRMZ6WmTamRz4G2IVaC9kZVH5gYKv6mIwcgc+StGo+P+GSMu5AZSVm3kxcFS/Q6PUwnQHWy+uQ31eC1+95CpZr9ySPTqmB+ULI2K2yUGKxao5UtrsH6DJpP4utXyEgKU4E5rmuiuJPZipT16KF0v3HSKVTBJJNxtl+7jLWFYo7DfWFDCdtt2Bl6+J/eXKlN0AbmtGTzgNccYw49ECLVaVDfoCNGStGpDGIfRFiKKuz4Hl0s+xLKJxIQ88AuhZZcBWv91pM/OCmQFjy5IqWPPEkt3LdJTKV9dxWu+d77fzInO9QSLqz69XFiUzk5Nllw7vqtY/f25fqKlZz/fPhKaQtSIevlQRwQOPyNYCcw3HsmIIUC66ihnhCci2B8a3sZHHDQfFhC4eLgajhzGEI/G0jvQxNU1rOF1wUI/4crTckdJTEHuOYbI6VjlKsValhfIy/ItlccmSlJ1gZcmzNknXQo9g18KrSW94tKAewbDU7Onz6AQmXYEuLrJRNFe/eRwB/W6ms="
 android:
   components:
-    - tools
-    - platform-tools
-    - tools
+    # The BuildTools version used by your project
+    - build-tools-30.0.3
+    # The SDK version used to compile your project
+    - android-30
+    # Additional components
+    - extra
 before_install:
   # Install SDK license so that you can install Android Gradle plugin.
   - mkdir -p $ANDROID_HOME/licenses
   - echo "d56f5187479451eabf01fb78af6dfcb131a6481e" > $ANDROID_HOME/licenses/android-sdk-license
   - echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" >> $ANDROID_HOME/licenses/android-sdk-license
-  - echo "84831b9409646a918e30573bab4c9c91346d8abd" > $ANDROID_HOME/licenses/android-sdk-preview-license
 install:
   - bundle install
 script:
