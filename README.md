@@ -6,7 +6,6 @@
 主にライブラリやプラグインの動作確認のプロジェクトとなります。
 
 ## 動作確認環境
-
-OS:  macOS Mojave 10.15.5  
-IDE: Android Studio 4.0  
-target : Android 4.4(API 19) 以上
+* OS:  macOS Big Sur 11.1
+* IDE: Android Studio 4.1.1
+* target : Android 6.0(API 23) 以上
