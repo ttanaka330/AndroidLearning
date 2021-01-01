@@ -1,4 +1,4 @@
-package com.github.ttanaka330.learning.todo
+package com.github.ttanaka330.learning.todo.ui.common.widget
 
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity

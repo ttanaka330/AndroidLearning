@@ -1,4 +1,4 @@
-package com.github.ttanaka330.learning.todo.widget
+package com.github.ttanaka330.learning.todo.ui.common.widget
 
 import android.app.Dialog
 import android.content.DialogInterface

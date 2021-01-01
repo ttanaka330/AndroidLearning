@@ -1,4 +1,4 @@
-package com.github.ttanaka330.learning.todo
+package com.github.ttanaka330.learning.todo.ui.detail
 
 import android.os.Bundle
 import android.text.Editable
@@ -9,9 +9,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import com.github.ttanaka330.learning.todo.R
 import com.github.ttanaka330.learning.todo.data.Task
 import com.github.ttanaka330.learning.todo.data.TaskRepository
 import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
+import com.github.ttanaka330.learning.todo.ui.common.widget.BaseFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_task_detail.view.*
 

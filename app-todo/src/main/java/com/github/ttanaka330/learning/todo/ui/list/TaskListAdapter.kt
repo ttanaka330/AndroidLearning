@@ -1,4 +1,4 @@
-package com.github.ttanaka330.learning.todo
+package com.github.ttanaka330.learning.todo.ui.list
 
 import android.content.res.ColorStateList
 import android.os.Build
@@ -11,6 +11,7 @@ import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.github.ttanaka330.learning.todo.R
 import com.github.ttanaka330.learning.todo.data.Task
 import kotlinx.android.synthetic.main.view_task.view.*
 
