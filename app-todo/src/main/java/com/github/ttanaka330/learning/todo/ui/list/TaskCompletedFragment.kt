@@ -14,29 +14,36 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ttanaka330.learning.todo.R
 import com.github.ttanaka330.learning.todo.data.Task
+import com.github.ttanaka330.learning.todo.databinding.FragmentTaskCompletedBinding
 import com.github.ttanaka330.learning.todo.ui.common.widget.BaseFragment
 import com.github.ttanaka330.learning.todo.ui.common.widget.ConfirmMessageDialog
 import com.github.ttanaka330.learning.todo.ui.detail.TaskDetailFragment
-import kotlinx.android.synthetic.main.fragment_task_list.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     private val viewModel: TaskCompletedViewModel by viewModel()
+    private var viewBinding: FragmentTaskCompletedBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_task_completed, container, false)
+    ): View {
+        val binding = FragmentTaskCompletedBinding.inflate(inflater, container, false)
+        viewBinding = binding
         setupToolbar()
-        return rootView
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupData(view)
+        setupData()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewBinding = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -58,10 +65,11 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
         setHasOptionsMenu(true)
     }
 
-    private fun setupData(view: View) {
-        val context = view.context
+    private fun setupData() {
+        val context = context ?: return
+        val binding = viewBinding ?: return
         val adapter = TaskListAdapter(this)
-        view.list.also {
+        binding.list.also {
             val orientation = RecyclerView.VERTICAL
             it.adapter = adapter
             it.layoutManager = LinearLayoutManager(context, orientation, false)
@@ -103,7 +111,8 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
     }
 
     override fun onChangedItemCount(itemCount: Int) {
-        view?.empty?.visibility = if (itemCount > 0) View.GONE else View.VISIBLE
+        val binding = viewBinding ?: return
+        binding.empty.visibility = if (itemCount > 0) View.GONE else View.VISIBLE
     }
 
     companion object {

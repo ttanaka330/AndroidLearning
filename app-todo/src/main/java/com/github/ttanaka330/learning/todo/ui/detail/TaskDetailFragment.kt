@@ -10,9 +10,9 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.github.ttanaka330.learning.todo.R
+import com.github.ttanaka330.learning.todo.databinding.FragmentTaskDetailBinding
 import com.github.ttanaka330.learning.todo.ui.common.widget.BaseFragment
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_task_detail.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -22,20 +22,27 @@ class TaskDetailFragment : BaseFragment() {
         val defaultId = TaskDetailViewModel.TASK_NONE_ID
         parametersOf(arguments?.getInt(ARG_TASK_ID, defaultId) ?: defaultId)
     }
+    private var viewBinding: FragmentTaskDetailBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_task_detail, container, false)
+    ): View {
+        val binding = FragmentTaskDetailBinding.inflate(inflater, container, false)
+        viewBinding = binding
         setupToolbar()
-        return rootView
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupData(view)
+        setupData()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewBinding = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -64,35 +71,36 @@ class TaskDetailFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    private fun setupData(view: View) {
+    private fun setupData() {
+        val binding = viewBinding ?: return
         viewModel.taskDetail.observe(viewLifecycleOwner) {
             // Delete対策
             it ?: return@observe
 
-            view.title.setText(it.title)
-            view.description.setText(it.description)
+            binding.title.setText(it.title)
+            binding.description.setText(it.description)
             if (it.completed) {
-                view.title.isEnabled = false
-                view.description.isEnabled = false
-                view.save.visibility = View.GONE
+                binding.title.isEnabled = false
+                binding.description.isEnabled = false
+                binding.save.visibility = View.GONE
             } else {
-                view.save.isEnabled = it.title.isNotBlank()
+                binding.save.isEnabled = it.title.isNotBlank()
             }
         }
 
-        view.title.addTextChangedListener(object : TextWatcher {
+        binding.title.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable) {
-                view.save.isEnabled = s.isNotBlank()
+                binding.save.isEnabled = s.isNotBlank()
             }
         })
-        view.save.setOnClickListener {
+        binding.save.setOnClickListener {
             viewModel.save(
-                title = view.title.text.toString(),
-                description = view.description.text.toString()
+                title = binding.title.text.toString(),
+                description = binding.description.text.toString()
             ).observe(viewLifecycleOwner) {
                 back()
             }
