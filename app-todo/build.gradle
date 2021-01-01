@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply from: '../../tools/ktlint.gradle'
+apply from: '../tools/ktlint.gradle'
 
 android {
     compileSdkVersion versions.compileSdk

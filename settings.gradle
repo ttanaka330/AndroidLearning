@@ -1,4 +1,2 @@
-// Template
-include ':template_todo'
-def templateDir = new File('template')
-project(':template_todo').projectDir = new File(templateDir, 'todo')
+rootProject.name = "AndroidLearning"
+include ':app-todo'
