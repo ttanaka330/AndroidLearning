@@ -1,12 +1,12 @@
 package com.github.ttanaka330.learning.todo.ui.list
 
 import android.content.res.ColorStateList
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -62,11 +62,7 @@ class TaskListAdapter(
 
     private fun ImageView.setCheckboxColor(isCompleted: Boolean) {
         val colorId = if (isCompleted) R.color.checkCompleted else R.color.checkActive
-        val color = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            resources.getColor(colorId)
-        } else {
-            resources.getColor(colorId, null)
-        }
+        val color = ContextCompat.getColor(context, colorId)
         ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(color))
     }
 
