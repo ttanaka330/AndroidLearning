@@ -46,9 +46,11 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_delete) {
-            val dialog = ConfirmMessageDialog.newInstance(R.string.message_confirm_delete_completed)
-            dialog.setTargetFragment(this, REQUEST_DELETE_MESSAGE)
-            dialog.show(fragmentManager, null)
+            fragmentManager?.let {
+                val dialog = ConfirmMessageDialog.newInstance(R.string.message_confirm_delete_completed)
+                dialog.setTargetFragment(this, REQUEST_DELETE_MESSAGE)
+                dialog.show(it, null)
+            }
             return true
         }
         return super.onOptionsItemSelected(item)

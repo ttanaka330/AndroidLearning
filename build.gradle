@@ -7,9 +7,9 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:$versions.gradlePlugin"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
-        classpath "org.jlleitschuh.gradle:ktlint-gradle:$versions.ktlintPlugin"
+        classpath "com.android.tools.build:gradle:$androidGradlePlugin"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlintGradlePlugin"
     }
 }
 
@@ -20,27 +20,9 @@ allprojects {
     }
 }
 
-apply plugin: 'kotlin'
-
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
 
 apply plugin: 'org.jlleitschuh.gradle.ktlint'
 ext.ReporterType = org.jlleitschuh.gradle.ktlint.reporter.ReporterType
-
-// Declaring custom 'clean' task when using the standard Gradle lifecycle plugins is not allowed
-//   https://stackoverflow.com/questions/43933459/
-//   declaring-custom-clean-task-when-using-the-standard-gradle-lifecycle-plugins-i
-task customClean(type: Delete) {
-    delete rootProject.buildDir
-}
-clean.dependsOn customClean

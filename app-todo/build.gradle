@@ -4,13 +4,13 @@ apply plugin: 'kotlin-android-extensions'
 apply from: '../tools/ktlint.gradle'
 
 android {
-    compileSdkVersion versions.compileSdk
-    buildToolsVersion versions.buildTools
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
 
     defaultConfig {
         applicationId "com.github.ttanaka330.learning.todo"
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.targetSdk
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -23,19 +23,31 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation deps.kotlin.jvm
-    implementation deps.support.appcompat
-    implementation deps.support.constraint
-    implementation deps.support.design
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
-    debugImplementation deps.stetho.core
+    // Android Official
+    implementation "androidx.appcompat:appcompat:$appcompat"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintLayout"
+    implementation "com.google.android.material:material:$material"
 
-    testImplementation deps.junit
-    androidTestImplementation deps.test.espresso
-    androidTestImplementation deps.test.junit
-    androidTestImplementation deps.test.runner
+    // Debug
+    debugImplementation "com.facebook.stetho:stetho:$stetho"
+
+    // Testing
+    testImplementation "junit:junit:$junit"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidXEspresso"
+    androidTestImplementation "androidx.test.ext:junit:$androidXExtJunit"
+    androidTestImplementation "androidx.test:runner:$androidXRunner"
 }
