@@ -15,7 +15,7 @@ abstract class TodoDatabase : RoomDatabase() {
 
         fun createDatabase(context: Context): TodoDatabase {
             return Room.databaseBuilder(context, TodoDatabase::class.java, DATABASE_NAME)
-                //.allowMainThreadQueries() // メインスレッドで処理をする場合に使用する（基本使わない）
+                // .allowMainThreadQueries() // メインスレッドで処理をする場合に使用する（基本使わない）
                 .build()
         }
     }
