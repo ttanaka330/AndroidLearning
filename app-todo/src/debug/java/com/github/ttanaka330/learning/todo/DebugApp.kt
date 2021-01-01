@@ -1,11 +1,10 @@
 package com.github.ttanaka330.learning.todo
 
-import android.app.Application
 import android.os.StrictMode
 import com.facebook.stetho.Stetho
 import timber.log.Timber
 
-class DebugApp : Application() {
+class DebugApp : App() {
 
     override fun onCreate() {
         setupStrict()

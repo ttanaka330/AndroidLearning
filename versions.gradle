@@ -16,6 +16,7 @@ ext {
     material = '1.2.1'
 
     // Other Library
+    koin = '2.2.2'
     stetho = '1.5.1'
     timber = '4.7.1'
 
