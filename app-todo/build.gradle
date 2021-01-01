@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply from: '../tools/ktlint.gradle'
 
 android {
@@ -40,6 +41,10 @@ dependencies {
     // Android Official
     implementation "androidx.appcompat:appcompat:$appcompat"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayout"
+    implementation "androidx.room:room-runtime:$room"
+    implementation "androidx.room:room-ktx:$room"
+    kapt "androidx.room:room-compiler:$room"
+    testImplementation "androidx.room:room-testing:$room"
     implementation "com.google.android.material:material:$material"
 
     // Dependency Injection

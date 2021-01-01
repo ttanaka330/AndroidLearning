@@ -30,8 +30,8 @@ class TaskDetailFragment : BaseFragment() {
     }
 
     private lateinit var repository: TaskRepository
-    private lateinit var task: Task
     private var taskId: Int? = null
+    private var task: Task? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,8 +66,8 @@ class TaskDetailFragment : BaseFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_delete) {
-            taskId?.let {
-                repository.delete(it)
+            task?.let { task ->
+                task.id?.let { repository.delete(it) }
                 showSnackbar(getString(R.string.message_delete, task.title))
             }
             back()
@@ -84,16 +84,17 @@ class TaskDetailFragment : BaseFragment() {
     private fun setupData(view: View) {
         val context = view.context
         repository = TaskRepositoryDataSource.getInstance(context)
-        task = taskId?.let { repository.load(it) } ?: Task()
+        val loadTask = taskId?.let { repository.load(it) } ?: return
+        task = loadTask
 
-        view.title.setText(task.title)
-        view.description.setText(task.description)
-        if (task.completed) {
+        view.title.setText(loadTask.title)
+        view.description.setText(loadTask.description)
+        if (loadTask.completed) {
             view.title.isEnabled = false
             view.description.isEnabled = false
             view.save.visibility = View.GONE
         } else {
-            view.save.isEnabled = task.title.isNotBlank()
+            view.save.isEnabled = loadTask.title.isNotBlank()
         }
     }
 
@@ -109,7 +110,8 @@ class TaskDetailFragment : BaseFragment() {
         })
         view.save.setOnClickListener {
             repository.save(
-                task.copy(
+                Task(
+                    id = task?.id,
                     title = view.title.text.toString(),
                     description = view.description.text.toString()
                 )
