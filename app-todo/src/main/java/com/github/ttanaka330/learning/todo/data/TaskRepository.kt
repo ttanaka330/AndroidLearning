@@ -1,14 +1,16 @@
 package com.github.ttanaka330.learning.todo.data
 
+import androidx.lifecycle.LiveData
+
 interface TaskRepository {
 
-    fun load(id: Int): Task?
+    fun load(id: Int): LiveData<Task?>
 
-    fun loadList(isCompleted: Boolean): List<Task>
+    fun loadList(isCompleted: Boolean): LiveData<List<Task>>
 
-    fun save(task: Task)
+    suspend fun save(task: Task)
 
-    fun delete(id: Int)
+    suspend fun delete(id: Int)
 
-    fun deleteCompleted()
+    suspend fun deleteCompleted()
 }

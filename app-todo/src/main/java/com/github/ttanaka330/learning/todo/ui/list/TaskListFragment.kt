@@ -1,7 +1,6 @@
 package com.github.ttanaka330.learning.todo.ui.list
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -12,20 +11,15 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ttanaka330.learning.todo.R
-import com.github.ttanaka330.learning.todo.ui.detail.TaskDetailFragment
 import com.github.ttanaka330.learning.todo.data.Task
-import com.github.ttanaka330.learning.todo.data.TaskRepository
-import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
 import com.github.ttanaka330.learning.todo.ui.common.widget.BaseFragment
+import com.github.ttanaka330.learning.todo.ui.detail.TaskDetailFragment
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
-    companion object {
-        fun newInstance() = TaskListFragment()
-    }
-
-    private lateinit var repository: TaskRepository
+    private val viewModel: TaskListViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,9 +28,12 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
         setupToolbar()
-        setupData(rootView)
-        setupListener(rootView)
         return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupData(view)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -58,41 +55,35 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     private fun setupData(view: View) {
         val context = view.context
-        repository = TaskRepositoryDataSource.getInstance(context)
-
-        view.list.apply {
+        val adapter = TaskListAdapter(this)
+        view.list.also {
             val orientation = RecyclerView.VERTICAL
-            adapter = TaskListAdapter(this@TaskListFragment)
-            layoutManager = LinearLayoutManager(context, orientation, false)
-            addItemDecoration(DividerItemDecoration(context, orientation))
+            it.adapter = adapter
+            it.layoutManager = LinearLayoutManager(context, orientation, false)
+            it.addItemDecoration(DividerItemDecoration(context, orientation))
         }
-        // onCreateView時点では view==null のため、Handlerで処理を後ろにずらす
-        Handler().post { updateTasks(view) }
-    }
 
-    private fun setupListener(view: View) {
         view.fab.setOnClickListener {
             navigationDetail()
         }
-    }
 
-    private fun updateTasks(view: View) {
-        val data = repository.loadList(false)
-        (view.list.adapter as TaskListAdapter).submitList(data)
+        viewModel.loadList().observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
     }
 
     private fun navigationDetail(taskId: Int? = null) {
-        fragmentManager?.beginTransaction()
-            ?.replace(R.id.container, TaskDetailFragment.newInstance(taskId))
-            ?.addToBackStack(null)
-            ?.commit()
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.container, TaskDetailFragment.newInstance(taskId))
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun navigationCompleted() {
-        fragmentManager?.beginTransaction()
-            ?.replace(R.id.container, TaskCompletedFragment.newInstance())
-            ?.addToBackStack(null)
-            ?.commit()
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.container, TaskCompletedFragment.newInstance())
+            .addToBackStack(null)
+            .commit()
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -104,11 +95,14 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
     }
 
     override fun onCompletedChanged(task: Task) {
-        repository.save(task)
-        view?.let { updateTasks(it) }
+        viewModel.updateCompleted(task)
     }
 
     override fun onChangedItemCount(itemCount: Int) {
         view?.empty?.visibility = if (itemCount > 0) View.GONE else View.VISIBLE
+    }
+
+    companion object {
+        fun newInstance() = TaskListFragment()
     }
 }

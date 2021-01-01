@@ -10,36 +10,17 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.github.ttanaka330.learning.todo.R
-import com.github.ttanaka330.learning.todo.data.Task
-import com.github.ttanaka330.learning.todo.data.TaskRepository
-import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
 import com.github.ttanaka330.learning.todo.ui.common.widget.BaseFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_task_detail.view.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class TaskDetailFragment : BaseFragment() {
 
-    companion object {
-        private const val ARG_TASK_ID = "TASK_ID"
-
-        fun newInstance(taskId: Int? = null) = TaskDetailFragment().apply {
-            arguments = Bundle().apply {
-                taskId?.let { putInt(ARG_TASK_ID, it) }
-            }
-        }
-    }
-
-    private lateinit var repository: TaskRepository
-    private var taskId: Int? = null
-    private var task: Task? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            if (it.containsKey(ARG_TASK_ID)) {
-                taskId = it.getInt(ARG_TASK_ID)
-            }
-        }
+    private val viewModel: TaskDetailViewModel by viewModel {
+        val defaultId = TaskDetailViewModel.TASK_NONE_ID
+        parametersOf(arguments?.getInt(ARG_TASK_ID, defaultId) ?: defaultId)
     }
 
     override fun onCreateView(
@@ -49,9 +30,12 @@ class TaskDetailFragment : BaseFragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_task_detail, container, false)
         setupToolbar()
-        setupData(rootView)
-        setupListener(rootView)
         return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupData(view)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -59,18 +43,17 @@ class TaskDetailFragment : BaseFragment() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        if (taskId == null) {
+        if (viewModel.taskId == TaskDetailViewModel.TASK_NONE_ID) {
             menu.findItem(R.id.action_delete).isVisible = false
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_delete) {
-            task?.let { task ->
-                task.id?.let { repository.delete(it) }
-                showSnackbar(getString(R.string.message_delete, task.title))
+            viewModel.delete().observe(viewLifecycleOwner) {
+                showSnackbar(getString(R.string.message_delete, it.title))
+                back()
             }
-            back()
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -82,23 +65,21 @@ class TaskDetailFragment : BaseFragment() {
     }
 
     private fun setupData(view: View) {
-        val context = view.context
-        repository = TaskRepositoryDataSource.getInstance(context)
-        val loadTask = taskId?.let { repository.load(it) } ?: return
-        task = loadTask
+        viewModel.taskDetail.observe(viewLifecycleOwner) {
+            // Delete対策
+            it ?: return@observe
 
-        view.title.setText(loadTask.title)
-        view.description.setText(loadTask.description)
-        if (loadTask.completed) {
-            view.title.isEnabled = false
-            view.description.isEnabled = false
-            view.save.visibility = View.GONE
-        } else {
-            view.save.isEnabled = loadTask.title.isNotBlank()
+            view.title.setText(it.title)
+            view.description.setText(it.description)
+            if (it.completed) {
+                view.title.isEnabled = false
+                view.description.isEnabled = false
+                view.save.visibility = View.GONE
+            } else {
+                view.save.isEnabled = it.title.isNotBlank()
+            }
         }
-    }
 
-    private fun setupListener(view: View) {
         view.title.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -109,24 +90,32 @@ class TaskDetailFragment : BaseFragment() {
             }
         })
         view.save.setOnClickListener {
-            repository.save(
-                Task(
-                    id = task?.id,
-                    title = view.title.text.toString(),
-                    description = view.description.text.toString()
-                )
-            )
-            back()
+            viewModel.save(
+                title = view.title.text.toString(),
+                description = view.description.text.toString()
+            ).observe(viewLifecycleOwner) {
+                back()
+            }
         }
     }
 
     private fun back() {
-        fragmentManager?.popBackStack()
+        parentFragmentManager.popBackStack()
     }
 
     private fun showSnackbar(message: String) {
         activity?.findViewById<View>(android.R.id.content)?.let {
             Snackbar.make(it, message, Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
+    companion object {
+        private const val ARG_TASK_ID = "TASK_ID"
+
+        fun newInstance(taskId: Int? = null) = TaskDetailFragment().apply {
+            arguments = Bundle().apply {
+                taskId?.let { putInt(ARG_TASK_ID, it) }
+            }
         }
     }
 }

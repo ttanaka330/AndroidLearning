@@ -3,7 +3,6 @@ package com.github.ttanaka330.learning.todo.ui.list
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -14,23 +13,16 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ttanaka330.learning.todo.R
-import com.github.ttanaka330.learning.todo.ui.detail.TaskDetailFragment
 import com.github.ttanaka330.learning.todo.data.Task
-import com.github.ttanaka330.learning.todo.data.TaskRepository
-import com.github.ttanaka330.learning.todo.data.TaskRepositoryDataSource
 import com.github.ttanaka330.learning.todo.ui.common.widget.BaseFragment
 import com.github.ttanaka330.learning.todo.ui.common.widget.ConfirmMessageDialog
+import com.github.ttanaka330.learning.todo.ui.detail.TaskDetailFragment
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
-    companion object {
-        private const val REQUEST_DELETE_MESSAGE = 1
-
-        fun newInstance() = TaskCompletedFragment()
-    }
-
-    private lateinit var repository: TaskRepository
+    private val viewModel: TaskCompletedViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,8 +31,12 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_task_completed, container, false)
         setupToolbar()
-        setupData(rootView)
         return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupData(view)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -49,11 +45,9 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_delete) {
-            fragmentManager?.let {
-                val dialog = ConfirmMessageDialog.newInstance(R.string.message_confirm_delete_completed)
-                dialog.setTargetFragment(this, REQUEST_DELETE_MESSAGE)
-                dialog.show(it, null)
-            }
+            val dialog = ConfirmMessageDialog.newInstance(R.string.message_confirm_delete_completed)
+            dialog.setTargetFragment(this, REQUEST_DELETE_MESSAGE)
+            dialog.show(parentFragmentManager, null)
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -66,33 +60,24 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     private fun setupData(view: View) {
         val context = view.context
-        repository = TaskRepositoryDataSource.getInstance(context)
-
-        view.list.apply {
+        val adapter = TaskListAdapter(this)
+        view.list.also {
             val orientation = RecyclerView.VERTICAL
-            adapter = TaskListAdapter(this@TaskCompletedFragment)
-            layoutManager = LinearLayoutManager(context, orientation, false)
-            addItemDecoration(DividerItemDecoration(context, orientation))
+            it.adapter = adapter
+            it.layoutManager = LinearLayoutManager(context, orientation, false)
+            it.addItemDecoration(DividerItemDecoration(context, orientation))
         }
-        // onCreateView時点では view==null のため、Handlerで処理を後ろにずらす
-        Handler().post { updateTasks(view) }
-    }
 
-    private fun updateTasks(view: View) {
-        val data = repository.loadList(true)
-        (view.list.adapter as TaskListAdapter).submitList(data)
-    }
-
-    private fun deleteCompleted() {
-        repository.deleteCompleted()
-        view?.let { setupData(it) }
+        viewModel.loadCompletedList().observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
     }
 
     private fun navigationDetail(taskId: Int? = null) {
-        fragmentManager?.beginTransaction()
-            ?.replace(R.id.container, TaskDetailFragment.newInstance(taskId))
-            ?.addToBackStack(null)
-            ?.commit()
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.container, TaskDetailFragment.newInstance(taskId))
+            .addToBackStack(null)
+            .commit()
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -102,7 +87,7 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_DELETE_MESSAGE) {
             if (resultCode == DialogInterface.BUTTON_POSITIVE) {
-                deleteCompleted()
+                viewModel.deleteCompleted()
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -114,11 +99,16 @@ class TaskCompletedFragment : BaseFragment(), TaskListAdapter.ActionListener {
     }
 
     override fun onCompletedChanged(task: Task) {
-        repository.save(task)
-        view?.let { updateTasks(it) }
+        viewModel.updateCompleted(task)
     }
 
     override fun onChangedItemCount(itemCount: Int) {
         view?.empty?.visibility = if (itemCount > 0) View.GONE else View.VISIBLE
+    }
+
+    companion object {
+        private const val REQUEST_DELETE_MESSAGE = 1
+
+        fun newInstance() = TaskCompletedFragment()
     }
 }
