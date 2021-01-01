@@ -21,7 +21,7 @@ class TaskRepositoryDataSource private constructor(context: Context) : TaskRepos
 
     override fun load(id: Int): Task? {
         val query = "SELECT * FROM ${TodoDatabase.TABLE_NAME}" +
-                " WHERE ${TodoDatabase.COLUMN_ID} = ?"
+            " WHERE ${TodoDatabase.COLUMN_ID} = ?"
         val queryArgs = arrayOf(id.toString())
         var task: Task? = null
         database.rawQuery(query, queryArgs).use {
@@ -34,8 +34,8 @@ class TaskRepositoryDataSource private constructor(context: Context) : TaskRepos
 
     override fun loadList(isCompleted: Boolean): List<Task> {
         val query = "SELECT * FROM ${TodoDatabase.TABLE_NAME}" +
-                " WHERE ${TodoDatabase.COLUMN_COMPLETED} = ?" +
-                " ORDER BY ${TodoDatabase.COLUMN_ID} DESC"
+            " WHERE ${TodoDatabase.COLUMN_COMPLETED} = ?" +
+            " ORDER BY ${TodoDatabase.COLUMN_ID} DESC"
         val queryArgs = arrayOf(toValue(isCompleted))
         val tasks: MutableList<Task> = mutableListOf()
         database.rawQuery(query, queryArgs).use {

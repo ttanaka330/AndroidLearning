@@ -16,11 +16,11 @@ class TodoDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         private const val VERSION = 1
         private const val DATABASE_NAME = "todo.db"
         private const val CREATE_TABLE = "CREATE TABLE $TABLE_NAME (" +
-                "$COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "$COLUMN_TITLE TEXT NOT NULL," +
-                "$COLUMN_DESCRIPTION TEXT," +
-                "$COLUMN_COMPLETED INTEGER" +
-                ")"
+            "$COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "$COLUMN_TITLE TEXT NOT NULL," +
+            "$COLUMN_DESCRIPTION TEXT," +
+            "$COLUMN_COMPLETED INTEGER" +
+            ")"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
