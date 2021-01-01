@@ -1,4 +1,5 @@
-# Created by https://www.gitignore.io/api/androidstudio
+# Created by https://www.toptal.com/developers/gitignore/api/androidstudio
+# Edit at https://www.toptal.com/developers/gitignore?templates=androidstudio
 
 ### AndroidStudio ###
 # Covers files to be ignored for android development using Android Studio.
@@ -6,6 +7,7 @@
 # Built application files
 *.apk
 *.ap_
+*.aab
 
 # Files for the ART/Dalvik VM
 *.dex
@@ -47,6 +49,13 @@ captures/
 *~
 *.swp
 
+# Keystore files
+*.jks
+*.keystore
+
+# Google Services (e.g. APIs or Firebase)
+# google-services.json
+
 # Android Patch
 gen-external-apklibs
 
@@ -62,7 +71,10 @@ obj/
 /out/
 
 # User-specific configurations
-.idea/
+.idea/*
+!.idea/dictionaries/
+.idea/dictionaries/**
+!.idea/dictionaries/dic.xml
 
 # OS-specific files
 .DS_Store
@@ -76,6 +88,8 @@ Thumbs.db
 # Legacy Eclipse project files
 .classpath
 .project
+.cproject
+.settings/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -108,4 +122,4 @@ fabric.properties
 
 !/gradle/wrapper/gradle-wrapper.jar
 
-# End of https://www.gitignore.io/api/androidstudio
+# End of https://www.toptal.com/developers/gitignore/api/androidstudio
