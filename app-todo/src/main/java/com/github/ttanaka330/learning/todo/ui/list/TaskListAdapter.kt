@@ -2,10 +2,8 @@ package com.github.ttanaka330.learning.todo.ui.list
 
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.DiffUtil
@@ -13,7 +11,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ttanaka330.learning.todo.R
 import com.github.ttanaka330.learning.todo.data.Task
-import kotlinx.android.synthetic.main.view_task.view.*
+import com.github.ttanaka330.learning.todo.databinding.ViewTaskBinding
 
 class TaskListAdapter(
     private val actionListener: ActionListener
@@ -39,14 +37,15 @@ class TaskListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return ViewHolder(inflater.inflate(R.layout.view_task, parent, false))
+        val viewBinding = ViewTaskBinding.inflate(inflater, parent, false)
+        return ViewHolder(viewBinding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.title.text = item.title
-        holder.description.text = item.description
-        holder.completed.apply {
+        holder.viewBinding.title.text = item.title
+        holder.viewBinding.description.text = item.description
+        holder.viewBinding.completed.apply {
             var isCompleted = item.completed
             setCheckboxColor(isCompleted)
             setOnClickListener {
@@ -55,7 +54,7 @@ class TaskListAdapter(
                 actionListener.onCompletedChanged(item.copy(completed = isCompleted))
             }
         }
-        holder.layout.setOnClickListener {
+        holder.viewBinding.layout.setOnClickListener {
             actionListener.onTaskClick(item)
         }
     }
@@ -66,12 +65,7 @@ class TaskListAdapter(
         ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(color))
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val layout: ViewGroup = view.layout
-        val title: TextView = view.title
-        val description: TextView = view.description
-        val completed: ImageView = view.completed
-    }
+    inner class ViewHolder(val viewBinding: ViewTaskBinding) : RecyclerView.ViewHolder(viewBinding.root)
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Task>() {

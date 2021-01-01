@@ -12,28 +12,35 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ttanaka330.learning.todo.R
 import com.github.ttanaka330.learning.todo.data.Task
+import com.github.ttanaka330.learning.todo.databinding.FragmentTaskListBinding
 import com.github.ttanaka330.learning.todo.ui.common.widget.BaseFragment
 import com.github.ttanaka330.learning.todo.ui.detail.TaskDetailFragment
-import kotlinx.android.synthetic.main.fragment_task_list.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
 
     private val viewModel: TaskListViewModel by viewModel()
+    private var viewBinding: FragmentTaskListBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
+    ): View {
+        val binding = FragmentTaskListBinding.inflate(inflater, container, false)
+        viewBinding = binding
         setupToolbar()
-        return rootView
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupData(view)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewBinding = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -54,16 +61,17 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
     }
 
     private fun setupData(view: View) {
+        val binding = viewBinding ?: return
         val context = view.context
         val adapter = TaskListAdapter(this)
-        view.list.also {
+        binding.list.also {
             val orientation = RecyclerView.VERTICAL
             it.adapter = adapter
             it.layoutManager = LinearLayoutManager(context, orientation, false)
             it.addItemDecoration(DividerItemDecoration(context, orientation))
         }
 
-        view.fab.setOnClickListener {
+        binding.fab.setOnClickListener {
             navigationDetail()
         }
 
@@ -99,7 +107,8 @@ class TaskListFragment : BaseFragment(), TaskListAdapter.ActionListener {
     }
 
     override fun onChangedItemCount(itemCount: Int) {
-        view?.empty?.visibility = if (itemCount > 0) View.GONE else View.VISIBLE
+        val binding = viewBinding ?: return
+        binding.empty.visibility = if (itemCount > 0) View.GONE else View.VISIBLE
     }
 
     companion object {
