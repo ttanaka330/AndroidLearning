@@ -17,6 +17,7 @@ ext {
 
     // Other Library
     stetho = '1.5.1'
+    timber = '4.7.1'
 
     // Testing
     junit = '4.13.1'

@@ -3,6 +3,7 @@ package com.github.ttanaka330.learning.todo
 import android.app.Application
 import android.os.StrictMode
 import com.facebook.stetho.Stetho
+import timber.log.Timber
 
 class DebugApp : Application() {
 
@@ -10,6 +11,11 @@ class DebugApp : Application() {
         setupStrict()
         super.onCreate()
         setupStetho()
+        setupLogger()
+    }
+
+    private fun setupLogger() {
+        Timber.plant(Timber.DebugTree())
     }
 
     private fun setupStetho() {

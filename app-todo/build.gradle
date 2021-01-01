@@ -43,6 +43,7 @@ dependencies {
     implementation "com.google.android.material:material:$material"
 
     // Debug
+    implementation "com.jakewharton.timber:timber:$timber"
     debugImplementation "com.facebook.stetho:stetho:$stetho"
 
     // Testing
