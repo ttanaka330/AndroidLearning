@@ -1,2 +1,6 @@
 rootProject.name = "AndroidLearning"
-include ':app-todo'
+include ':app-todo',
+        ':app-learning'
+
+def moduleLearning = new File('app-learning')
+project(':app-learning').projectDir = new File(moduleLearning, 'app')
