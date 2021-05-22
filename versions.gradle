@@ -3,13 +3,13 @@ ext {
     targetSdkVersion = 30
     compileSdkVersion = 30
     buildToolsVersion = '30.0.3'
-    kotlinVersion = '1.4.21'
-    kotlinCoroutines = '1.4.2'
+    kotlinVersion = '1.4.31'
+    kotlinCoroutines = '1.4.3'
 
     // Plugin
     androidGradlePlugin = '4.2.1'
-    ktlintGradlePlugin = '9.4.1'
-    ktlint = '0.40.0'
+    ktlintGradlePlugin = '10.0.0'
+    ktlint = '0.41.0'
 
     // Android Official
     appcompat = '1.2.0'
