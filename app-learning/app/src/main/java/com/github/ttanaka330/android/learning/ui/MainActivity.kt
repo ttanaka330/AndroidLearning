@@ -1,8 +1,7 @@
 package com.github.ttanaka330.android.learning.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.github.ttanaka330.android.learning.R
+import androidx.appcompat.app.AppCompatActivity
 import com.github.ttanaka330.android.learning.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
