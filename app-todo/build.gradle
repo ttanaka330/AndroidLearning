@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply from: '../tools/ktlint.gradle'
+apply from: '../gradle/ktlint.gradle'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
