@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply from: '../tools/ktlint.gradle'
+apply from: '../gradle/ktlint.gradle'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -56,9 +56,9 @@ dependencies {
     implementation "com.google.android.material:material:$material"
 
     // Dependency Injection
-    implementation "org.koin:koin-androidx-ext:$koin"
-    implementation "org.koin:koin-androidx-viewmodel:$koin"
-    testImplementation "org.koin:koin-test:$koin"
+    implementation "io.insert-koin:koin-androidx-ext:$koin"
+    implementation "io.insert-koin:koin-androidx-viewmodel:$koin"
+    testImplementation "io.insert-koin:koin-test:$koin"
 
     // Debug
     implementation "com.jakewharton.timber:timber:$timber"

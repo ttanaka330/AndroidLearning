@@ -6,6 +6,7 @@
 主にライブラリやプラグインの動作確認のプロジェクトとなります。
 
 ## 動作確認環境
-* OS:  macOS Big Sur 11.1
-* IDE: Android Studio 4.1.1
+* OS:  macOS Big Sur 11.2.3
+* IDE: Android Studio 4.2.1
+* Language: Kotlin 1.4.31
 * target : Android 6.0(API 23) 以上
