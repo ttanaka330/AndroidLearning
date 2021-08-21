@@ -6,7 +6,8 @@
 主にライブラリやプラグインの動作確認のプロジェクトとなります。
 
 ## 動作確認環境
-* OS:  macOS Big Sur 11.2.3
-* IDE: Android Studio 4.2.1
-* Language: Kotlin 1.4.31
+* OS:  macOS Big Sur 11.5.2
+* IDE: Android Studio Arctic Fox | 2020.3.1 Patch 1
+* Android Gradle Plugin: 7.0.1
+* Language: Kotlin 1.5.21
 * target : Android 6.0(API 23) 以上

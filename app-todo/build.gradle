@@ -45,8 +45,7 @@ dependencies {
     implementation "com.google.android.material:material:$material"
 
     // Dependency Injection
-    implementation "io.insert-koin:koin-androidx-ext:$koin"
-    implementation "io.insert-koin:koin-androidx-viewmodel:$koin"
+    implementation "io.insert-koin:koin-android:$koin"
     testImplementation "io.insert-koin:koin-test:$koin"
 
     // Debug
