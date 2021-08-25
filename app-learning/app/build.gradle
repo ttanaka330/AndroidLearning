@@ -26,6 +26,7 @@ android {
 }
 
 dependencies {
+    implementation project(":learning-core")
     implementation project(":learning-maps")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"

@@ -23,6 +23,8 @@ android {
 }
 
 dependencies {
+    implementation project(":learning-core")
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
     implementation "androidx.core:core-ktx:$core"
