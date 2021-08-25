@@ -21,7 +21,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".ui.LearningMapsActivity" />
+        <activity android:name=".ui.LearningMapsActivity"
+            android:theme="@style/Theme.AndroidLearning.Translucent" />
     </application>
 
 </manifest>
