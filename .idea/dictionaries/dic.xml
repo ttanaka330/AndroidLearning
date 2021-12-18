@@ -1,12 +1,15 @@
 <component name="ProjectDictionaryState">
   <dictionary name="dic">
     <words>
+      <w>constraintlayout</w>
+      <w>jakewharton</w>
       <w>jlleitschuh</w>
       <w>koin</w>
       <w>ktlint</w>
       <w>snackbar</w>
       <w>stetho</w>
       <w>ttanaka</w>
+      <w>viewmodel</w>
     </words>
   </dictionary>
 </component>
