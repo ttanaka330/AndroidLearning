@@ -1,3 +1,5 @@
+import dependencies.Dep
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -28,33 +30,32 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutines"
+    implementation Dep.Kotlin.coroutines
 
     // Android Official
-    implementation "androidx.core:core-ktx:$core"
-    implementation "androidx.appcompat:appcompat:$appcompat"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintLayout"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
-    implementation "androidx.recyclerview:recyclerview:$recyclerView"
-    implementation "androidx.room:room-runtime:$room"
-    implementation "androidx.room:room-ktx:$room"
-    kapt "androidx.room:room-compiler:$room"
-    testImplementation "androidx.room:room-testing:$room"
-    implementation "com.google.android.material:material:$material"
+    implementation Dep.Jetpack.core
+    implementation Dep.Jetpack.appcompat
+    implementation Dep.Jetpack.constraintlayout
+    implementation Dep.Jetpack.livedata
+    implementation Dep.Jetpack.viewmodel
+    implementation Dep.Jetpack.recyclerview
+    implementation Dep.Room.runtime
+    implementation Dep.Room.ktx
+    kapt Dep.Room.compiler
+    testImplementation Dep.Room.test
+    implementation Dep.material
 
     // Dependency Injection
-    implementation "io.insert-koin:koin-android:$koin"
-    testImplementation "io.insert-koin:koin-test:$koin"
+    implementation Dep.Koin.android
+    testImplementation Dep.Koin.test
 
     // Debug
-    implementation "com.jakewharton.timber:timber:$timber"
-    debugImplementation "com.facebook.stetho:stetho:$stetho"
+    implementation Dep.Debug.timber
+    debugImplementation Dep.Debug.stetho
 
     // Testing
-    testImplementation "junit:junit:$junit"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$androidXEspresso"
-    androidTestImplementation "androidx.test.ext:junit:$androidXExtJunit"
-    androidTestImplementation "androidx.test:runner:$androidXRunner"
+    testImplementation Dep.Test.junit
+    androidTestImplementation Dep.AndroidTest.espresso
+    androidTestImplementation Dep.AndroidTest.junit
+    androidTestImplementation Dep.AndroidTest.runner
 }

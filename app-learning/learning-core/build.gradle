@@ -1,3 +1,5 @@
+import dependencies.Dep
+
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
@@ -20,7 +22,6 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-    implementation "com.google.android.material:material:$material"
-    testImplementation "junit:junit:$junit"
+    implementation Dep.material
+    testImplementation Dep.Test.junit
 }

@@ -1,3 +1,5 @@
+import dependencies.Dep
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -29,18 +31,17 @@ dependencies {
     implementation project(":learning-core")
     implementation project(":learning-maps")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-    implementation "androidx.core:core-ktx:$core"
-    implementation "androidx.appcompat:appcompat:$appcompat"
-    implementation "androidx.fragment:fragment-ktx:$fragment"
-    implementation "androidx.recyclerview:recyclerview:$recyclerView"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintLayout"
-    implementation "com.google.android.material:material:$material"
+    implementation Dep.Jetpack.core
+    implementation Dep.Jetpack.appcompat
+    implementation Dep.Jetpack.fragment
+    implementation Dep.Jetpack.recyclerview
+    implementation Dep.Jetpack.constraintlayout
+    implementation Dep.material
 
-    implementation "com.jakewharton.timber:timber:$timber"
+    implementation Dep.Debug.timber
 
-    testImplementation "junit:junit:$junit"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$androidXEspresso"
-    androidTestImplementation "androidx.test.ext:junit:$androidXExtJunit"
-    androidTestImplementation "androidx.test:runner:$androidXRunner"
+    testImplementation Dep.Test.junit
+    androidTestImplementation Dep.AndroidTest.espresso
+    androidTestImplementation Dep.AndroidTest.junit
+    androidTestImplementation Dep.AndroidTest.runner
 }
