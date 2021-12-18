@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
 }
 apply from: rootProject.file('gradle/android.gradle')
@@ -7,11 +7,8 @@ apply from: rootProject.file('gradle/ktlint.gradle')
 
 android {
     defaultConfig {
-        applicationId "com.github.ttanaka330.android.learning"
-        versionCode 1
-        versionName "1.0.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -27,15 +24,16 @@ android {
 
 dependencies {
     implementation project(":learning-core")
-    implementation project(":learning-maps")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+
     implementation "androidx.core:core-ktx:$core"
     implementation "androidx.appcompat:appcompat:$appcompat"
     implementation "androidx.fragment:fragment-ktx:$fragment"
     implementation "androidx.recyclerview:recyclerview:$recyclerView"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayout"
     implementation "com.google.android.material:material:$material"
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
 
     implementation "com.jakewharton.timber:timber:$timber"
 

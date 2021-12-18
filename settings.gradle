@@ -1,6 +1,10 @@
 rootProject.name = "AndroidLearning"
 include ':app-todo',
-        ':app-learning'
+        ':app-learning',
+        ':learning-core',
+        ':learning-maps'
 
 def moduleLearning = new File('app-learning')
 project(':app-learning').projectDir = new File(moduleLearning, 'app')
+project(':learning-core').projectDir = new File(moduleLearning, 'learning-core')
+project(':learning-maps').projectDir = new File(moduleLearning, 'learning-maps')
