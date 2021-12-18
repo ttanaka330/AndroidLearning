@@ -3,8 +3,8 @@ package dependencies
 object Dep {
 
     object Versions {
-        const val kotlin = "1.5.21"
-        const val ktlint = "0.42.1"
+        const val kotlin = "1.5.32"
+        const val ktlint = "0.43.2"
     }
 
     object Kotlin {
@@ -12,18 +12,18 @@ object Dep {
     }
 
     object Jetpack {
-        private const val lifecycleVersion = "2.3.1"
-        const val core = "androidx.core:core-ktx:1.6.0"
-        const val appcompat = "androidx.appcompat:appcompat:1.3.1"
-        const val constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.0"
-        const val fragment = "androidx.fragment:fragment-ktx:1.3.6"
+        private const val lifecycleVersion = "2.4.0"
+        const val core = "androidx.core:core-ktx:1.7.0"
+        const val appcompat = "androidx.appcompat:appcompat:1.4.0"
+        const val constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.2"
+        const val fragment = "androidx.fragment:fragment-ktx:1.4.0"
         const val recyclerview = "androidx.recyclerview:recyclerview:1.2.1"
         const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
         const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     }
 
     object Room {
-        private const val roomVersion = "2.3.0"
+        private const val roomVersion = "2.4.0"
         const val compiler = "androidx.room:room-compiler:$roomVersion"
         const val ktx = "androidx.room:room-ktx:$roomVersion"
         const val runtime = "androidx.room:room-runtime:$roomVersion"
@@ -37,7 +37,7 @@ object Dep {
     const val material = "com.google.android.material:material:1.4.0"
 
     object Koin {
-        private const val koinVersion = "3.1.2"
+        private const val koinVersion = "3.1.4"
         const val android = "io.insert-koin:koin-android:$koinVersion"
         const val test = "io.insert-koin:koin-test:$koinVersion"
     }

@@ -9,5 +9,5 @@
 * OS:  macOS Big Sur 11.6.1
 * IDE: Android Studio Arctic Fox | 2020.3.1 Patch 4
 * Android Gradle Plugin: 7.0.4
-* Language: Kotlin 1.5.21
+* Language: Kotlin 1.5.32
 * target : Android 6.0(API 23) 以上
