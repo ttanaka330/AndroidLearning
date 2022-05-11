@@ -1,0 +1,67 @@
+name: CI
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup JDK 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 11
+          cache: gradle
+      - name: Build app
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: assembleDebug
+
+  lint:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+      - name: Run lint
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: lint
+      - name: Run Danger
+        run: bundle exec danger
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  ktlint:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+      - name: Run ktlint
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: ktlintCheck
+      - name: Run Danger
+        run: bundle exec danger
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
