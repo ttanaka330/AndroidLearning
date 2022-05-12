@@ -3,12 +3,12 @@ package dependencies
 object Dep {
 
     object Versions {
-        const val kotlin = "1.5.32"
-        const val ktlint = "0.43.2"
+        const val kotlin = "1.6.21"
+        const val ktlint = "0.45.2"
     }
 
     object Kotlin {
-        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
+        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
     }
 
     object Jetpack {
