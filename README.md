@@ -6,8 +6,8 @@
 主にライブラリやプラグインの動作確認のプロジェクトとなります。
 
 ## 動作確認環境
-* OS:  macOS Monterey 12.3.1
-* IDE: Android Studio Chipmunk | 2021.2.1
-* Android Gradle Plugin: 7.2.0
-* Language: Kotlin 1.6.21
+* OS: Windows 11
+* IDE: Android Studio Giraffe | 2022.3.1 Patch 2
+* Android Gradle Plugin: 8.1.2
+* Language: Kotlin 1.9.20
 * target : Android 8.0(API 26) 以上

@@ -19,6 +19,7 @@ android {
             consumerProguardFiles 'consumer-rules.pro'
         }
     }
+    namespace 'com.github.ttanaka330.android.learning'
 }
 
 dependencies {
