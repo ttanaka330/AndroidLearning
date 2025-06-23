@@ -1,0 +1,55 @@
+[versions]
+agp = "8.10.1"
+androidxAppcompat = "1.4.0"
+androidxConstraintLayout = "2.1.2"
+androidxCore = "1.7.0"
+androidxEspresso = "3.4.0"
+androidxFragment = "1.4.0"
+androidxRecyclerView = "1.2.1"
+androidxTestExt = "1.1.3"
+androidxTestRunner = "1.4.0"
+googleMap = "17.0.1"
+junit = "4.13.2"
+kotlin = "1.9.20"
+ktlint = "0.50.0"
+material = "1.4.0"
+timber = "5.0.1"
+
+# TODO
+androidxLifecycle = "2.4.0"
+androidxRoom = "2.4.0"
+koin = "3.1.4"
+kotlinxCoroutines = "1.7.3"
+stetho = "1.6.0"
+
+[libraries]
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppcompat" }
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+androidx-constraint-layout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidxConstraintLayout" }
+androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidxFragment" }
+androidx-recycler-view = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "androidxRecyclerView" }
+google-map = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "googleMap" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+
+# Test Libraries
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
+androidx-test-ext = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestExt" }
+androidx-text-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
+
+# TODO
+androidx-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
+androidx-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+androidx-room = { group = "androidx.room", name = "room-ktx", version.ref = "androidxRoom" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidxRoom" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidxRoom" }
+androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "androidxRoom" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+stetho = { group = "com.facebook.stetho", name = "stetho", version.ref = "stetho" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
