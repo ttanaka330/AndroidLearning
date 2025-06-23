@@ -1,9 +1,7 @@
-import dependencies.Dep
-
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
+    alias libs.plugins.android.application
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.kotlin.ksp
 }
 apply from: rootProject.file('gradle/android.gradle')
 apply from: rootProject.file('gradle/ktlint.gradle')
@@ -31,32 +29,32 @@ android {
 }
 
 dependencies {
-    implementation Dep.Kotlin.coroutines
+    implementation libs.kotlinx.coroutines.android
 
     // Android Official
-    implementation Dep.Jetpack.core
-    implementation Dep.Jetpack.appcompat
-    implementation Dep.Jetpack.constraintlayout
-    implementation Dep.Jetpack.livedata
-    implementation Dep.Jetpack.viewmodel
-    implementation Dep.Jetpack.recyclerview
-    implementation Dep.Room.runtime
-    implementation Dep.Room.ktx
-    kapt Dep.Room.compiler
-    testImplementation Dep.Room.test
-    implementation Dep.material
+    implementation libs.androidx.core
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.constraint.layout
+    implementation libs.androidx.recycler.view
+    implementation libs.androidx.livedata
+    implementation libs.androidx.viewmodel
+    implementation libs.androidx.room
+    implementation libs.androidx.room.runtime
+    ksp libs.androidx.room.compiler
+    testImplementation libs.androidx.room.testing
+    implementation libs.material
 
     // Dependency Injection
-    implementation Dep.Koin.android
-    testImplementation Dep.Koin.test
+    implementation libs.koin.android
+    testImplementation libs.koin.test
 
     // Debug
-    implementation Dep.Debug.timber
-    debugImplementation Dep.Debug.stetho
+    implementation libs.timber
+    implementation libs.stetho
 
     // Testing
-    testImplementation Dep.Test.junit
-    androidTestImplementation Dep.AndroidTest.espresso
-    androidTestImplementation Dep.AndroidTest.junit
-    androidTestImplementation Dep.AndroidTest.runner
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.test.espresso
+    androidTestImplementation libs.androidx.test.ext
+    androidTestImplementation libs.androidx.test.runner
 }

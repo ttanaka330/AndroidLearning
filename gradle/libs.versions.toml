@@ -11,7 +11,8 @@ androidxTestRunner = "1.4.0"
 googleMap = "17.0.1"
 junit = "4.13.2"
 kotlin = "1.9.20"
-ktlint = "0.50.0"
+kotlinKsp = "1.9.20-1.0.14"
+ktlintPlugin = "11.6.1"
 material = "1.4.0"
 timber = "5.0.1"
 
@@ -34,9 +35,9 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 
 # Test Libraries
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
+androidx-test-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
 androidx-test-ext = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestExt" }
-androidx-text-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
 
 # TODO
 androidx-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
@@ -53,3 +54,6 @@ stetho = { group = "com.facebook.stetho", name = "stetho", version.ref = "stetho
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintPlugin" }
