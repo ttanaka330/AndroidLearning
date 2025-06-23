@@ -1,4 +1,3 @@
-import dependencies.Dep
 apply plugin: 'org.jlleitschuh.gradle.ktlint'
 
 // NOTE:
@@ -9,7 +8,7 @@ apply plugin: 'org.jlleitschuh.gradle.ktlint'
 //   ext.ReporterType = org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 ktlint {
-    version = Dep.Versions.ktlint
+    version = "0.50.0"
     debug = true
     verbose = true
     android = true

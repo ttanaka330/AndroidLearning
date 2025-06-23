@@ -1,8 +1,6 @@
-import dependencies.Dep
-
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
+    alias libs.plugins.android.application
+    alias libs.plugins.kotlin.android
 }
 apply from: rootProject.file('gradle/android.gradle')
 apply from: rootProject.file('gradle/ktlint.gradle')
@@ -29,20 +27,19 @@ android {
 }
 
 dependencies {
-    implementation project(":learning-core")
-    implementation project(":learning-maps")
+    implementation project(":app-learning:learning-core")
+    implementation project(":app-learning:learning-maps")
 
-    implementation Dep.Jetpack.core
-    implementation Dep.Jetpack.appcompat
-    implementation Dep.Jetpack.fragment
-    implementation Dep.Jetpack.recyclerview
-    implementation Dep.Jetpack.constraintlayout
-    implementation Dep.material
+    implementation libs.androidx.core
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.constraint.layout
+    implementation libs.androidx.fragment
+    implementation libs.androidx.recycler.view
+    implementation libs.material
+    implementation libs.timber
 
-    implementation Dep.Debug.timber
-
-    testImplementation Dep.Test.junit
-    androidTestImplementation Dep.AndroidTest.espresso
-    androidTestImplementation Dep.AndroidTest.junit
-    androidTestImplementation Dep.AndroidTest.runner
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.test.espresso
+    androidTestImplementation libs.androidx.test.ext
+    androidTestImplementation libs.androidx.test.runner
 }

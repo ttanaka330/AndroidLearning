@@ -1,10 +1,22 @@
-rootProject.name = "AndroidLearning"
-include ':app-todo',
-        ':app-learning',
-        ':learning-core',
-        ':learning-maps'
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
 
-def moduleLearning = new File('app-learning')
-project(':app-learning').projectDir = new File(moduleLearning, 'app')
-project(':learning-core').projectDir = new File(moduleLearning, 'learning-core')
-project(':learning-maps').projectDir = new File(moduleLearning, 'learning-maps')
+rootProject.name = "AndroidLearning"
+include ':app-learning:app'
+include ':app-learning:learning-core'
+include ':app-learning:learning-maps'
+include ':app-todo'
