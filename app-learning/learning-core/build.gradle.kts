@@ -1,5 +1,5 @@
 plugins {
-    id("learning.android.library")
+    alias(libs.plugins.learning.android.library)
 }
 
 android {

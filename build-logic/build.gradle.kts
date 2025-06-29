@@ -23,11 +23,11 @@ dependencies {
 gradlePlugin {
     plugins {
         register("androidApplication") {
-            id = "learning.android.application"
+            id = libs.plugins.learning.android.application.get().pluginId
             implementationClass = "AndroidApplicationConventionPlugin"
         }
         register("androidLibrary") {
-            id = "learning.android.library"
+            id = libs.plugins.learning.android.library.get().pluginId
             implementationClass = "AndroidLibraryConventionPlugin"
         }
     }
