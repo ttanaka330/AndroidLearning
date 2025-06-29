@@ -2,7 +2,6 @@ package com.github.ttanaka330.android.learning.ui
 
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -49,12 +48,11 @@ class MainFragment : Fragment() {
     private fun getLearningInfoList(parent: Activity): List<LearningInfo>? {
         try {
             val info = parent.packageManager.getPackageInfo(parent.packageName, PackageManager.GET_ACTIVITIES)
-            val activities: Array<ActivityInfo> = info.activities
-            return activities.map {
+            return info.activities?.map {
                 val packageName = getPackage(it.name)
                 val className = getClassName(it.name)
                 LearningInfo(packageName, className)
-            }.filter {
+            }?.filter {
                 it.packageName.indexOf(parent.packageName) != -1 &&
                     it.className != parent.javaClass.simpleName
             }

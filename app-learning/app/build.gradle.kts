@@ -1,8 +1,6 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.learning.android.application)
 }
-apply(from = rootProject.file("gradle/android.gradle"))
 
 android {
     namespace = "com.github.ttanaka330.android.learning"
