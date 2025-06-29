@@ -13,7 +13,7 @@ plugins {
 subprojects {
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
     configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-        version.set("0.50.0")
+        version.set("1.6.0")
         debug.set(true)
         verbose.set(true)
         android.set(true)

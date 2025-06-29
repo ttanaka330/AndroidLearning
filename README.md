@@ -9,5 +9,5 @@
 * OS: Windows 11
 * IDE: Android Studio Meerkat Feature Drop | 2024.3.2 Patch 1
 * Android Gradle Plugin: 8.10.1
-* Language: Kotlin 1.9.20
+* Language: Kotlin 2.1.21
 * target : Android 10.0(API 29) 以上
