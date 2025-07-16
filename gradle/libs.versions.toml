@@ -1,6 +1,12 @@
 [versions]
+minSdk = "29"
+targetSdk = "35"
+compileSdk = "35"
+
+# libraries / plugins
 agp = "8.10.1"
 androidxAppcompat = "1.4.0"
+androidxComposeBom = "2025.06.01"
 androidxConstraintLayout = "2.1.2"
 androidxCore = "1.7.0"
 androidxEspresso = "3.4.0"
@@ -26,6 +32,9 @@ stetho = "1.6.0"
 [libraries]
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppcompat" }
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom-alpha", version.ref = "androidxComposeBom" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-constraint-layout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidxConstraintLayout" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidxFragment" }
 androidx-recycler-view = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "androidxRecyclerView" }
@@ -54,15 +63,18 @@ stetho = { group = "com.facebook.stetho", name = "stetho", version.ref = "stetho
 # Dependencies of the included build-logic
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintPlugin" }
 
 # Plugins defined by this project
 learning-android-application = { id = "learning.android.application" }
+learning-android-compose = { id = "learning.android.compose" }
 learning-android-library = { id = "learning.android.library" }

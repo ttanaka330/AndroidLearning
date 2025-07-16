@@ -1,5 +1,7 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.github.ttanaka330.android.buildlogic.configureKotlinAndroid
+import com.github.ttanaka330.android.buildlogic.libs
+import com.github.ttanaka330.android.buildlogic.version
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -13,7 +15,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
 
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
-                defaultConfig.targetSdk = 35
+                defaultConfig.targetSdk = libs.version("targetSdk").toInt()
                 defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             }
         }
