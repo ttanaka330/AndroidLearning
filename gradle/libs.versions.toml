@@ -1,4 +1,9 @@
 [versions]
+minSdk = "29"
+targetSdk = "35"
+compileSdk = "35"
+
+# libraries / plugins
 agp = "8.10.1"
 androidxAppcompat = "1.4.0"
 androidxConstraintLayout = "2.1.2"
